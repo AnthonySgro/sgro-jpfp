@@ -1,0 +1,35 @@
+{
+    "name": "sgro-final-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm run build & node server",
+        "build": "webpack --mode=production",
+        "start:dev": "npm run start-server & npm run build-watch",
+        "build-watch": "webpack -w --mode=development",
+        "start-server": "nodemon server --ignore public",
+        "test": "mocha \"**/*.spec.js\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1",
+        "pg": "^8.5.1",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "sequelize": "^6.5.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.13.10",
+        "@babel/preset-react": "^7.12.13",
+        "babel-loader": "^8.2.2",
+        "chai": "^4.3.4",
+        "mocha": "^8.3.2",
+        "morgan": "^1.10.0",
+        "nodemon": "^2.0.7",
+        "webpack": "^5.27.0",
+        "webpack-cli": "^4.5.0"
+    }
+}
