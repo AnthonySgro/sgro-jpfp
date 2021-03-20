@@ -10,7 +10,11 @@ const {
 router.get("/", async (req, res, next) => {
     try {
         // Get all campuses
-        const allStudents = await Student.findAll();
+        const allStudents = await Student.findAll({
+            include: {
+                model: Campus,
+            },
+        });
 
         // Return proper status
         if (allStudents.length) {

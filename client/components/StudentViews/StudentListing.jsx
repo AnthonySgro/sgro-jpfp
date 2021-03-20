@@ -1,32 +1,35 @@
 import React, { Component } from "react";
 
 // Component Imports
-import CampusCard from "../Cards/CampusCard.jsx";
+import StudentCard from "../Cards/StudentCard.jsx";
 
 // Redux imports
 import { connect } from "react-redux";
 
-class CampusListing extends Component {
+class StudentListing extends Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     componentDidMount() {}
+
     render() {
-        const { campuses } = this.props;
+        const { students } = this.props;
+        console.log(this.props);
+
         return (
             <main className="listing-main">
                 <div className="main-view-header">
-                    <h1 className="main-view-title">All Campuses</h1>
-                    <button className="main-view-btn">Add Campus</button>
+                    <h1 className="main-view-title">All Students</h1>
+                    <button className="main-view-btn">Add Student</button>
                 </div>
                 <br />
                 {/* If there are campuses, render a card for each */}
-                {campuses.length > 0 ? (
+                {students.length > 0 ? (
                     <div className="campus-listings-container">
-                        {campuses.map((campus) => (
-                            <CampusCard key={campus.id} {...campus} />
+                        {students.map((student) => (
+                            <StudentCard key={student.id} {...student} />
                         ))}
                     </div>
                 ) : (
@@ -40,8 +43,8 @@ class CampusListing extends Component {
 
 function mapStateToProps(state) {
     return {
-        campuses: state.campusInfo.allCampuses,
+        students: state.studentInfo.allStudents,
     };
 }
 
-export default connect(mapStateToProps)(CampusListing);
+export default connect(mapStateToProps)(StudentListing);

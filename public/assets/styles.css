@@ -1,3 +1,105 @@
-body {
-    background-color: red;
+html {
+    font-family: "Lato", "Poppins", sans-serif;
+}
+
+/* Header Styles */
+
+#app-header {
+    background-color: #81b29a;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#app-header > * {
+    margin: 2vh;
+}
+
+#header-links > * {
+    margin-left: 2vh;
+}
+
+/* Generic Listing Style */
+.listing-main {
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 4vh;
+}
+
+/* Campus Listing Styles */
+
+.main-view-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.campus-listings-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.campus-listings-container > * {
+    margin: 1vh;
+}
+
+/* Card Styles */
+
+.card-container {
+    background-color: #f2cc8f;
+    padding: 1vh;
+}
+
+/* Campus Card Styles */
+
+.campus-card-container {
+    display: flex;
+    flex-direction: row;
+    width: 40vh;
+}
+
+.campus-card-container img {
+    width: 100px;
+    height: auto;
+    padding-right: 1vh;
+}
+
+.campus-card-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.campus-card-numStudents {
+    margin: 0vh;
+    font-size: smaller;
+}
+
+.campus-card-info-interact {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Student Card Styles */
+.student-card-container {
+    display: flex;
+    flex-direction: column;
+    width: 18vh;
+}
+
+.student-card-container img {
+    align-self: center;
+    width: 17vh;
+    height: auto;
+}
+
+.student-card-info {
+    margin-top: 1vh;
+}
+
+.student-card-campus {
+    font-size: x-small;
 }

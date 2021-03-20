@@ -37,12 +37,4 @@ Campus.init(
     },
 );
 
-Campus.findByName = async (name) => {
-    try {
-        return;
-    } catch (err) {
-        console.log(err);
-    }
-};
-
 module.exports = Campus;

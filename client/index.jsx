@@ -1,22 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDom from "react-dom";
-import { Provider } from "react-redux";
 
+// Redux
+import { Provider } from "react-redux";
 import store from "./store";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+// Components
+import App from "./components/App.jsx";
 
-    render() {
-        return (
-            <Provider store={store}>
-                <h1>Hello World</h1>
-            </Provider>
-        );
-    }
-}
-
-ReactDom.render(<App></App>, document.querySelector("#app"));
+ReactDom.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector("#app"),
+);

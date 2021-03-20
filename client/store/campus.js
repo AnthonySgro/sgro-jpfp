@@ -1,9 +1,10 @@
 import axios from "axios";
 
-// Action Type
+// Action Types
 const LOAD_All_CAMPUSES = "LOAD_ALL_CAMPUSES";
+const LOAD_CAMPUS_DETAIL = "LOAD_CAMPUS_DETAIL";
 
-// Action Creator
+// Action Creators
 export const loadAllCampuses = (campuses) => {
     return {
         type: LOAD_All_CAMPUSES,
@@ -23,7 +24,7 @@ export const fetchAllCampuses = () => {
 };
 
 // Initial Reducer State
-const initialState = { allcampuses: [], selectedCampus: {} };
+const initialState = { allCampuses: [], selectedCampus: {} };
 
 // Campuses Reducer
 export default (state = initialState, action) => {

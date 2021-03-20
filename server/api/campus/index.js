@@ -9,15 +9,25 @@ const {
 
 router.get("/", async (req, res, next) => {
     try {
-        // Get all campuses
-        const allCampuses = await Campus.findAll();
+        // Get all campuses and number of students
+        const allCampuses = await Campus.findAll({
+            attributes: [
+                "Campuses.*",
+                [db.fn("COUNT", db.col("Students.id")), "studentCount"],
+            ],
+            include: [
+                {
+                    model: Student,
+                    attributes: [],
+                    include: [],
+                },
+            ],
+            group: ["Campuses.id"],
+            raw: true,
+        });
 
-        // Return proper status
-        if (allCampuses.length) {
-            res.status(200).send(allCampuses);
-        } else {
-            res.sendStatus(404);
-        }
+        // Return all campuses
+        res.status(200).send(allCampuses);
     } catch (err) {
         next(err);
     }

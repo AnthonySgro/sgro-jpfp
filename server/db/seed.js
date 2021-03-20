@@ -30,7 +30,6 @@ const seed = async () => {
                 });
             }),
         );
-        const pennState = Campus.findByName("Penn State University");
 
         await Promise.all(
             [
