@@ -1,4 +1,48 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
-const { db } = require("../index");
+const db = require("../db");
 
-class Campus extends Model {}
+class Campus extends Model {
+    // Instance Methods
+}
+
+Campus.init(
+    {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                notEmpty: true,
+            },
+        },
+        imgUrl: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Media_Viewer_Icon_-_Location.svg/1200px-Media_Viewer_Icon_-_Location.svg.png",
+            validate: {
+                isUrl: true,
+            },
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+    },
+    {
+        hooks: {},
+        timestamps: false,
+        sequelize: db,
+        modelName: "Campuses",
+    },
+);
+
+Campus.findByName = async (name) => {
+    try {
+        return;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+module.exports = Campus;
