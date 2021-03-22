@@ -161,3 +161,67 @@ html {
 .student-card-campus {
     font-size: x-small;
 }
+
+/* Form Styles */
+.container {
+    background-color: #f1faee;
+    min-width: 50vh;
+    max-width: 60vh;
+    min-height: 20vh;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 20px -7px rgba(0, 0, 0, 0.58);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 1rem 2rem;
+}
+
+h2 {
+    align-self: center;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0.5rem;
+}
+
+label {
+    color: gray;
+    margin: 0.2rem;
+}
+
+.form-control small {
+    visibility: hidden;
+    margin: 0.1rem;
+    color: #e74c3c;
+}
+
+.form-control input:focus {
+    outline: 0;
+    border-color: grey;
+}
+
+.form-control.error small {
+    visibility: visible;
+}
+
+.form-control.success input {
+    border-color: #2ecc71;
+}
+
+.form-control.error input {
+    border-color: #e74c3c;
+}
+
+input {
+    padding: 0.5rem;
+    border: 1px solid lightgray;
+    background-color: #fbfcfa;
+    border-radius: 0.3rem;
+    outline: none;
+}

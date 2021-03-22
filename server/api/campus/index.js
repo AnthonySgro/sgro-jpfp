@@ -7,6 +7,7 @@ const {
     model: { Campus, Student },
 } = require("../../db");
 
+// Sends information about the database back
 router.get("/", async (req, res, next) => {
     try {
         // Get all campuses and number of students
@@ -30,6 +31,36 @@ router.get("/", async (req, res, next) => {
         res.status(200).send(allCampuses);
     } catch (err) {
         next(err);
+    }
+});
+
+// Creates a campus
+router.post("/", async (req, res, next) => {
+    try {
+        const { name, address, description } = req.body;
+
+        const newCampus = await Campus.create({
+            name,
+            address,
+            description,
+        });
+
+        if (newCampus !== null) {
+            // Return a 201 code and all campuses
+            res.sendStatus(201);
+        }
+
+        // Error handling
+    } catch (err) {
+        console.log(err);
+        switch (err.errors[0].type) {
+            case "Validation error":
+                res.sendStatus(422);
+            case "unique violation":
+                res.sendStatus(409);
+            default:
+                next(err);
+        }
     }
 });
 

@@ -27,6 +27,32 @@ router.get("/", async (req, res, next) => {
     }
 });
 
+router.post("/", async (req, res, next) => {
+    try {
+        const { firstName, lastName, email } = req.body;
+        console.log(req.body);
+        const newStudent = await Student.create({
+            firstName,
+            lastName,
+            email,
+        });
+
+        if (newStudent !== null) {
+            res.sendStatus(201);
+        }
+    } catch (err) {
+        console.log(err);
+        switch (err.errors[0].type) {
+            case "Validation error":
+                res.sendStatus(422);
+            case "unique violation":
+                res.sendStatus(409);
+            default:
+                next(err);
+        }
+    }
+});
+
 router.get("/:id", async (req, res, next) => {
     try {
         // Get individual student with campus joined

@@ -11,7 +11,6 @@ class StudentCard extends Component {
 
     render() {
         const { id, Campus, firstName, lastName, imgUrl } = this.props;
-        console.log(id);
 
         return (
             <div className="student-card-container card-container">

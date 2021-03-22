@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 // Component Imports
 import CampusCard from "../Cards/CampusCard.jsx";
+import CampusAdd from "../Forms/CampusAdd.jsx";
 
 // Redux imports
 import { connect } from "react-redux";
@@ -33,6 +34,7 @@ class CampusListing extends Component {
                     // If there are no campuses, display this message
                     <p>There are no campuses registered in the database</p>
                 )}
+                <CampusAdd />
             </React.Fragment>
         );
     }

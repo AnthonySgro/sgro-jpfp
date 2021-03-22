@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const db = require("../db");
 const parseAddress = require("parse-address-string");
-const { afterValidate, beforeValidate } = require("./Student");
+const { Student } = require("../");
 
 class Campus extends Model {
     // Instance Methods

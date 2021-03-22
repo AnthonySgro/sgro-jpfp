@@ -12,6 +12,7 @@ import { fetchAllStudents } from "../store/student";
 import Header from "./Header.jsx";
 import CampusListing from "./CampusViews/CampusListing.jsx";
 import CampusDetail from "./CampusViews/CampusDetail.jsx";
+import CampusAdd from "./Forms/CampusAdd.jsx";
 import StudentListing from "./StudentViews/StudentListing.jsx";
 import StudentDetail from "./StudentViews/StudentDetail.jsx";
 
@@ -39,6 +40,11 @@ class App extends Component {
                                 exact
                                 path="/campuses"
                                 component={CampusListing}
+                            />
+                            <Route
+                                exact
+                                path="/campuses/add"
+                                component={CampusAdd}
                             />
                             <Route
                                 exact

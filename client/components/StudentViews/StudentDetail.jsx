@@ -88,7 +88,10 @@ class StudentDetail extends Component {
                                 <select name="student-detail-campus-select">
                                     <option value={0}>Select Campus...</option>
                                     {allOtherCampuses.map((campus) => (
-                                        <option value={campus.name}>
+                                        <option
+                                            key={campus.id}
+                                            value={campus.name}
+                                        >
                                             {campus.name}
                                         </option>
                                     ))}
@@ -108,7 +111,10 @@ class StudentDetail extends Component {
                                 <select name="student-detail-campus-select">
                                     <option value={0}>Select Campus...</option>
                                     {allOtherCampuses.map((campus) => (
-                                        <option value={campus.name}>
+                                        <option
+                                            key={campus.id}
+                                            value={campus.name}
+                                        >
                                             {campus.name}
                                         </option>
                                     ))}
