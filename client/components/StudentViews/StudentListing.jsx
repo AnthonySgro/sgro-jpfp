@@ -15,11 +15,10 @@ class StudentListing extends Component {
     componentDidMount() {}
 
     render() {
+        // Receive students as props
         const { students } = this.props;
-        console.log(this.props);
-
         return (
-            <main className="listing-main">
+            <React.Fragment>
                 <div className="main-view-header">
                     <h1 className="main-view-title">All Students</h1>
                     <button className="main-view-btn">Add Student</button>
@@ -36,15 +35,9 @@ class StudentListing extends Component {
                     // If there are no campuses, display this message
                     <p>There are no campuses registered in the database</p>
                 )}
-            </main>
+            </React.Fragment>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        students: state.studentInfo.allStudents,
-    };
-}
-
-export default connect(mapStateToProps)(StudentListing);
+export default connect()(StudentListing);

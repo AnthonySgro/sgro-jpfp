@@ -11,21 +11,25 @@ const seed = async () => {
             [
                 {
                     name: "Ohio State University",
+                    address: "281 W Lane Ave, Columbus, OH 43210",
                     description: "THE Osu lorem ipsum dolor stuff yada yada",
                 },
                 {
                     name: "Penn State University",
+                    address: "State College, PA 16801",
                     description:
                         "Arch nemesis perhaps? I don't know you be the judge",
                 },
                 {
                     name: "The University of Michigan",
+                    address: "500 S State St, Ann Arbor, MI 48109",
                     description: "garbage football team more yada yada oh man",
                 },
             ].map((campus) => {
                 const { name, description } = campus;
                 Campus.create({
                     name: campus.name,
+                    address: campus.address,
                     description: campus.description,
                 });
             }),

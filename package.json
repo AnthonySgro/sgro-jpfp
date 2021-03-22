@@ -18,6 +18,7 @@
         "axios": "^0.21.1",
         "express": "^4.17.1",
         "faker": "^5.4.0",
+        "parse-address-string": "^0.0.3",
         "pg": "^8.5.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",

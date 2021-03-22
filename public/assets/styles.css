@@ -2,6 +2,25 @@ html {
     font-family: "Lato", "Poppins", sans-serif;
 }
 
+/* General Styles */
+.edit-btn {
+    background-color: #81b29a;
+    border: 0;
+    margin: 1vh;
+    padding: 0vh 4vh;
+    height: 5vh;
+    align-self: center;
+}
+
+.delete-btn {
+    background-color: #e07a5f;
+    border: 0;
+    margin: 1vh;
+    padding: 0vh 4vh;
+    height: 5vh;
+    align-self: center;
+}
+
 /* Header Styles */
 
 #app-header {
@@ -44,6 +63,45 @@ html {
 .campus-listings-container > * {
     margin: 1vh;
 }
+
+/* Detail Styles */
+
+.info-detail-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.info-detail-img {
+    width: 40%;
+    height: auto;
+}
+
+.info-detail-text {
+    width: 40%;
+}
+
+.info-detail-additional {
+    margin: 1vh;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.info-detail-button-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.info-detail-address-container > * {
+    margin: 0vh;
+    padding: 0vh;
+}
+
+/* Campus Detail Styles */
 
 /* Card Styles */
 

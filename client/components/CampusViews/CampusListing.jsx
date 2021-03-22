@@ -16,7 +16,7 @@ class CampusListing extends Component {
     render() {
         const { campuses } = this.props;
         return (
-            <main className="listing-main">
+            <React.Fragment>
                 <div className="main-view-header">
                     <h1 className="main-view-title">All Campuses</h1>
                     <button className="main-view-btn">Add Campus</button>
@@ -33,7 +33,7 @@ class CampusListing extends Component {
                     // If there are no campuses, display this message
                     <p>There are no campuses registered in the database</p>
                 )}
-            </main>
+            </React.Fragment>
         );
     }
 }

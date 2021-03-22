@@ -11,6 +11,7 @@ class StudentCard extends Component {
 
     render() {
         const { id, Campus, firstName, lastName, imgUrl } = this.props;
+        console.log(id);
 
         return (
             <div className="student-card-container card-container">
@@ -23,12 +24,18 @@ class StudentCard extends Component {
                     to={`/students/${id}`}
                     className="student-card-name student-card-info"
                 >{`${firstName} ${lastName}`}</Link>
-                <Link
-                    to={`/campuses/${Campus.id}`}
-                    className="student-card-campus student-card-info"
-                >
-                    {Campus.name}
-                </Link>
+
+                {/* If campus is passed down, display that too */}
+                {Campus ? (
+                    <Link
+                        to={`/campuses/${Campus.id}`}
+                        className="student-card-campus student-card-info"
+                    >
+                        {Campus.name}
+                    </Link>
+                ) : (
+                    ""
+                )}
             </div>
         );
     }

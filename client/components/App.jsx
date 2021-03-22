@@ -11,6 +11,7 @@ import { fetchAllStudents } from "../store/student";
 // Components
 import Header from "./Header.jsx";
 import CampusListing from "./CampusViews/CampusListing.jsx";
+import CampusDetail from "./CampusViews/CampusDetail.jsx";
 import StudentListing from "./StudentViews/StudentListing.jsx";
 
 class App extends Component {
@@ -26,26 +27,42 @@ class App extends Component {
     }
 
     render() {
+        const { students } = this.props;
         return (
             <Router>
                 <React.Fragment>
                     <Header />
-                    <Switch>
-                        <Route
-                            exact
-                            path="/campuses"
-                            component={CampusListing}
-                        />
-                        <Route
-                            exact
-                            path="/students"
-                            component={StudentListing}
-                        />
-                    </Switch>
+                    <main className="listing-main">
+                        <Switch>
+                            <Route
+                                exact
+                                path="/campuses"
+                                component={CampusListing}
+                            />
+                            <Route
+                                exact
+                                path="/campuses/:id"
+                                component={CampusDetail}
+                            />
+                            <Route
+                                exact
+                                path="/students"
+                                render={() => (
+                                    <StudentListing students={students} />
+                                )}
+                            />
+                        </Switch>
+                    </main>
                 </React.Fragment>
             </Router>
         );
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        students: state.studentInfo.allStudents,
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -55,4 +72,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
