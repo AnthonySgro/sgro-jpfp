@@ -1,9 +1,13 @@
 import axios from "axios";
 
+// Import redux actions
+import { fetchAllStudents } from "./student";
+
 // Action Types
 const LOAD_All_CAMPUSES = "LOAD_ALL_CAMPUSES";
 const LOAD_CAMPUS_DETAIL = "LOAD_CAMPUS_DETAIL";
 const ADD_CAMPUS = "ADD_CAMPUS";
+const DELETE_CAMPUS = "DELETE_CAMPUS";
 
 // Action Creators
 export const loadAllCampuses = (campuses) => {
@@ -23,6 +27,13 @@ export const loadCampusDetail = (campus) => {
 export const addCampus = (campuses) => {
     return {
         type: ADD_CAMPUS,
+        campuses,
+    };
+};
+
+export const deleteCampus = (campuses) => {
+    return {
+        type: DELETE_CAMPUS,
         campuses,
     };
 };
@@ -59,6 +70,20 @@ export const addCampusToDatabase = (campusData) => {
     };
 };
 
+export const deleteCampusFromDatabase = (id) => {
+    return async (dispatch) => {
+        // Attempts to delete the campus from the database, then grabs all campuses in database
+        (await axios.delete(`/api/campuses/${id}`)).data;
+        const campuses = (await axios.get("/api/campuses")).data;
+
+        // Dispatches the delete campus event
+        dispatch(deleteCampus(campuses));
+
+        // Dispatches this to reload campus affiliations if deleted
+        dispatch(fetchAllStudents());
+    };
+};
+
 // Initial Reducer State
 const initialState = { allCampuses: [], selectedCampus: {} };
 
@@ -70,6 +95,8 @@ export default (state = initialState, action) => {
         case LOAD_CAMPUS_DETAIL:
             return (state = { ...state, selectedCampus: action.campus });
         case ADD_CAMPUS:
+            return (state = { ...state, allCampuses: action.campuses });
+        case DELETE_CAMPUS:
             return (state = { ...state, allCampuses: action.campuses });
         default:
             return state;

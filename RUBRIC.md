@@ -97,16 +97,16 @@ Congrats! You have completed your second vertical slice! Make sure to `commit -m
     -   [x] Make an AJAX request that causes the new campus to be persisted in the database
     -   [x] Add the new campus to the list of campuses without needing to refresh the page
 
--   [ ] Write a component to display a form for adding a new student that contains inputs for _at least_ first name, last name and email
--   [ ] Display this component as part of the all-students view, alongside the list of students
+-   [x] Write a component to display a form for adding a new student that contains inputs for _at least_ first name, last name and email
+-   [x] Display this component as part of the all-students view, alongside the list of students
 -   Submitting the form with a valid first name/last name/email should:
-    -   [ ] Make an AJAX request that causes the new student to be persisted in the database
-    -   [ ] Add the new student to the list of students without needing to refresh the page
+    -   [x] Make an AJAX request that causes the new student to be persisted in the database
+    -   [x] Add the new student to the list of students without needing to refresh the page
 
 #### Backend
 
--   [ ] Write a route to add a new campus
--   [ ] Write a route to add a new student
+-   [x] Write a route to add a new campus
+-   [x] Write a route to add a new student
 
 Congrats! You have completed your third vertical slice! Make sure to `commit -m "Feature: Add Campus and Student"` before moving on (see RUBRIC.md - points are awarded/deducted for a proper git workflow)!
 

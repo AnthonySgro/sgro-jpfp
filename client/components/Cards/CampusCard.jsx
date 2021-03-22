@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 // React Router Links
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { deleteCampusFromDatabase } from "../../store/campus";
 
 class CampusCard extends Component {
     constructor(props) {
@@ -11,6 +13,7 @@ class CampusCard extends Component {
 
     render() {
         const { id, name, imgUrl, description, studentCount } = this.props;
+        const { deleteCampus } = this.props;
 
         // Pluralize student count corrently
         const plural = studentCount !== "1";
@@ -31,7 +34,7 @@ class CampusCard extends Component {
                     </div>
                     <div className="campus-card-info-interact">
                         <Link to={`/campuses/${id}/edit`}>Edit</Link>
-                        <button>Delete</button>
+                        <button onClick={() => deleteCampus(id)}>Delete</button>
                     </div>
                 </div>
             </div>
@@ -39,4 +42,10 @@ class CampusCard extends Component {
     }
 }
 
-export default CampusCard;
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteCampus: (id) => dispatch(deleteCampusFromDatabase(id)),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(CampusCard);

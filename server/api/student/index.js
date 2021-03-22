@@ -53,6 +53,21 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await Student.destroy({
+            where: {
+                id,
+            },
+        });
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 router.get("/:id", async (req, res, next) => {
     try {
         // Get individual student with campus joined

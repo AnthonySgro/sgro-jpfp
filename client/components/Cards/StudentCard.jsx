@@ -3,6 +3,10 @@ import React, { Component } from "react";
 // React Router Links
 import { Link } from "react-router-dom";
 
+// Redux Imports
+import { connect } from "react-redux";
+import { deleteStudentFromDatabase } from "../../store/student";
+
 class StudentCard extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +15,7 @@ class StudentCard extends Component {
 
     render() {
         const { id, Campus, firstName, lastName, imgUrl } = this.props;
+        const { deleteStudent } = this.props;
 
         return (
             <div className="student-card-container card-container">
@@ -26,18 +31,33 @@ class StudentCard extends Component {
 
                 {/* If campus is passed down, display that too */}
                 {Campus ? (
-                    <Link
-                        to={`/campuses/${Campus.id}`}
-                        className="student-card-campus student-card-info"
-                    >
-                        {Campus.name}
-                    </Link>
+                    <div>
+                        <Link
+                            to={`/campuses/${Campus.id}`}
+                            className="student-card-campus student-card-info"
+                        >
+                            {Campus.name}
+                        </Link>
+                        <button onClick={() => deleteStudent(id)}>
+                            Delete
+                        </button>
+                    </div>
                 ) : (
-                    ""
+                    <div>
+                        <button onClick={() => deleteStudent(id)}>
+                            Delete
+                        </button>
+                    </div>
                 )}
             </div>
         );
     }
 }
 
-export default StudentCard;
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteStudent: (id) => dispatch(deleteStudentFromDatabase(id)),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(StudentCard);

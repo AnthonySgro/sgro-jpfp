@@ -64,6 +64,21 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await Campus.destroy({
+            where: {
+                id,
+            },
+        });
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 router.get("/:id", async (req, res, next) => {
     try {
         // Get designated campus database with students

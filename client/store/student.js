@@ -1,9 +1,13 @@
 import axios from "axios";
 
+// Import redux actions
+import { fetchAllCampuses } from "./campus";
+
 // Action Type
 const LOAD_All_STUDENTS = "LOAD_All_STUDENTS";
 const LOAD_STUDENT_DETAIL = "LOAD_STUDENT_DETAIL";
 const ADD_STUDENT = "ADD_STUDENT";
+const DELETE_STUDENT = "DELETE_STUDENT";
 
 // Action Creator
 export const loadAllStudents = (allStudents) => {
@@ -23,6 +27,13 @@ export const loadStudentDetail = (student) => {
 export const addStudent = (allStudents) => {
     return {
         type: ADD_STUDENT,
+        allStudents,
+    };
+};
+
+export const deleteStudent = (allStudents) => {
+    return {
+        type: DELETE_STUDENT,
         allStudents,
     };
 };
@@ -51,9 +62,26 @@ export const fetchStudentDetail = (id) => {
 export const addStudentToDatabase = (studentData) => {
     return async (dispatch) => {
         // Attempts to add the student to the database, then grabs all students in database
-        (await axios.post("/api/students", studentData)).data;
+        await axios.post("/api/students", studentData);
         const students = (await axios.get("/api/students")).data;
+
+        // Dispatches the action to all reducers
         dispatch(addStudent(students));
+
+        // Re-fetches campuses as the addition may have changed things
+        dispatch(fetchAllCampuses());
+    };
+};
+
+export const deleteStudentFromDatabase = (id) => {
+    return async (dispatch) => {
+        // Attempts to delete the student from the database, then grabs all students in database
+        await axios.delete(`/api/students/${id}`);
+        const students = (await axios.get("/api/students")).data;
+        dispatch(deleteStudent(students));
+
+        // Re-fetches campuses as the delete may have changed things
+        dispatch(fetchAllCampuses());
     };
 };
 
@@ -68,6 +96,8 @@ export default (state = initialState, action) => {
         case LOAD_STUDENT_DETAIL:
             return (state = { ...state, selectedStudent: action.student });
         case ADD_STUDENT:
+            return (state = { ...state, allStudents: action.allStudents });
+        case DELETE_STUDENT:
             return (state = { ...state, allStudents: action.allStudents });
         default:
             return state;
