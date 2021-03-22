@@ -65,6 +65,13 @@ const seed = async () => {
                     gpa: 3.8,
                     cId: 2,
                 },
+                {
+                    first: "Evan",
+                    last: "Delgado",
+                    email: "woohoo69@gmail.com",
+                    gpa: 3.65,
+                    cId: null,
+                },
             ].map((stu) => {
                 const { first, last, email, gpa, cId } = stu;
 

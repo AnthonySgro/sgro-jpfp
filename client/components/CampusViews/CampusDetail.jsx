@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import parseAddress from "parse-address-string";
 
 // Redux Imports
 import { connect } from "react-redux";
+import { fetchCampusDetail } from "../../store/campus";
 
 // Component Imports
 import StudentListing from "../StudentViews/StudentListing.jsx";
@@ -23,12 +23,16 @@ class CampusDetail extends Component {
     }
 
     render() {
+        // Deconstructs all information from campus store obj
         const {
             name,
             description,
             id,
             imgUrl,
-            address,
+            street,
+            city,
+            state,
+            zip,
             Students,
         } = this.props.campus;
 
@@ -37,6 +41,7 @@ class CampusDetail extends Component {
             return <p>Loading...</p>;
         }
 
+        // Page content
         return (
             <React.Fragment>
                 <div className="info-detail-main">
@@ -48,11 +53,9 @@ class CampusDetail extends Component {
                 </div>
                 <div className="info-detail-additional">
                     <div className="info-detail-address-container">
-                        <p className="info-detail-address-street">
-                            323 W Address St
-                        </p>
+                        <p className="info-detail-address-street">{street}</p>
                         <p className="info-detail-address-citystate">
-                            Citystate, Provence 78777
+                            {`${city}, ${state} ${zip}`}
                         </p>
                     </div>
                     <div className="info-detail-button-container">

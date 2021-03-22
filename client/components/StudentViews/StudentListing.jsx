@@ -33,7 +33,7 @@ class StudentListing extends Component {
                     </div>
                 ) : (
                     // If there are no campuses, display this message
-                    <p>There are no campuses registered in the database</p>
+                    <p>There are no students registered in the database</p>
                 )}
             </React.Fragment>
         );

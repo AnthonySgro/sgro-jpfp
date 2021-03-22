@@ -13,6 +13,7 @@ import Header from "./Header.jsx";
 import CampusListing from "./CampusViews/CampusListing.jsx";
 import CampusDetail from "./CampusViews/CampusDetail.jsx";
 import StudentListing from "./StudentViews/StudentListing.jsx";
+import StudentDetail from "./StudentViews/StudentDetail.jsx";
 
 class App extends Component {
     constructor(props) {
@@ -50,6 +51,11 @@ class App extends Component {
                                 render={() => (
                                     <StudentListing students={students} />
                                 )}
+                            />
+                            <Route
+                                exact
+                                path="/students/:id"
+                                component={StudentDetail}
                             />
                         </Switch>
                     </main>
