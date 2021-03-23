@@ -17,11 +17,7 @@ router.get("/", async (req, res, next) => {
         });
 
         // Return proper status
-        if (allStudents.length) {
-            res.status(200).send(allStudents);
-        } else {
-            res.sendStatus(404);
-        }
+        res.status(200).send(allStudents);
     } catch (err) {
         next(err);
     }
@@ -29,12 +25,34 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
     try {
-        const { firstName, lastName, email } = req.body;
-        console.log(req.body);
+        const { firstName, lastName, email, campusName } = req.body;
+        let { imgUrl } = req.body;
+        // Set a default value for the associated campus
+        let associatedCampusId = null;
+
+        // If user sent a campus name, change associated campus
+        if (!!campusName) {
+            associatedCampusId = (
+                await Campus.findOne({
+                    where: {
+                        name: campusName,
+                    },
+                })
+            ).id;
+        }
+
+        // If user sent empty URL, allow it and use default pic
+        if (imgUrl === "") {
+            imgUrl =
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+        }
+
         const newStudent = await Student.create({
             firstName,
             lastName,
             email,
+            CampusId: associatedCampusId,
+            imgUrl,
         });
 
         if (newStudent !== null) {

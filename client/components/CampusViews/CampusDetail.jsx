@@ -2,15 +2,19 @@ import React, { Component } from "react";
 
 // Redux Imports
 import { connect } from "react-redux";
-import { fetchCampusDetail } from "../../store/campus";
+import {
+    fetchCampusDetail,
+    deleteCampusFromDatabase,
+} from "../../store/campus";
 
 // Component Imports
-import StudentListing from "../StudentViews/StudentListing.jsx";
+import StudentCard from "../Cards/StudentCard.jsx";
 
 class CampusDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.submitDelete = this.submitDelete.bind(this);
     }
 
     componentDidMount() {
@@ -20,6 +24,12 @@ class CampusDetail extends Component {
 
         // On mount, load the specific campus here
         loadCampus(id);
+    }
+
+    submitDelete(id) {
+        const { deleteCampus } = this.props;
+        deleteCampus(id);
+        this.props.history.push(`/campuses`);
     }
 
     render() {
@@ -60,11 +70,22 @@ class CampusDetail extends Component {
                     </div>
                     <div className="info-detail-button-container">
                         <button className="edit-btn">Edit</button>
-                        <button className="delete-btn">Delete</button>
+                        <button
+                            className="delete-btn"
+                            onClick={() => this.submitDelete(id)}
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
-                <div className="campus-detail-students">
-                    <StudentListing students={Students} />
+                <div className="campus-listings-container">
+                    {Students.map((student) => (
+                        <StudentCard
+                            key={student.id}
+                            {...student}
+                            Campus={this.props.campus}
+                        />
+                    ))}
                 </div>
             </React.Fragment>
         );
@@ -80,6 +101,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadCampus: (id) => dispatch(fetchCampusDetail(id)),
+        deleteCampus: (id) => dispatch(deleteCampusFromDatabase(id)),
     };
 }
 

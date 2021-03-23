@@ -20,21 +20,34 @@ class CampusListing extends Component {
             <React.Fragment>
                 <div className="main-view-header">
                     <h1 className="main-view-title">All Campuses</h1>
-                    <button className="main-view-btn">Add Campus</button>
                 </div>
-                <br />
-                {/* If there are campuses, render a card for each */}
-                {campuses.length > 0 ? (
-                    <div className="campus-listings-container">
-                        {campuses.map((campus) => (
-                            <CampusCard key={campus.id} {...campus} />
-                        ))}
+                <div className="main-view-chunk">
+                    <nav className="main-view-sidebar">
+                        <h2 className="main-view-sidebar-title">Menu</h2>
+                        <CampusAdd />
+                    </nav>
+                    <div className="main-view-list-backdrop">
+                        <div className="main-view-list-campus">
+                            {campuses.length > 0 ? (
+                                // If there are campuses, render cards
+                                <div className="main-view-listings-container">
+                                    {campuses.map((campus) => (
+                                        <CampusCard
+                                            key={campus.id}
+                                            {...campus}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                // If there are no campuses, display this message
+                                <div className="main-view-listings-container">
+                                    There are no campuses registered in the
+                                    database
+                                </div>
+                            )}
+                        </div>
                     </div>
-                ) : (
-                    // If there are no campuses, display this message
-                    <p>There are no campuses registered in the database</p>
-                )}
-                <CampusAdd />
+                </div>
             </React.Fragment>
         );
     }

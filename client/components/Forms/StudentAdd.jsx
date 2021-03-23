@@ -11,6 +11,7 @@ class StudentAdd extends Component {
             firstName: "",
             lastName: "",
             email: "",
+            campusName: "",
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -32,15 +33,17 @@ class StudentAdd extends Component {
     }
 
     render() {
+        const { allCampuses } = this.props;
+        const { firstName, lastName, email, campusName } = this.state;
         return (
             <div className="container">
                 <form id="form" className="form" onSubmit={this.handleSubmit}>
-                    <h2>Enter Student</h2>
+                    <h2>Enroll Student</h2>
                     <div className="form-control">
                         <div className="form-control">
                             <label htmlFor="firstName">First Name</label>
                             <input
-                                value={this.state.firstName}
+                                value={firstName}
                                 onChange={this.handleChange}
                                 id="student-firstname-input"
                                 name="firstName"
@@ -52,7 +55,7 @@ class StudentAdd extends Component {
                         <div className="form-control">
                             <label htmlFor="lastName">Last Name</label>
                             <input
-                                value={this.state.lastName}
+                                value={lastName}
                                 onChange={this.handleChange}
                                 name="lastName"
                                 id="student-lastname-input"
@@ -64,7 +67,7 @@ class StudentAdd extends Component {
                         <div className="form-control">
                             <label htmlFor="email">Email</label>
                             <input
-                                value={this.state.email}
+                                value={email}
                                 onChange={this.handleChange}
                                 name="email"
                                 id="student-email-input"
@@ -72,6 +75,22 @@ class StudentAdd extends Component {
                                 placeholder="Enter email"
                             ></input>
                             <small>Error message</small>
+                        </div>
+                        <div className="form-control">
+                            <label htmlFor="campusName">Campus Name</label>
+                            <select
+                                name="campusName"
+                                id="student-campus-input"
+                                value={campusName}
+                                onChange={this.handleChange}
+                            >
+                                <option value={0}>No Campus</option>
+                                {allCampuses.map((campus) => (
+                                    <option key={campus.id} value={campus.name}>
+                                        {campus.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <button type="submit" id="btn">
@@ -83,6 +102,12 @@ class StudentAdd extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        allCampuses: state.campusInfo.allCampuses,
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         addStudent: (studentData) =>
@@ -90,4 +115,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(StudentAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentAdd);

@@ -10,6 +10,8 @@ import { fetchAllStudents } from "../store/student";
 
 // Components
 import Header from "./Header.jsx";
+import HomePage from "./Homepage/Homepage.jsx";
+import AboutUs from "./AboutUs.jsx";
 import CampusListing from "./CampusViews/CampusListing.jsx";
 import CampusDetail from "./CampusViews/CampusDetail.jsx";
 import CampusAdd from "./Forms/CampusAdd.jsx";
@@ -36,6 +38,7 @@ class App extends Component {
                     <Header />
                     <main className="listing-main">
                         <Switch>
+                            <Route exact path="/" component={HomePage} />
                             <Route
                                 exact
                                 path="/campuses"
@@ -63,6 +66,7 @@ class App extends Component {
                                 path="/students/:id"
                                 component={StudentDetail}
                             />
+                            <Route exact path="/about-us" component={AboutUs} />
                         </Switch>
                     </main>
                 </React.Fragment>

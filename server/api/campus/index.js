@@ -38,11 +38,19 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     try {
         const { name, address, description } = req.body;
+        let { imgUrl } = req.body;
+
+        // If url is empty, give it the default value
+        if (imgUrl === "") {
+            imgUrl =
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Media_Viewer_Icon_-_Location.svg/1200px-Media_Viewer_Icon_-_Location.svg.png";
+        }
 
         const newCampus = await Campus.create({
             name,
             address,
             description,
+            imgUrl,
         });
 
         if (newCampus !== null) {

@@ -25,7 +25,12 @@ class CampusCard extends Component {
                 </div>
                 <div className="campus-card-info-container">
                     <div className="campus-card-info-text">
-                        <Link to={`/campuses/${id}`}>{name}</Link>
+                        <Link
+                            to={`/campuses/${id}`}
+                            className="card-detail-link"
+                        >
+                            {name}
+                        </Link>
                         <p className="campus-card-numStudents">
                             {`${studentCount} ${
                                 plural ? "Students" : "Student"
@@ -33,8 +38,18 @@ class CampusCard extends Component {
                         </p>
                     </div>
                     <div className="campus-card-info-interact">
-                        <Link to={`/campuses/${id}/edit`}>Edit</Link>
-                        <button onClick={() => deleteCampus(id)}>Delete</button>
+                        <Link
+                            to={`/campuses/${id}/edit`}
+                            className="card-edit-link"
+                        >
+                            Edit
+                        </Link>
+                        <button
+                            className="card-delete-button"
+                            onClick={() => deleteCampus(id)}
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>

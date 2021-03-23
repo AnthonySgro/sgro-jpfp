@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Import redux actions
-import { fetchAllCampuses } from "./campus";
+import { fetchAllCampuses, fetchCampusDetail } from "./campus";
 
 // Action Type
 const LOAD_All_STUDENTS = "LOAD_All_STUDENTS";
@@ -73,15 +73,22 @@ export const addStudentToDatabase = (studentData) => {
     };
 };
 
-export const deleteStudentFromDatabase = (id) => {
+export const deleteStudentFromDatabase = (studentId, campusId) => {
     return async (dispatch) => {
         // Attempts to delete the student from the database, then grabs all students in database
-        await axios.delete(`/api/students/${id}`);
+        await axios.delete(`/api/students/${studentId}`);
         const students = (await axios.get("/api/students")).data;
+
+        // Dispatches the action to all reducers
         dispatch(deleteStudent(students));
 
         // Re-fetches campuses as the delete may have changed things
         dispatch(fetchAllCampuses());
+
+        if (campusId) {
+            // Re-fetches target campus in case we are deleting from its detail page
+            dispatch(fetchCampusDetail(campusId));
+        }
     };
 };
 

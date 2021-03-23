@@ -11,6 +11,7 @@ class CampusAdd extends Component {
             name: "",
             address: "",
             description: "",
+            imgUrl: "",
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -35,7 +36,7 @@ class CampusAdd extends Component {
         return (
             <div className="container">
                 <form id="form" className="form" onSubmit={this.handleSubmit}>
-                    <h2>Enter Campus</h2>
+                    <h2>Add Campus</h2>
                     <div className="form-control">
                         <div className="form-control">
                             <label htmlFor="name">Campus Name</label>
@@ -71,6 +72,18 @@ class CampusAdd extends Component {
                                 type="text"
                                 placeholder="Enter description"
                             ></textarea>
+                            <small>Error message</small>
+                        </div>
+                        <div className="form-control">
+                            <label htmlFor="imgUrl">Campus Image</label>
+                            <input
+                                value={this.state.imgUrl}
+                                onChange={this.handleChange}
+                                id="campus-imgUrl-input"
+                                name="imgUrl"
+                                type="text"
+                                placeholder="Enter campus image URL"
+                            />
                             <small>Error message</small>
                         </div>
                     </div>

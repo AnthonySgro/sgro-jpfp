@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 
+// React Router Imports
+
 // Redux Imports
 import { connect } from "react-redux";
-import { fetchStudentDetail } from "../../store/student";
+import {
+    fetchStudentDetail,
+    deleteStudentFromDatabase,
+} from "../../store/student";
 import { fetchAllCampuses } from "../../store/campus";
 
 // Component Imports
@@ -14,6 +19,7 @@ class StudentDetail extends Component {
         this.state = {};
         this.getStudentCampusDetails = this.getStudentCampusDetails.bind(this);
         this.getAllOtherCampuses = this.getAllOtherCampuses.bind(this);
+        this.submitDelete = this.submitDelete.bind(this);
     }
 
     componentDidMount() {
@@ -47,9 +53,16 @@ class StudentDetail extends Component {
         return allCampuses.filter((campus) => campus.id !== CampusId);
     }
 
+    submitDelete(id) {
+        const { deleteStudent } = this.props;
+        deleteStudent(id);
+        this.props.history.push(`/students`);
+    }
+
     render() {
         // Deconstructs all information from campus store obj
-        const { firstName, lastName, id, imgUrl, gpa } = this.props.student;
+        const { firstName, lastName, id, imgUrl } = this.props.student;
+        let { gpa } = this.props.student;
 
         // Get campus information
         const campus = this.getStudentCampusDetails();
@@ -58,6 +71,10 @@ class StudentDetail extends Component {
         // Display loading screen until our axios call resolves
         if (!id) {
             return <p>Loading...</p>;
+        }
+
+        if (gpa === null) {
+            gpa = "N/A";
         }
 
         // Page content
@@ -70,7 +87,12 @@ class StudentDetail extends Component {
                         <p className="info-detail-information">{`GPA: ${gpa}`}</p>
                         <div className="info-detail-button-container">
                             <button className="edit-btn">Edit</button>
-                            <button className="delete-btn">Delete</button>
+                            <button
+                                className="delete-btn"
+                                onClick={() => this.submitDelete(id)}
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -140,6 +162,7 @@ function mapDispatchToProps(dispatch) {
     return {
         loadStudent: (id) => dispatch(fetchStudentDetail(id)),
         loadAllCampuses: () => dispatch(fetchAllCampuses()),
+        deleteStudent: (sId) => dispatch(deleteStudentFromDatabase(sId)),
     };
 }
 

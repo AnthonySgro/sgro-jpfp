@@ -2,6 +2,9 @@ html {
     font-family: "Lato", "Poppins", sans-serif;
 }
 
+body {
+    margin: 0;
+}
 /* General Styles */
 .edit-btn {
     background-color: #81b29a;
@@ -13,7 +16,7 @@ html {
 }
 
 .delete-btn {
-    background-color: #e07a5f;
+    background-color: #804434;
     border: 0;
     margin: 1vh;
     padding: 0vh 4vh;
@@ -24,25 +27,160 @@ html {
 /* Header Styles */
 
 #app-header {
-    background-color: #81b29a;
+    /* background-color: #81b29a; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 3.3vh;
+}
+
+#header-home > * {
+    text-decoration: none;
+    color: black;
+    font-size: xx-large;
+    font-variant: small-caps;
+    font-weight: 500;
+    letter-spacing: -1px;
 }
 
 #app-header > * {
     margin: 2vh;
 }
 
+#header-links {
+    display: flex;
+    flex-direction: row;
+}
+
 #header-links > * {
-    margin-left: 2vh;
+    margin-left: 4vh;
+    align-self: center;
+    color: black;
+    text-decoration: none;
+    font-size: larger;
+    padding-bottom: 8px;
+    position: relative;
+}
+
+#about-us {
+    margin-right: 3vh;
+    position: relative;
+    top: -4px;
+    padding: 8px 6px;
+    border-radius: 0.5rem;
+    background-color: black;
+    color: white;
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px 0px rgba(58, 58, 58, 0.589);
+
+    transition: all ease-in-out 0.2s;
+}
+
+/* Homepage */
+#homepage-lander {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+}
+
+#homepage-top-text > p {
+    padding: 6vh 5vh 0vh 5vh;
+    font-style: italic;
+    font-size: 110%;
+}
+
+#homepage-lander h1 {
+    margin: 0vh;
+    font-size: 800%;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+    text-align: center;
+    color: black;
+    font-variant: small-caps;
+}
+
+#logo-period {
+    font-size: 50%;
+    padding-left: 2px;
+}
+
+#homepage-btn-container {
+    padding: 8vh 8vh 3vh 8vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#homepage-btn {
+    width: 200px;
+    align-self: center;
+    padding: 2.4vh 3vh;
+    background-color: black;
+    outline: none;
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    transition: all 0.4s ease-in-out;
+}
+
+#homepage-btn:hover {
+    transform: scale(1.05, 1.05);
+    cursor: pointer;
+    transition: all 1s;
+}
+
+#homepage-btn:active {
+    transform: scale(0.95, 0.95);
+    transition: all 0.2s;
+}
+
+#homepage-btn > p {
+    font-size: larger;
+    font-weight: 700;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    right: 0;
+}
+
+#image-tray {
+    display: flex;
+    padding-top: 14vh;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#image-tray > .wide {
+    width: 5vh;
+    height: 6vh;
+}
+#image-tray > .thin {
+    width: 6vh;
+    height: 6vh;
+}
+
+#image-tray > img {
+    position: relative;
+    bottom: 2vh;
+}
+
+@media (max-width: 1050px) {
+    .even {
+        visibility: hidden;
+    }
 }
 
 /* Generic Listing Style */
+
 .listing-main {
     display: flex;
     flex-direction: column;
-    margin: 2vh 4vh;
+    /* margin: 2vh 4vh; */
 }
 
 /* Campus Listing Styles */
@@ -50,17 +188,63 @@ html {
 .main-view-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-content: center;
+    width: 100%;
+    justify-content: center;
+    color: white;
+    background-color: black;
 }
 
-.campus-listings-container {
-    width: 100%;
+.main-view-header > * {
+    text-align: center;
+}
+
+.main-view-chunk {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    height: 78vh;
 }
 
-.campus-listings-container > * {
+.main-view-sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: black;
+    min-width: 30vh;
+    max-width: 425px;
+    min-height: 50vh;
+    width: 35%;
+    height: 100%;
+    border-top-right-radius: 0rem;
+}
+
+.main-view-sidebar-title {
+    color: white;
+}
+
+.main-view-list-backdrop {
+    background-color: black;
+    width: 100%;
+}
+
+.main-view-list-campus {
+    width: auto;
+    min-height: 100%;
+    background-color: #3d405b;
+    border-top-left-radius: 1rem;
+}
+
+.main-view-listings-container {
+    padding: 3vh 1vh 0vh 1vh;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-view-listings-container > * {
     margin: 1vh;
 }
 
@@ -106,8 +290,42 @@ html {
 /* Card Styles */
 
 .card-container {
-    background-color: #f2cc8f;
+    background-color: #f1faee;
     padding: 1vh;
+    border-radius: 0.7rem;
+}
+
+.card-detail-link,
+.card-edit-link {
+    text-decoration: none;
+}
+
+.card-edit-link {
+    font-size: small;
+}
+
+.card-delete-button {
+    color: white;
+    background-color: rgb(255, 1, 1);
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transform: translateY(0px);
+    box-shadow: 0px 0px 0px red;
+    transition: all 0.2s ease-in-out;
+}
+
+.card-delete-button:hover {
+    cursor: pointer;
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 6px -6px rgba(114, 15, 15, 0.589);
+    transition: all 0.4s ease-in-out;
+}
+
+.card-detail-link:hover,
+.card-edit-link:hover {
+    text-decoration: underline;
 }
 
 /* Campus Card Styles */
@@ -121,7 +339,7 @@ html {
 .campus-card-container img {
     width: 100px;
     height: auto;
-    padding-right: 1vh;
+    border-radius: 0.5rem;
 }
 
 .campus-card-info-container {
@@ -129,6 +347,7 @@ html {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
+    padding-left: 1vh;
 }
 
 .campus-card-numStudents {
@@ -139,6 +358,7 @@ html {
 .campus-card-info-interact {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 /* Student Card Styles */
@@ -154,29 +374,40 @@ html {
     height: auto;
 }
 
-.student-card-info {
-    margin-top: 1vh;
+.student-card-image {
+    margin: 0.5vh 1vh;
+    border-radius: 0.5rem;
 }
 
 .student-card-campus {
     font-size: x-small;
 }
 
+.student-card-university {
+    margin-bottom: 0.5vh;
+}
+
 /* Form Styles */
 .container {
     background-color: #f1faee;
-    min-width: 50vh;
-    max-width: 60vh;
+    min-width: 30vh;
+    max-width: 40vh;
     min-height: 20vh;
     border-radius: 0.5rem;
     box-shadow: 0px 0px 20px -7px rgba(0, 0, 0, 0.58);
+    width: 120%;
 }
 
 .form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin: 1rem 2rem;
+    margin: 1rem 1rem;
+    width: 90%;
+}
+
+.form textarea {
+    resize: vertical;
 }
 
 h2 {
@@ -224,4 +455,66 @@ input {
     background-color: #fbfcfa;
     border-radius: 0.3rem;
     outline: none;
+}
+
+/* Header Animations */
+
+.header-link::before,
+.header-link::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: black;
+}
+.header-link::before {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+}
+
+.header-link::after {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.2s;
+}
+.header-link:hover::before,
+.header-link:hover::after,
+.header-link:focus::before,
+.header-link:focus::after,
+#about-us:focus::before,
+#about-us:focus::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+.header-link:hover::before,
+.header-link:focus::before {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.2s;
+}
+.header-link:hover::after,
+.header-link:focus::after {
+    transition: transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0s 0.2s;
+}
+
+#about-us:hover {
+    color: rgb(232, 255, 104);
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 6px -6px rgba(87, 87, 87, 0.589);
+    transition: all ease-in-out 0.2s;
+}
+
+#about-us:focus,
+#about-us:hover {
+    color: rgb(232, 255, 104);
+}
+
+#about-us:active {
+    transform: translateY(-2px);
+    transform: scale(0.95, 0.95);
+    transition: transform 0.2s;
 }

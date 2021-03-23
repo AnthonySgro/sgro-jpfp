@@ -34,21 +34,34 @@ class StudentListing extends Component {
             <React.Fragment>
                 <div className="main-view-header">
                     <h1 className="main-view-title">All Students</h1>
-                    <button className="main-view-btn">Add Student</button>
                 </div>
-                <br />
-                {/* If there are campuses, render a card for each */}
-                {students.length > 0 ? (
-                    <div className="campus-listings-container">
-                        {students.map((student) => (
-                            <StudentCard key={student.id} {...student} />
-                        ))}
+
+                <div className="main-view-chunk">
+                    <nav className="main-view-sidebar">
+                        <h2 className="main-view-sidebar-title">Menu</h2>
+                        <StudentAdd />
+                    </nav>
+                    <div className="main-view-list-backdrop">
+                        <div className="main-view-list-campus">
+                            {students.length > 0 ? (
+                                <div className="main-view-listings-container">
+                                    {students.map((student) => (
+                                        <StudentCard
+                                            key={student.id}
+                                            {...student}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                // If there are no campuses, display this message
+                                <div className="main-view-listings-container">
+                                    There are no students registered in the
+                                    database
+                                </div>
+                            )}
+                        </div>
                     </div>
-                ) : (
-                    // If there are no campuses, display this message
-                    <p>There are no students registered in the database</p>
-                )}
-                <StudentAdd />
+                </div>
             </React.Fragment>
         );
     }

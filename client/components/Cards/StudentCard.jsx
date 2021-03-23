@@ -15,7 +15,7 @@ class StudentCard extends Component {
 
     render() {
         const { id, Campus, firstName, lastName, imgUrl } = this.props;
-        const { deleteStudent } = this.props;
+        const { deleteStudent, stateCampus } = this.props;
 
         return (
             <div className="student-card-container card-container">
@@ -26,38 +26,47 @@ class StudentCard extends Component {
                 />
                 <Link
                     to={`/students/${id}`}
-                    className="student-card-name student-card-info"
+                    className="student-card-name card-detail-link"
                 >{`${firstName} ${lastName}`}</Link>
-
-                {/* If campus is passed down, display that too */}
-                {Campus ? (
-                    <div>
+                <div className="student-card-university">
+                    {/* If campus is passed down, display that too */}
+                    {Campus ? (
                         <Link
                             to={`/campuses/${Campus.id}`}
-                            className="student-card-campus student-card-info"
+                            className="student-card-campus card-detail-link"
                         >
                             {Campus.name}
                         </Link>
-                        <button onClick={() => deleteStudent(id)}>
-                            Delete
-                        </button>
-                    </div>
-                ) : (
-                    <div>
-                        <button onClick={() => deleteStudent(id)}>
-                            Delete
-                        </button>
-                    </div>
-                )}
+                    ) : (
+                        <a className="student-card-campus student-card-info">
+                            No University
+                        </a>
+                    )}
+                </div>
+                <div className="student-card-interact">
+                    <button
+                        className="card-delete-button"
+                        onClick={() => deleteStudent(id, stateCampus.id)}
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
         );
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
     return {
-        deleteStudent: (id) => dispatch(deleteStudentFromDatabase(id)),
+        stateCampus: state.campusInfo.selectedCampus,
     };
 }
 
-export default connect(null, mapDispatchToProps)(StudentCard);
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteStudent: (sId, cId) =>
+            dispatch(deleteStudentFromDatabase(sId, cId)),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentCard);
