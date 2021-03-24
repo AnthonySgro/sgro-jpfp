@@ -1,79 +1,98 @@
 const db = require("./db");
 const Student = require("./model/Student");
 const Campus = require("./model/Campus");
+const faker = require("faker");
+const axios = require("axios");
 
 const seed = async () => {
     try {
+        // Produces a random number of these in the database
+        const NUMBER_OF_UNIVERSITIES = 14;
+        const NUMBER_OF_STUDENTS = 300;
+
+        // Drop database if exists...
         await db.sync({ force: true });
-        console.log("Database Synced!");
+
+        // Generates fake universities
+        let fakeUniversities = [];
+        for (let i = 0; i < NUMBER_OF_UNIVERSITIES; i++) {
+            const randomNum = Math.floor(Math.random() * 1000);
+            const name = (
+                await axios.get(
+                    "http://universities.hipolabs.com/search?country=united%20states",
+                )
+            ).data[randomNum].name;
+
+            const num = Math.floor(Math.random() * 4) + 1;
+            const description = (
+                await axios.get(
+                    `https://baconipsum.com/api/?type=all-meat&sentences=${num}&start-with-lorem=1&format=html`,
+                )
+            ).data;
+
+            const imgUrl = (await axios.get("https://picsum.photos/200"))
+                .request.connection._httpMessage.res.responseUrl;
+
+            const street = faker.address.streetAddress();
+            const city = faker.address.city();
+            const state = faker.address.state();
+            const zip = faker.address.zipCode();
+            const address = `${street}, ${city}, ${state} ${zip}`;
+
+            fakeUniversities.push({
+                name: name,
+                address: address,
+                description: description,
+                imgUrl: imgUrl,
+            });
+        }
 
         await Promise.all(
-            [
-                {
-                    name: "Ohio State University",
-                    address: "281 W Lane Ave, Columbus, OH 43210",
-                    description: "THE Osu lorem ipsum dolor stuff yada yada",
-                },
-                {
-                    name: "Penn State University",
-                    address: "State College, PA 16801",
-                    description:
-                        "Arch nemesis perhaps? I don't know you be the judge",
-                },
-                {
-                    name: "The University of Michigan",
-                    address: "500 S State St, Ann Arbor, MI 48109",
-                    description: "garbage football team more yada yada oh man",
-                },
-            ].map((campus) => {
-                const { name, description } = campus;
+            fakeUniversities.map((campus) => {
                 Campus.create({
                     name: campus.name,
                     address: campus.address,
                     description: campus.description,
+                    imgUrl: campus.imgUrl,
                 });
             }),
         );
 
+        // Generates fake students
+        let fakeStudents = [];
+        for (let i = 0; i < NUMBER_OF_STUDENTS; i++) {
+            const firstName = faker.name.firstName();
+            const lastName = faker.name.lastName();
+            const email = faker.internet.email();
+            const gpa = faker.random.number({ min: 0, max: 4, precision: 0.1 });
+            const imgUrl = (await axios.get("https://randomuser.me/api/")).data
+                .results[0].picture.large;
+
+            const numOfColleges = (await Campus.findAll()).length;
+            let cId = Math.floor(Math.random() * numOfColleges);
+            if (cId !== 0) {
+                fakeStudents.push({
+                    first: firstName,
+                    last: lastName,
+                    email: email,
+                    gpa: gpa,
+                    imgUrl: imgUrl,
+                    cId: cId,
+                });
+            } else {
+                fakeStudents.push({
+                    first: firstName,
+                    last: lastName,
+                    email: email,
+                    gpa: gpa,
+                    imgUrl: imgUrl,
+                });
+            }
+        }
+
         await Promise.all(
-            [
-                {
-                    first: "Anthony",
-                    last: "Sgro",
-                    email: "fakeEmail1776@gmail.com",
-                    gpa: 2.0,
-                    cId: 1,
-                },
-                {
-                    first: "Tom",
-                    last: "Robbins",
-                    email: "fakeEmail1777@gmail.com",
-                    gpa: 2.3,
-                    cId: 2,
-                },
-                {
-                    first: "Nava",
-                    last: "Vaikunthan",
-                    email: "fakeEmail2008@gmail.com",
-                    gpa: 3.5,
-                    cId: 2,
-                },
-                {
-                    first: "Tamanna",
-                    last: "Ananna",
-                    email: "anotherFakeEmail2@gmail.com",
-                    gpa: 3.8,
-                    cId: 2,
-                },
-                {
-                    first: "Evan",
-                    last: "Delgado",
-                    email: "woohoo69@gmail.com",
-                    gpa: 3.65,
-                    cId: null,
-                },
-            ].map((stu) => {
-                const { first, last, email, gpa, cId } = stu;
+            fakeStudents.map((stu) => {
+                const { first, last, email, gpa, cId, imgUrl } = stu;
 
                 Student.create({
                     firstName: first,
@@ -81,11 +100,14 @@ const seed = async () => {
                     email: email,
                     gpa: gpa,
                     CampusId: cId,
+                    imgUrl: imgUrl,
                 });
             }),
         );
+
+        console.log("Database Synced and Seeded!");
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 

@@ -436,12 +436,12 @@ footer {
 }
 
 .card-container .card-img-hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     transition: all 0.2s ease-in-out;
 }
 
 .card-container {
-    background: darkslategray;
+    background: rgb(27, 27, 27);
     padding: 1vh;
     border-radius: 0.7rem;
     display: flex;

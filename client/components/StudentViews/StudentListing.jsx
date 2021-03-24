@@ -96,9 +96,6 @@ class StudentListing extends Component {
                                         There are no students registered in the
                                         database
                                     </div>
-                                    <button className="add-btn add-after-listings">
-                                        Add Student
-                                    </button>
                                 </React.Fragment>
                             )}
                         </div>

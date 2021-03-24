@@ -83,9 +83,6 @@ class CampusListing extends Component {
                                         There are no campuses registered in the
                                         database
                                     </div>
-                                    <button className="add-btn add-after-listings">
-                                        Add Campus
-                                    </button>
                                 </React.Fragment>
                             )}
                         </div>

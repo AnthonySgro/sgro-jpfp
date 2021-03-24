@@ -18,7 +18,7 @@ Campus.init(
             },
         },
         imgUrl: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(2000),
             defaultValue:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Media_Viewer_Icon_-_Location.svg/1200px-Media_Viewer_Icon_-_Location.svg.png",
             validate: {
@@ -47,7 +47,7 @@ Campus.init(
             },
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(2000),
             allowNull: true,
         },
     },

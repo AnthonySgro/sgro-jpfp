@@ -91,7 +91,7 @@ class CampusAdd extends Component {
                         Submit
                     </button>
                     <button
-                        type="submit"
+                        type="button"
                         className="back-btn"
                         onClick={this.props.removeAdder}
                     >
