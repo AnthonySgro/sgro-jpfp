@@ -4,6 +4,7 @@ const Campus = require("./model/Campus");
 const faker = require("faker");
 const axios = require("axios");
 
+// TAKES A WHILE! ~1 minute-ish
 const seed = async () => {
     try {
         // Produces a random number of these in the database
@@ -15,7 +16,7 @@ const seed = async () => {
 
         // Generates fake universities
         let fakeUniversities = [];
-        for (let i = 0; i < NUMBER_OF_UNIVERSITIES; i++) {
+        for (let i = 1; i <= NUMBER_OF_UNIVERSITIES; i++) {
             const randomNum = Math.floor(Math.random() * 1000);
             const name = (
                 await axios.get(
@@ -42,9 +43,12 @@ const seed = async () => {
             fakeUniversities.push({
                 name: name,
                 address: address,
+                state: state,
                 description: description,
                 imgUrl: imgUrl,
             });
+
+            console.log(`${i} universities generated`);
         }
 
         await Promise.all(
@@ -52,6 +56,7 @@ const seed = async () => {
                 Campus.create({
                     name: campus.name,
                     address: campus.address,
+                    state: campus.state,
                     description: campus.description,
                     imgUrl: campus.imgUrl,
                 });
@@ -60,7 +65,7 @@ const seed = async () => {
 
         // Generates fake students
         let fakeStudents = [];
-        for (let i = 0; i < NUMBER_OF_STUDENTS; i++) {
+        for (let i = 1; i <= NUMBER_OF_STUDENTS; i++) {
             const firstName = faker.name.firstName();
             const lastName = faker.name.lastName();
             const email = faker.internet.email();
@@ -88,6 +93,8 @@ const seed = async () => {
                     imgUrl: imgUrl,
                 });
             }
+
+            console.log(`${i} students generated`);
         }
 
         await Promise.all(

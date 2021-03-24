@@ -2,6 +2,7 @@ const { Sequelize, DataTypes, Model } = require("sequelize");
 const db = require("../db");
 const parseAddress = require("parse-address-string");
 const { Student } = require("../");
+const { afterCreate } = require("./Student");
 
 class Campus extends Model {
     // Instance Methods
@@ -78,20 +79,35 @@ Campus.init(
                             state,
                         } = await getSplitAddress(campus.address);
 
-                        // Updates Campus instance
-                        await Campus.update(
-                            {
-                                street: street_address1,
-                                city: city,
-                                zip: postal_code,
-                                state: state,
-                            },
-                            {
-                                where: {
-                                    id: campus.id,
+                        if (campus.state === null) {
+                            // Updates Campus instance
+                            await Campus.update(
+                                {
+                                    street: street_address1,
+                                    city: city,
+                                    zip: postal_code,
+                                    state: state,
                                 },
-                            },
-                        );
+                                {
+                                    where: {
+                                        id: campus.id,
+                                    },
+                                },
+                            );
+                        } else {
+                            await Campus.update(
+                                {
+                                    street: street_address1,
+                                    city: city,
+                                    zip: postal_code,
+                                },
+                                {
+                                    where: {
+                                        id: campus.id,
+                                    },
+                                },
+                            );
+                        }
                     }
                 } catch (err) {
                     console.log(err);

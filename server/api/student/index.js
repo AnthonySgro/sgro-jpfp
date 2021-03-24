@@ -59,13 +59,50 @@ router.post("/", async (req, res, next) => {
             res.sendStatus(201);
         }
     } catch (err) {
-        console.log(err);
         switch (err.errors[0].type) {
             case "Validation error":
                 res.sendStatus(422);
             case "unique violation":
                 res.sendStatus(409);
             default:
+                console.log(err);
+                next(err);
+        }
+    }
+});
+
+router.put("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { firstName, lastName, gpa } = req.body;
+
+        let student = await Student.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        // If student not found, return 404
+        if (student === null) {
+            res.sendStatus(404);
+        }
+
+        // Update values
+        student.firstName = firstName;
+        student.lastName = lastName;
+        student.gpa = gpa;
+        await student.save();
+
+        console.log(student);
+        res.sendStatus(204);
+    } catch (err) {
+        switch (err.errors[0].type) {
+            case "Validation error":
+                res.sendStatus(422);
+            case "unique violation":
+                res.sendStatus(409);
+            default:
+                console.log(err);
                 next(err);
         }
     }

@@ -13,7 +13,7 @@ const {
     seed,
     model: { Campus, Student },
 } = require("./db");
-seed();
+// seed();
 
 // Middleware
 app.use(express.json());

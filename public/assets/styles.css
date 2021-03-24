@@ -41,9 +41,9 @@ body {
 }
 
 .add-btn:active {
-    transform: translateY(0px);
+    transform: translateY(-2px) scale(0.95, 0.95);
+    transition: all 0.2s;
     background-color: rgb(0, 0, 214);
-    transition: all 0s;
 }
 
 /* Header Styles */
@@ -363,22 +363,98 @@ footer {
 /* Detail Styles */
 
 .info-detail-main {
+    margin: 4vh 10vh;
+}
+
+.info-detail-profile {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    padding: 4vh 4vh 0vh 4vh;
+    margin-bottom: 100vh;
+}
+
+.info-detail-profile input {
+    font-family: "Roboto Mono";
+}
+
+.info-detail-img-container {
+    max-width: 65vh;
+    max-height: 65vh;
+    min-width: 65vh;
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border-radius: 1rem;
+    margin-right: 5vh;
 }
 
 .info-detail-img {
-    width: 33%;
+    width: 90%;
     height: auto;
     border-radius: 1rem;
 }
 
 .info-detail-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-detail-name {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.info-detail-title {
+    font-size: 340%;
+    width: auto;
+}
+
+.info-detail-gpa-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: pre-wrap;
+    font-family: "Roboto Mono";
+}
+
+#gpa-editor {
+    padding: 0.5rem 0.3rem;
+    position: relative;
+    top: 1px;
+}
+
+.disabled {
+    color: black;
+    background: none;
+    border: none;
+    font-family: "Roboto Mono", monospace;
+}
+
+.enabled {
+    font-family: "Roboto Mono", monospace;
+}
+
+.info-detail-button-container > * {
+    margin: 1rem;
+}
+
+#save-changes {
+}
+
+/* .info-detail-img {
+    width: 33%;
+    height: auto;
+    border-radius: 1rem;
+} */
+
+/*
+.info-detail-text {
     width: auto;
     margin-left: 5vh;
-    color: white;
+    color: black;
 }
 
 .info-detail-additional {
@@ -418,7 +494,7 @@ footer {
     text-align: center;
     color: white;
     font-size: x-large;
-}
+} */
 
 /* Campus Detail Styles */
 
@@ -459,6 +535,10 @@ footer {
     font-size: small;
 }
 
+.card-edit-link:hover {
+    cursor: pointer;
+}
+
 .card-delete-button {
     color: white;
     background-color: rgb(255, 1, 1);
@@ -477,6 +557,11 @@ footer {
     transform: translateY(-3px);
     box-shadow: 0px 8px 6px -6px rgba(114, 15, 15, 0.589);
     transition: all 0.4s ease-in-out;
+}
+
+.card-delete-button:active {
+    transform: translateY(-2px) scale(0.95, 0.95);
+    transition: all 0.2s;
 }
 
 .card-detail-link:hover,
@@ -674,8 +759,8 @@ input {
 .submit-btn:active,
 .back-btn:active {
     cursor: pointer;
-    transform: translateY(0px);
-    transition: all 0s ease-in-out;
+    transform: translateY(0px) scale(0.95, 0.95);
+    transition: all 0.1s;
 }
 
 /* Header Animations */

@@ -8,6 +8,7 @@ const LOAD_All_STUDENTS = "LOAD_All_STUDENTS";
 const LOAD_STUDENT_DETAIL = "LOAD_STUDENT_DETAIL";
 const ADD_STUDENT = "ADD_STUDENT";
 const DELETE_STUDENT = "DELETE_STUDENT";
+const UPDATE_STUDENT = "UPDATE_STUDENT";
 
 // Action Creator
 export const loadAllStudents = (allStudents) => {
@@ -35,6 +36,13 @@ export const deleteStudent = (allStudents) => {
     return {
         type: DELETE_STUDENT,
         allStudents,
+    };
+};
+
+export const updateStudent = (student) => {
+    return {
+        type: UPDATE_STUDENT,
+        student,
     };
 };
 
@@ -92,6 +100,17 @@ export const deleteStudentFromDatabase = (studentId, campusId) => {
     };
 };
 
+export const updateStudentInDatabase = (payload, campusId) => {
+    return async (dispatch) => {
+        // Attempts to update the student in the database, then grabs that student
+        await axios.put(`/api/students/${payload.id}`, payload);
+        const student = (await axios.get(`/api/students/${payload.id}`)).data;
+        console.log(student);
+        // Dispatches the action to all reducers
+        dispatch(updateStudent(student));
+    };
+};
+
 // Initial Reducer State
 const initialState = { allStudents: [], selectedStudent: {} };
 
@@ -106,6 +125,9 @@ export default (state = initialState, action) => {
             return (state = { ...state, allStudents: action.allStudents });
         case DELETE_STUDENT:
             return (state = { ...state, allStudents: action.allStudents });
+        case UPDATE_STUDENT:
+            return (state = { ...state, selectedStudent: action.student });
+
         default:
             return state;
     }

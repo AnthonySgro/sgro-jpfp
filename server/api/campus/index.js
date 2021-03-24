@@ -60,13 +60,13 @@ router.post("/", async (req, res, next) => {
 
         // Error handling
     } catch (err) {
-        console.log(err);
         switch (err.errors[0].type) {
             case "Validation error":
                 res.sendStatus(422);
             case "unique violation":
                 res.sendStatus(409);
             default:
+                console.log(err);
                 next(err);
         }
     }
