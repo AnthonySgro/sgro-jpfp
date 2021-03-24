@@ -9,6 +9,7 @@ import {
 
 // Component Imports
 import StudentCard from "../Cards/StudentCard.jsx";
+import CampusAdd from "../Forms/CampusAdd.jsx";
 
 class CampusDetail extends Component {
     constructor(props) {
@@ -54,39 +55,65 @@ class CampusDetail extends Component {
         // Page content
         return (
             <React.Fragment>
-                <div className="info-detail-main">
-                    <img src={imgUrl} alt="" className="info-detail-img" />
-                    <div className="info-detail-text">
-                        <h1 className="info-detail-title">{name}</h1>
-                        <p className="info-detail-information">{description}</p>
+                <div className="main-view-header">
+                    <h1 className="main-view-title">Campus Detail</h1>
+                </div>
+                <div className="main-view-chunk">
+                    <nav className="main-view-sidebar">
+                        <CampusAdd />
+                    </nav>
+                    <div className="main-view-list-backdrop">
+                        <div className="main-view-list-campus">
+                            <div className="info-detail-main">
+                                <img
+                                    src={imgUrl}
+                                    alt=""
+                                    className="info-detail-img"
+                                />
+                                <div className="info-detail-text">
+                                    <h1 className="info-detail-title">
+                                        {name}
+                                    </h1>
+                                    <p className="info-detail-information">
+                                        {description}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="info-detail-additional">
+                                <div className="info-detail-address-container">
+                                    <p className="info-detail-address-street">
+                                        {street}
+                                    </p>
+                                    <p className="info-detail-address-citystate">
+                                        {`${city}, ${state} ${zip}`}
+                                    </p>
+                                </div>
+                                <div className="info-detail-button-container">
+                                    <button className="edit-btn">Edit</button>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => this.submitDelete(id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="detail-list-label-container">
+                                <p className="detail-list-label">Students</p>
+                            </div>
+                            <div className="main-view-listings-container">
+                                {Students.map((student) => (
+                                    <StudentCard
+                                        key={student.id}
+                                        {...student}
+                                        Campus={this.props.campus}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="info-detail-additional">
-                    <div className="info-detail-address-container">
-                        <p className="info-detail-address-street">{street}</p>
-                        <p className="info-detail-address-citystate">
-                            {`${city}, ${state} ${zip}`}
-                        </p>
-                    </div>
-                    <div className="info-detail-button-container">
-                        <button className="edit-btn">Edit</button>
-                        <button
-                            className="delete-btn"
-                            onClick={() => this.submitDelete(id)}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </div>
-                <div className="campus-listings-container">
-                    {Students.map((student) => (
-                        <StudentCard
-                            key={student.id}
-                            {...student}
-                            Campus={this.props.campus}
-                        />
-                    ))}
-                </div>
+                {/* */}
             </React.Fragment>
         );
     }

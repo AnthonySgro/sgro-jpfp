@@ -87,8 +87,15 @@ class CampusAdd extends Component {
                             <small>Error message</small>
                         </div>
                     </div>
-                    <button type="submit" id="btn">
+                    <button type="submit" className="submit-btn">
                         Submit
+                    </button>
+                    <button
+                        type="submit"
+                        className="back-btn"
+                        onClick={this.props.removeAdder}
+                    >
+                        {"<"}
                     </button>
                 </form>
             </div>

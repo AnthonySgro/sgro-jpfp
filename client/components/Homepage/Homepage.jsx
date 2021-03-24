@@ -120,7 +120,9 @@ class HomePage extends Component {
             <main>
                 <div id="homepage-lander">
                     <div id="homepage-top-text">
-                        <p>The Illuminati's Backdoor to College</p>
+                        <p className="sub-heading-text">
+                            The Illuminati's Backdoor to College
+                        </p>
                     </div>
                     <div id="big-text-homepage">
                         <h1>
@@ -134,7 +136,7 @@ class HomePage extends Component {
                         <p
                             className="typewrite"
                             data-period="2000"
-                            data-type='[ "Get your kid into college.", "Destroy students grades.", "Build your dream school.", "Control their destiny." ]'
+                            data-type='[ "Steal an Ivy League diploma.", "Flunk the neighbors kid.", "Destroy a public school.", "Boost your childs grades", "You deserve it." ]'
                         >
                             {/* Typewriter effect here */}
                             <span></span>

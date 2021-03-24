@@ -77,6 +77,18 @@ class StudentAdd extends Component {
                             <small>Error message</small>
                         </div>
                         <div className="form-control">
+                            <label htmlFor="imgUrl">Profile Picture</label>
+                            <input
+                                value={this.state.imgUrl}
+                                onChange={this.handleChange}
+                                id="campus-imgUrl-input"
+                                name="imgUrl"
+                                type="text"
+                                placeholder="Enter campus image URL"
+                            />
+                            <small>Error message</small>
+                        </div>
+                        <div className="form-control">
                             <label htmlFor="campusName">Campus Name</label>
                             <select
                                 name="campusName"
@@ -93,8 +105,15 @@ class StudentAdd extends Component {
                             </select>
                         </div>
                     </div>
-                    <button type="submit" id="btn">
+                    <button type="submit" className="submit-btn">
                         Submit
+                    </button>
+                    <button
+                        type="button"
+                        className="back-btn"
+                        onClick={this.props.removeAdder}
+                    >
+                        {"<"}
                     </button>
                 </form>
             </div>

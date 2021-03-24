@@ -4,34 +4,59 @@ html {
 
 body {
     margin: 0;
+    background-color: white;
+    z-index: -1;
 }
 /* General Styles */
-.edit-btn {
-    background-color: #81b29a;
-    border: 0;
-    margin: 1vh;
-    padding: 0vh 4vh;
-    height: 5vh;
-    align-self: center;
-}
 
 .delete-btn {
-    background-color: #804434;
-    border: 0;
-    margin: 1vh;
-    padding: 0vh 4vh;
-    height: 5vh;
-    align-self: center;
+    color: white;
+    background-color: rgb(255, 1, 1);
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transform: translateY(0px);
+    box-shadow: 0px 0px 0px red;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-btn {
+    color: white;
+    background-color: blue;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transform: translateY(0px);
+    box-shadow: 0px 0px 0px blue;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-btn:hover {
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 6px -6px rgba(12, 35, 98, 0.589);
+    transition: all 0.3s ease-in-out;
+}
+
+.add-btn:active {
+    transform: translateY(0px);
+    background-color: rgb(0, 0, 214);
+    transition: all 0s;
 }
 
 /* Header Styles */
 
 #app-header {
-    /* background-color: #81b29a; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 3.3vh;
+    background-color: white;
+    z-index: 5;
+    position: sticky;
+    top: 0;
 }
 
 #header-home > * {
@@ -86,9 +111,11 @@ body {
 }
 
 #homepage-top-text > p {
-    padding: 6vh 5vh 0vh 5vh;
+    padding: 9vh 5vh 0vh 5vh;
     font-style: italic;
     font-size: 110%;
+    background-color: white;
+    margin: 0;
 }
 
 #homepage-lander h1 {
@@ -100,6 +127,7 @@ body {
     text-align: center;
     color: black;
     font-variant: small-caps;
+    background-color: white;
 }
 
 #logo-period {
@@ -108,9 +136,10 @@ body {
 }
 
 #homepage-btn-container {
-    padding: 8vh 8vh 3vh 8vh;
+    padding: 6vh 8vh 20vh 8vh;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 #homepage-btn {
@@ -146,6 +175,7 @@ footer {
     bottom: 0;
     width: 100%;
     right: 0;
+    background-color: white;
 }
 
 #image-tray {
@@ -185,14 +215,87 @@ footer {
 
 /* Campus Listing Styles */
 
+.listing-lander {
+    height: 60vh;
+    width: 100%;
+}
+
+.listing-lander-content-box {
+    position: relative;
+    top: 3.6%;
+    left: 10%;
+    height: 71%;
+    width: 63.5%;
+    color: white;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 1) 50%,
+        rgba(61, 61, 61, 1) 100%
+    );
+    border-radius: 0.4rem;
+}
+
+.listing-lander-fun-box {
+    position: relative;
+    bottom: 63%;
+    left: 59.5%;
+    background-color: transparent;
+    height: 36.9vh;
+    width: 53vh;
+}
+
+.listing-lander-fun-box > img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0.4rem;
+}
+
+.listing-lander-title {
+    color: white;
+    font-size: 200%;
+    padding-top: 12%;
+    font-variant: small-caps;
+}
+
+.listing-lander-text,
+.listing-lander-title {
+    padding-left: 7%;
+}
+
+.listing-lander-text {
+    margin-bottom: 2px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.secondline {
+    margin: 0;
+}
+
+.finalline {
+    font-style: oblique;
+    line-height: 5vh;
+}
+
+/*  */
+/*  */
+/*  */
+/*  */
+
+.main-listing-view {
+    position: relative;
+    bottom: 5vh;
+}
+
 .main-view-header {
     display: flex;
     flex-direction: row;
     align-content: center;
     width: 100%;
     justify-content: center;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
+    text-decoration: underline;
 }
 
 .main-view-header > * {
@@ -210,7 +313,9 @@ footer {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    background-color: black;
+    background-color: white;
+    /* border-top: 1px solid black;
+    border-right: 1px solid black; */
     min-width: 30vh;
     max-width: 425px;
     min-height: 50vh;
@@ -224,24 +329,31 @@ footer {
 }
 
 .main-view-list-backdrop {
-    background-color: black;
+    background-color: white;
     width: 100%;
 }
 
+.add-after-listings {
+    margin: 2vh;
+    max-width: 200px;
+    align-self: center;
+}
+
 .main-view-list-campus {
-    width: auto;
-    min-height: 100%;
-    background-color: #3d405b;
-    border-top-left-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0rem 2rem;
 }
 
 .main-view-listings-container {
-    padding: 3vh 1vh 0vh 1vh;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .main-view-listings-container > * {
@@ -253,16 +365,20 @@ footer {
 .info-detail-main {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    padding: 4vh 4vh 0vh 4vh;
 }
 
 .info-detail-img {
     width: 33%;
     height: auto;
+    border-radius: 1rem;
 }
 
 .info-detail-text {
-    width: 33%;
+    width: auto;
+    margin-left: 5vh;
+    color: white;
 }
 
 .info-detail-additional {
@@ -271,6 +387,8 @@ footer {
     flex-direction: row;
     align-content: center;
     justify-content: space-between;
+    padding: 0vh 4vh 0vh 4vh;
+    color: white;
 }
 
 .info-detail-button-container {
@@ -285,19 +403,56 @@ footer {
     padding: 0vh;
 }
 
+.info-detail-img {
+    background-color: white;
+}
+
+.detail-list-label-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid white;
+    margin: 0vh 30vh;
+}
+.detail-list-label {
+    text-align: center;
+    color: white;
+    font-size: x-large;
+}
+
 /* Campus Detail Styles */
 
 /* Card Styles */
 
+.card-container a {
+    color: white;
+}
+.card-container img {
+    border-radius: 1rem;
+    background-color: white;
+    cursor: pointer;
+    transform: translateY(0px);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card-container .card-img-hover {
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in-out;
+}
+
 .card-container {
-    background-color: #f1faee;
+    background: darkslategray;
     padding: 1vh;
     border-radius: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card-detail-link,
 .card-edit-link {
     text-decoration: none;
+    margin-bottom: 2px;
 }
 
 .card-edit-link {
@@ -311,6 +466,7 @@ footer {
     border: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
     transform: translateY(0px);
     box-shadow: 0px 0px 0px red;
     transition: all 0.2s ease-in-out;
@@ -328,12 +484,24 @@ footer {
     text-decoration: underline;
 }
 
+.delete-text {
+    padding: 0;
+    margin: 0;
+    font-size: x-small;
+}
+
+.image-link-wrapper {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
 /* Campus Card Styles */
 
 .campus-card-container {
     display: flex;
     flex-direction: row;
-    width: 40vh;
+    width: 36vh;
 }
 
 .campus-card-container img {
@@ -352,7 +520,9 @@ footer {
 
 .campus-card-numStudents {
     margin: 0vh;
+    font-weight: 300;
     font-size: smaller;
+    color: white;
 }
 
 .campus-card-info-interact {
@@ -389,13 +559,23 @@ footer {
 
 /* Form Styles */
 .container {
-    background-color: #f1faee;
+    background-color: white;
     min-width: 30vh;
     max-width: 40vh;
     min-height: 20vh;
     border-radius: 0.5rem;
     box-shadow: 0px 0px 20px -7px rgba(0, 0, 0, 0.58);
     width: 120%;
+    margin-top: 2vh;
+    position: absolute;
+    transform: translateX(-40vh);
+    transition: transform 1s ease-in-out;
+    z-index: 4;
+}
+
+.container-highlighted {
+    transform: translateX(5.5%);
+    transition: transform 1s ease-in-out;
 }
 
 .form {
@@ -455,6 +635,47 @@ input {
     background-color: #fbfcfa;
     border-radius: 0.3rem;
     outline: none;
+}
+
+.submit-btn {
+    width: 30%;
+    align-self: center;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transform: translateY(0px);
+    box-shadow: 0px 0px 0px #313131;
+    transition: all 0.2s ease-in-out;
+    background-color: #d7d8d7;
+}
+
+.back-btn {
+    margin: 1rem;
+    background: lightseagreen;
+    width: 15%;
+    align-self: center;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    transform: translateY(0px);
+    box-shadow: 0px 0px 0px rgb(10, 56, 54);
+    transition: all 0.2s ease-in-out;
+    background-color: #d7d8d7;
+}
+
+.submit-btn:hover,
+.back-btn:hover {
+    cursor: pointer;
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
+
+.submit-btn:active,
+.back-btn:active {
+    cursor: pointer;
+    transform: translateY(0px);
+    transition: all 0s ease-in-out;
 }
 
 /* Header Animations */

@@ -11,6 +11,22 @@ class StudentCard extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.raiseImage = this.raiseImage.bind(this);
+        this.lowerImage = this.lowerImage.bind(this);
+    }
+
+    componentDidMount() {}
+
+    raiseImage() {
+        const { id } = this.props;
+        const img = document.querySelector(`#student-card-img-${id}`);
+        img.classList.add("card-img-hover");
+    }
+
+    lowerImage() {
+        const { id } = this.props;
+        const img = document.querySelector(`#student-card-img-${id}`);
+        img.classList.remove("card-img-hover");
     }
 
     render() {
@@ -18,12 +34,19 @@ class StudentCard extends Component {
         const { deleteStudent, stateCampus } = this.props;
 
         return (
-            <div className="student-card-container card-container">
-                <img
-                    src={imgUrl}
-                    alt="Student Image"
-                    className="student-card-image"
-                />
+            <div
+                className="student-card-container card-container"
+                onMouseEnter={() => this.raiseImage()}
+                onMouseLeave={() => this.lowerImage()}
+            >
+                <Link to={`/students/${id}`} className="image-link-wrapper">
+                    <img
+                        src={imgUrl}
+                        alt="Student Image"
+                        className="student-card-image"
+                        id={`student-card-img-${id}`}
+                    />
+                </Link>
                 <Link
                     to={`/students/${id}`}
                     className="student-card-name card-detail-link"
@@ -48,7 +71,7 @@ class StudentCard extends Component {
                         className="card-delete-button"
                         onClick={() => deleteStudent(id, stateCampus.id)}
                     >
-                        Delete
+                        <p className="delete-text">x</p>
                     </button>
                 </div>
             </div>
