@@ -84,7 +84,7 @@ class StudentAdd extends Component {
                                 id="campus-imgUrl-input"
                                 name="imgUrl"
                                 type="text"
-                                placeholder="Enter campus image URL"
+                                placeholder="Enter profile image URL"
                             />
                             <small>Error message</small>
                         </div>

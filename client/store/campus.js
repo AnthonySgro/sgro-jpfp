@@ -8,6 +8,7 @@ const LOAD_All_CAMPUSES = "LOAD_ALL_CAMPUSES";
 const LOAD_CAMPUS_DETAIL = "LOAD_CAMPUS_DETAIL";
 const ADD_CAMPUS = "ADD_CAMPUS";
 const DELETE_CAMPUS = "DELETE_CAMPUS";
+const UPDATE_CAMPUS = "UPDATE_CAMPUS";
 
 // Action Creators
 export const loadAllCampuses = (campuses) => {
@@ -38,6 +39,13 @@ export const deleteCampus = (campuses) => {
     };
 };
 
+export const updateCampus = (campus) => {
+    return {
+        type: UPDATE_CAMPUS,
+        campus,
+    };
+};
+
 // Thunks
 export const fetchAllCampuses = () => {
     // Fetches campuses from my api
@@ -62,7 +70,7 @@ export const fetchCampusDetail = (id) => {
 export const addCampusToDatabase = (campusData) => {
     return async (dispatch) => {
         // Attempts to add the campus to the database, then grabs all campuses in database
-        (await axios.post(`/api/campuses`, campusData)).data;
+        await axios.post(`/api/campuses`, campusData);
         const campuses = (await axios.get("/api/campuses")).data;
 
         // Dispatches the add campus event
@@ -73,7 +81,7 @@ export const addCampusToDatabase = (campusData) => {
 export const deleteCampusFromDatabase = (id) => {
     return async (dispatch) => {
         // Attempts to delete the campus from the database, then grabs all campuses in database
-        (await axios.delete(`/api/campuses/${id}`)).data;
+        await axios.delete(`/api/campuses/${id}`);
         const campuses = (await axios.get("/api/campuses")).data;
 
         // Dispatches the delete campus event
@@ -81,6 +89,20 @@ export const deleteCampusFromDatabase = (id) => {
 
         // Dispatches this to reload campus affiliations if deleted
         dispatch(fetchAllStudents());
+    };
+};
+
+export const updateCampusInDatabase = (payload) => {
+    return async (dispatch) => {
+        // Attempts to update the student in the database, then grabs that student
+        await axios.put(`/api/campuses/${payload.id}`, payload);
+        const campus = (await axios.get(`/api/campuses/${payload.id}`)).data;
+
+        // Dispatches the action to all reducers
+        dispatch(updateCampus(campus));
+
+        // Dispatches this to update all campus information
+        dispatch(fetchAllCampuses());
     };
 };
 
@@ -98,6 +120,8 @@ export default (state = initialState, action) => {
             return (state = { ...state, allCampuses: action.campuses });
         case DELETE_CAMPUS:
             return (state = { ...state, allCampuses: action.campuses });
+        case UPDATE_CAMPUS:
+            return (state = { ...state, selectedCampus: action.campus });
         default:
             return state;
     }

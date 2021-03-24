@@ -51,12 +51,7 @@ class StudentDetail extends Component {
         await loadStudent(id);
         await loadAllCampuses();
 
-        const { firstName, lastName, imgUrl } = this.props.student;
-        let { gpa } = this.props.student;
-
-        if (gpa === undefined) {
-            gpa = "N/A";
-        }
+        const { firstName, lastName, imgUrl, gpa } = this.props.student;
 
         this.setState({
             firstName,
@@ -127,7 +122,8 @@ class StudentDetail extends Component {
         event.preventDefault();
 
         // Prepare payload
-        const { firstName, lastName, gpa, id } = this.state;
+        const { firstName, lastName, id, gpa } = this.state;
+
         const payload = {
             firstName,
             lastName,
@@ -139,7 +135,12 @@ class StudentDetail extends Component {
         await this.props.updateStudent(payload);
 
         // If successful (not implemented yet), reset our state to be in sync with the database
-        this.setState({ firstName, lastName, gpa, preValues: { ...payload } });
+        this.setState({
+            firstName,
+            lastName,
+            gpa,
+            preValues: { ...payload, gpa: gpa || "N/A" },
+        });
 
         // Reverts our styling to pre-editing
         this.enableEditing();
@@ -175,7 +176,6 @@ class StudentDetail extends Component {
     render() {
         // Deconstructs all information from campus store obj
         const { firstName, lastName, id, imgUrl } = this.props.student;
-        let { gpa } = this.props.student;
 
         // Get campus information
         const campus = this.getStudentCampusDetails();
@@ -248,10 +248,12 @@ class StudentDetail extends Component {
                                             disabled
                                             style={{
                                                 width:
-                                                    this.state.gpa.length +
-                                                    "ch",
+                                                    this.state.gpa !== null
+                                                        ? this.state.gpa
+                                                              .length + "ch"
+                                                        : "3ch",
                                             }}
-                                            value={this.state.gpa}
+                                            value={this.state.gpa || ""}
                                             onChange={() =>
                                                 this.handleChange(event)
                                             }
@@ -264,13 +266,15 @@ class StudentDetail extends Component {
                                         className="card-edit-link"
                                         onClick={this.enableEditing}
                                     >
-                                        {this.state.editLabel}
+                                        {this.state.editLabel || ""}
                                     </a>
                                     <button
                                         type="submit"
                                         className="add-btn add-after-listings"
                                         id="save-changes"
-                                        style={this.state.saveChangesStyles}
+                                        style={
+                                            this.state.saveChangesStyles || ""
+                                        }
                                     >
                                         Save Changes
                                     </button>

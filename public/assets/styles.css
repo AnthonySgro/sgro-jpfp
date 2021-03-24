@@ -352,8 +352,8 @@ footer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .main-view-listings-container > * {
@@ -369,7 +369,7 @@ footer {
 .info-detail-profile {
     display: flex;
     flex-direction: row;
-    margin-bottom: 100vh;
+    margin-bottom: 2vh;
 }
 
 .info-detail-profile input {
@@ -448,52 +448,6 @@ footer {
     width: 33%;
     height: auto;
     border-radius: 1rem;
-} */
-
-/*
-.info-detail-text {
-    width: auto;
-    margin-left: 5vh;
-    color: black;
-}
-
-.info-detail-additional {
-    margin: 1vh;
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    padding: 0vh 4vh 0vh 4vh;
-    color: white;
-}
-
-.info-detail-button-container {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: center;
-}
-
-.info-detail-address-container > * {
-    margin: 0vh;
-    padding: 0vh;
-}
-
-.info-detail-img {
-    background-color: white;
-}
-
-.detail-list-label-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-top: 1px solid white;
-    margin: 0vh 30vh;
-}
-.detail-list-label {
-    text-align: center;
-    color: white;
-    font-size: x-large;
 } */
 
 /* Campus Detail Styles */

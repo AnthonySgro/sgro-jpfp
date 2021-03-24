@@ -105,7 +105,7 @@ export const updateStudentInDatabase = (payload, campusId) => {
         // Attempts to update the student in the database, then grabs that student
         await axios.put(`/api/students/${payload.id}`, payload);
         const student = (await axios.get(`/api/students/${payload.id}`)).data;
-        console.log(student);
+
         // Dispatches the action to all reducers
         dispatch(updateStudent(student));
     };

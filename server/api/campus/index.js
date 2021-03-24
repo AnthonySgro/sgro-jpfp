@@ -72,6 +72,42 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+router.put("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { name, description, address } = req.body;
+
+        let campus = await Campus.findOne({
+            where: {
+                id: id,
+            },
+        });
+
+        // If student not found, return 404
+        if (campus === null) {
+            res.sendStatus(404);
+        }
+
+        // Update values
+        campus.name = name;
+        campus.description = description;
+        campus.gpa = address;
+        await campus.save();
+
+        res.sendStatus(204);
+    } catch (err) {
+        switch (err.errors[0].type) {
+            case "Validation error":
+                res.sendStatus(422);
+            case "unique violation":
+                res.sendStatus(409);
+            default:
+                console.log(err);
+                next(err);
+        }
+    }
+});
+
 router.delete("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;

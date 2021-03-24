@@ -154,8 +154,8 @@ Congrats! You have completed your fourth vertical slice! Make sure to `commit -m
 -   [ ] Write a component to display a form updating _at least_ a student's first and last names, and email
 -   [ ] Display this component as part of the single-student view, alongside the single student
 -   Submitting the form with valid data should:
-    -   [ ] Make an AJAX request that causes that student to be updated in the database
-    -   [ ] Update the student in the current view without needing to refresh the page
+    -   [x] Make an AJAX request that causes that student to be updated in the database
+    -   [x] Update the student in the current view without needing to refresh the page
 
 #### Backend
 

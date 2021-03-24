@@ -74,7 +74,8 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { firstName, lastName, gpa } = req.body;
+        const { firstName, lastName } = req.body;
+        let { gpa } = req.body;
 
         let student = await Student.findOne({
             where: {
@@ -87,13 +88,16 @@ router.put("/:id", async (req, res, next) => {
             res.sendStatus(404);
         }
 
+        if (gpa === "N/A" || gpa === "") {
+            gpa = null;
+        }
+
         // Update values
         student.firstName = firstName;
         student.lastName = lastName;
-        student.gpa = gpa;
+        student.gpa = gpa || 0;
         await student.save();
 
-        console.log(student);
         res.sendStatus(204);
     } catch (err) {
         switch (err.errors[0].type) {

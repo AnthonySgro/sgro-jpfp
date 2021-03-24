@@ -62,10 +62,7 @@ class CampusCard extends Component {
                         </p>
                     </div>
                     <div className="campus-card-info-interact">
-                        <Link
-                            to={`/campuses/${id}/edit`}
-                            className="card-edit-link"
-                        >
+                        <Link to={`/campuses/${id}`} className="card-edit-link">
                             Edit
                         </Link>
                         <button
