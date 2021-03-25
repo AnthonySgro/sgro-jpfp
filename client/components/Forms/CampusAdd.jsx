@@ -4,6 +4,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addCampusToDatabase } from "../../store/campus";
 
+// Function imports
+import campusFormValidator, {
+    resetCampusFormStyles,
+} from "./campusFormValidator";
+
 class CampusAdd extends Component {
     constructor(props) {
         super(props);
@@ -15,22 +20,36 @@ class CampusAdd extends Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.backBtn = this.backBtn.bind(this);
+    }
+
+    backBtn() {
+        this.props.removeAdder();
+
+        // Reset styles after the form disappears
+        setTimeout(() => {
+            resetCampusFormStyles();
+        }, 200);
     }
 
     handleSubmit(event) {
         // Prevents the form from submitting normally
         event.preventDefault();
 
-        // Submits the data to our redux thunk which makes the post request
-        this.props.addCampus(this.state);
+        const allValid = campusFormValidator();
 
-        // Resets our state to blank
-        this.setState({
-            name: "",
-            address: "",
-            description: "",
-            imgUrl: "",
-        });
+        if (allValid) {
+            // Submits the data to our redux thunk which makes the post request
+            this.props.addCampus(this.state);
+
+            // Resets our state to blank
+            this.setState({
+                name: "",
+                address: "",
+                description: "",
+                imgUrl: "",
+            });
+        }
     }
 
     // Modifies the state to reflect current text in input fields
@@ -46,7 +65,7 @@ class CampusAdd extends Component {
                 <form id="form" className="form" onSubmit={this.handleSubmit}>
                     <h2>Add Campus</h2>
                     <div className="form-control">
-                        <div className="form-control">
+                        <div className="form-control attn">
                             <label htmlFor="name">Campus Name</label>
                             <input
                                 value={this.state.name}
@@ -58,7 +77,7 @@ class CampusAdd extends Component {
                             />
                             <small>Error message</small>
                         </div>
-                        <div className="form-control">
+                        <div className="form-control attn">
                             <label htmlFor="address">Address</label>
                             <input
                                 value={this.state.address}
@@ -70,7 +89,7 @@ class CampusAdd extends Component {
                             />
                             <small>Error message</small>
                         </div>
-                        <div className="form-control">
+                        <div className="form-control attn">
                             <label htmlFor="description">Description</label>
                             <textarea
                                 value={this.state.description}
@@ -82,7 +101,7 @@ class CampusAdd extends Component {
                             ></textarea>
                             <small>Error message</small>
                         </div>
-                        <div className="form-control">
+                        <div className="form-control attn">
                             <label htmlFor="imgUrl">Campus Image</label>
                             <input
                                 value={this.state.imgUrl}
@@ -95,13 +114,17 @@ class CampusAdd extends Component {
                             <small>Error message</small>
                         </div>
                     </div>
-                    <button type="submit" className="submit-btn">
+                    <button
+                        type="submit"
+                        className="submit-btn"
+                        id="submit-btn-form"
+                    >
                         Submit
                     </button>
                     <button
                         type="button"
                         className="back-btn"
-                        onClick={this.props.removeAdder}
+                        onClick={() => this.backBtn(event)}
                     >
                         {"<"}
                     </button>

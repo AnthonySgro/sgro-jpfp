@@ -3,6 +3,7 @@ import React, { Component } from "react";
 // Component Imports
 import CampusCard from "../Cards/CampusCard.jsx";
 import CampusAdd from "../Forms/CampusAdd.jsx";
+import Loading from "../Loading.jsx";
 
 // Redux imports
 import { connect } from "react-redux";
@@ -24,11 +25,15 @@ class CampusListing extends Component {
 
     removeAdder() {
         const container = document.querySelectorAll(".container");
-        container[0].classList.remove("container-highlighted");
+
+        if (container.length) {
+            container[0].classList.remove("container-highlighted");
+        }
     }
 
     render() {
         const { campuses } = this.props;
+
         return (
             <React.Fragment>
                 <div className="listing-lander">
@@ -53,40 +58,44 @@ class CampusListing extends Component {
                     </div>
                 </div>
                 <div className="main-listing-view">
-                    <div className="main-view-chunk">
-                        <CampusAdd removeAdder={this.removeAdder} />
-                        <nav className="main-view-sidebar">
-                            <h2>Menu</h2>
-                            <button
-                                className="add-btn add-after-listings"
-                                onClick={this.highlightAdder}
-                            >
-                                Build Campus
-                            </button>
-                        </nav>
-                        <div className="main-view-list-campus">
-                            <h2>All Campuses</h2>
-                            {campuses.length > 0 ? (
-                                // If there are campuses, render cards
-                                <div className="main-view-listings-container">
-                                    {campuses.map((campus) => (
-                                        <CampusCard
-                                            key={campus.id}
-                                            {...campus}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                // If there are no campuses, display this message
-                                <React.Fragment>
+                    {campuses === undefined ? (
+                        <Loading />
+                    ) : (
+                        <div className="main-view-chunk">
+                            <CampusAdd removeAdder={this.removeAdder} />
+                            <nav className="main-view-sidebar">
+                                <h2>Menu</h2>
+                                <button
+                                    className="add-btn add-after-listings"
+                                    onClick={this.highlightAdder}
+                                >
+                                    Build Campus
+                                </button>
+                            </nav>
+                            <div className="main-view-list-campus">
+                                <h2>All Campuses</h2>
+                                {campuses.length > 0 ? (
+                                    // If there are campuses, render cards
                                     <div className="main-view-listings-container">
-                                        There are no campuses registered in the
-                                        database
+                                        {campuses.map((campus) => (
+                                            <CampusCard
+                                                key={campus.id}
+                                                {...campus}
+                                            />
+                                        ))}
                                     </div>
-                                </React.Fragment>
-                            )}
+                                ) : (
+                                    // If there are no campuses, display this message
+                                    <React.Fragment>
+                                        <div className="main-view-listings-container">
+                                            There are no campuses registered in
+                                            the database
+                                        </div>
+                                    </React.Fragment>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </React.Fragment>
         );

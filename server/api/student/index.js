@@ -100,7 +100,7 @@ router.put("/:id", async (req, res, next) => {
             student.email = email;
             student.gpa = gpa || 0;
         } else {
-            if (campusId === "") {
+            if (campusId === "" || undefined) {
                 campusId = null;
             }
             student.CampusId = campusId;

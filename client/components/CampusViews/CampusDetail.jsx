@@ -10,6 +10,7 @@ import {
 
 // Component Imports
 import StudentCard from "../Cards/StudentCard.jsx";
+import Loading from "../Loading.jsx";
 import CampusAdd from "../Forms/CampusAdd.jsx";
 import StudentListing from "../StudentViews/StudentListing.jsx";
 
@@ -17,6 +18,7 @@ class CampusDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             name: "",
             description: "",
             address: "",
@@ -54,6 +56,7 @@ class CampusDetail extends Component {
         const { name, description, address } = this.props.campus;
 
         this.setState({
+            loading: false,
             name,
             description,
             address,
@@ -182,8 +185,8 @@ class CampusDetail extends Component {
         } = this.props.campus;
 
         // Display loading screen until our axios call resolves
-        if (!id) {
-            return <p>Loading...</p>;
+        if (!id || this.state.loading) {
+            return <Loading />;
         }
 
         return (

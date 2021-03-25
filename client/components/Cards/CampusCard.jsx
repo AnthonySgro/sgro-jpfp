@@ -4,6 +4,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { deleteCampusFromDatabase } from "../../store/campus";
+import {
+    updateStudentInDatabase,
+    fetchStudentDetail,
+} from "../../store/student";
 
 class CampusCard extends Component {
     constructor(props) {
@@ -11,6 +15,7 @@ class CampusCard extends Component {
         this.state = {};
         this.raiseImage = this.raiseImage.bind(this);
         this.lowerImage = this.lowerImage.bind(this);
+        this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
     raiseImage() {
@@ -25,8 +30,28 @@ class CampusCard extends Component {
         img.classList.remove("card-img-hover");
     }
 
+    async unregisterStudent() {
+        const { studentId, unregisterFunction, loadStudent } = this.props;
+        if (studentId) {
+            // Calls the update thunk with an empty id
+            await unregisterFunction({ id: studentId, campusId: "" });
+
+            this.props.resetSelect();
+
+            // Loads the selected student again
+            await loadStudent(studentId);
+        }
+    }
+
     render() {
-        const { id, name, imgUrl, description, studentCount } = this.props;
+        const {
+            id,
+            name,
+            imgUrl,
+            description,
+            studentCount,
+            unregister,
+        } = this.props;
         const { deleteCampus } = this.props;
 
         // Pluralize student count corrently
@@ -62,12 +87,24 @@ class CampusCard extends Component {
                         <Link to={`/campuses/${id}`} className="card-edit-link">
                             Edit
                         </Link>
-                        <button
-                            className="card-delete-button"
-                            onClick={() => deleteCampus(id)}
-                        >
-                            x
-                        </button>
+                        {unregister ? (
+                            <button
+                                type="button"
+                                className="card-delete-button"
+                                onClick={() => this.unregisterStudent()}
+                            >
+                                <p className="delete-text">Unregister</p>
+                            </button>
+                        ) : (
+                            <button
+                                className="card-delete-button"
+                                onClick={() =>
+                                    deleteStudent(id, stateCampus.id)
+                                }
+                            >
+                                <p className="delete-text">x</p>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -78,6 +115,9 @@ class CampusCard extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         deleteCampus: (id) => dispatch(deleteCampusFromDatabase(id)),
+        unregisterFunction: (payload) =>
+            dispatch(updateStudentInDatabase(payload)),
+        loadStudent: (id) => dispatch(fetchStudentDetail(id)),
     };
 }
 

@@ -4,6 +4,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addStudentToDatabase } from "../../store/student";
 
+// Function Imports
+import studentFormValidator, {
+    resetStudentFormStyles,
+} from "./studentFormValidator";
+
 class StudentAdd extends Component {
     constructor(props) {
         super(props);
@@ -16,23 +21,36 @@ class StudentAdd extends Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.backBtn = this.backBtn.bind(this);
+    }
+
+    backBtn() {
+        this.props.removeAdder();
+
+        // Reset styles after the form disappears
+        setTimeout(() => {
+            resetStudentFormStyles();
+        }, 200);
     }
 
     handleSubmit(event) {
         // Prevents the form from submitting normally
         event.preventDefault();
 
-        // Submits the data to our redux thunk which makes the post request
-        this.props.addStudent(this.state);
+        const allValid = studentFormValidator(this.props.allStudents);
+        if (allValid) {
+            // Submits the data to our redux thunk which makes the post request
+            this.props.addStudent(this.state);
 
-        // Resets our state to blank
-        this.setState({
-            firstName: "",
-            lastName: "",
-            email: "",
-            imgUrl: "",
-            campusName: "",
-        });
+            // Resets our state to blank
+            this.setState({
+                firstName: "",
+                lastName: "",
+                email: "",
+                imgUrl: "",
+                campusName: "",
+            });
+        }
     }
 
     // Modifies the state to reflect current text in input fields
@@ -121,7 +139,7 @@ class StudentAdd extends Component {
                     <button
                         type="button"
                         className="back-btn"
-                        onClick={this.props.removeAdder}
+                        onClick={this.backBtn}
                     >
                         {"<"}
                     </button>
@@ -134,6 +152,7 @@ class StudentAdd extends Component {
 function mapStateToProps(state) {
     return {
         allCampuses: state.campusInfo.allCampuses,
+        allStudents: state.studentInfo.allStudents,
     };
 }
 

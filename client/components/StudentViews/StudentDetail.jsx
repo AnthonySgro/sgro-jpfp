@@ -13,11 +13,13 @@ import { fetchAllCampuses } from "../../store/campus";
 
 // Component Imports
 import CampusCard from "../Cards/CampusCard.jsx";
+import Loading from "../Loading.jsx";
 
 class StudentDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             firstName: "",
             lastName: "",
             gpa: "",
@@ -44,6 +46,7 @@ class StudentDetail extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitCampus = this.handleSubmitCampus.bind(this);
         this.enableEditing = this.enableEditing.bind(this);
+        this.resetSelect = this.resetSelect.bind(this);
     }
 
     async componentDidMount() {
@@ -66,6 +69,7 @@ class StudentDetail extends Component {
         }
 
         this.setState({
+            loading: false,
             firstName,
             lastName,
             gpa,
@@ -215,6 +219,16 @@ class StudentDetail extends Component {
         this.props.history.push(`/students`);
     }
 
+    resetSelect() {
+        // Reset campus id if we disenrolled
+        this.setState({
+            campusId: "",
+            preValues: {
+                campusId: "",
+            },
+        });
+    }
+
     render() {
         // Deconstructs all information from campus store obj
         const { firstName, lastName, id, imgUrl } = this.props.student;
@@ -226,7 +240,7 @@ class StudentDetail extends Component {
 
         // Display loading screen until our axios call resolves
         if (!id) {
-            return <p>Loading...</p>;
+            return <Loading />;
         }
 
         // Page content
@@ -355,14 +369,22 @@ class StudentDetail extends Component {
                     <div className="main-view-list-student">
                         <h2>Campus Information</h2>
                         {campus ? (
-                            // // If student has a campus
-                            <form onSubmit={this.handleSubmitCampus}>
+                            // If student has a campus
+                            <form
+                                onSubmit={this.handleSubmitCampus}
+                                className="student-detail-campus-change"
+                            >
                                 <div className="student-detail-campus-feedback">
                                     This Student is registered to a campus
                                 </div>
                                 <div className="student-detail-campus-info">
                                     <div className="student-detail-campus-card">
-                                        <CampusCard {...campus} />
+                                        <CampusCard
+                                            {...campus}
+                                            unregister={true}
+                                            studentId={id}
+                                            resetSelect={this.resetSelect}
+                                        />
                                     </div>
                                     <div className="student-detail-campus-edit">
                                         <select
@@ -370,6 +392,7 @@ class StudentDetail extends Component {
                                             onChange={() =>
                                                 this.handleChange(event)
                                             }
+                                            style={{ width: "30vh" }}
                                             value={this.state.campusId}
                                         >
                                             {allCampuses.map((campus) => (
@@ -382,13 +405,18 @@ class StudentDetail extends Component {
                                             ))}
                                             <option value={""}>None</option>
                                         </select>
-                                        <button>Change Campus</button>
+                                        <button className="add-btn">
+                                            Change Campus
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         ) : (
                             // If student does not have a campus
-                            <form onSubmit={this.handleSubmitCampus}>
+                            <form
+                                onSubmit={this.handleSubmitCampus}
+                                className="student-detail-campus-change"
+                            >
                                 <div className="student-detail-campus-feedback">
                                     This Student is not registered to a campus
                                 </div>
@@ -401,7 +429,7 @@ class StudentDetail extends Component {
                                             }
                                             value={this.state.campusId}
                                         >
-                                            <option value={""} disabled hidden>
+                                            <option value={""} disabled>
                                                 Select Campus...
                                             </option>
                                             {allOtherCampuses.map((campus) => (
@@ -413,7 +441,9 @@ class StudentDetail extends Component {
                                                 </option>
                                             ))}
                                         </select>
-                                        <button>Change Campus</button>
+                                        <button className="add-btn">
+                                            Change Campus
+                                        </button>
                                     </div>
                                 </div>
                             </form>

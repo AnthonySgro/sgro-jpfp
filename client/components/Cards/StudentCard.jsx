@@ -98,7 +98,7 @@ class StudentCard extends Component {
                     {unregister ? (
                         <button
                             className="card-delete-button"
-                            onClick={() => this.unregisterStudent()}
+                            onClick={this.unregisterStudent}
                         >
                             <p className="delete-text">Unregister</p>
                         </button>

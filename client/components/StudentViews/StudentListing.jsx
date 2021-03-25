@@ -3,6 +3,7 @@ import React, { Component } from "react";
 // Component Imports
 import StudentCard from "../Cards/StudentCard.jsx";
 import StudentAdd from "../Forms/StudentAdd.jsx";
+import Loading from "../Loading.jsx";
 
 // Redux imports
 import { connect } from "react-redux";
@@ -10,13 +11,19 @@ import { connect } from "react-redux";
 class StudentListing extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            loading: true,
+        };
 
         this.highlightAdder = this.highlightAdder.bind(true);
         this.removeAdder = this.removeAdder.bind(true);
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.setState({
+            loading: false,
+        });
+    }
 
     highlightAdder() {
         const container = document.querySelectorAll(".container");
@@ -31,17 +38,6 @@ class StudentListing extends Component {
     render() {
         // Receive students as props
         let { students } = this.props;
-
-        // const studentsUndefined = students === undefined;
-
-        // // If props weren't passed down, default to all students from store
-        // const displayStudents = studentsUndefined
-        //     ? this.props.storeStudents
-        //     : students;
-
-        // if (displayStudents === undefined) {
-        //     return "loading...";
-        // }
 
         return (
             <React.Fragment>
@@ -79,23 +75,30 @@ class StudentListing extends Component {
                             </button>
                         </nav>
                         <div className="main-view-list-campus">
-                            <h2>All Students</h2>
-                            {students.length > 0 ? (
-                                <div className="main-view-listings-container">
-                                    {students.map((student) => (
-                                        <StudentCard
-                                            key={student.id}
-                                            {...student}
-                                        />
-                                    ))}
-                                </div>
+                            {/* Displays loading page if loading (not really working) */}
+                            {students === undefined ? (
+                                <Loading />
                             ) : (
-                                // If there are no campuses, display this message
                                 <React.Fragment>
-                                    <div className="main-view-listings-container">
-                                        There are no students registered in the
-                                        database
-                                    </div>
+                                    <h2>All Students</h2>
+                                    {students.length > 0 ? (
+                                        <div className="main-view-listings-container">
+                                            {students.map((student) => (
+                                                <StudentCard
+                                                    key={student.id}
+                                                    {...student}
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        // If there are no campuses, display this message
+                                        <React.Fragment>
+                                            <div className="main-view-listings-container">
+                                                There are no students registered
+                                                in the database
+                                            </div>
+                                        </React.Fragment>
+                                    )}
                                 </React.Fragment>
                             )}
                         </div>
