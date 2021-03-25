@@ -11,6 +11,7 @@ class StudentAdd extends Component {
             firstName: "",
             lastName: "",
             email: "",
+            imgUrl: "",
             campusName: "",
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,6 +24,15 @@ class StudentAdd extends Component {
 
         // Submits the data to our redux thunk which makes the post request
         this.props.addStudent(this.state);
+
+        // Resets our state to blank
+        this.setState({
+            firstName: "",
+            lastName: "",
+            email: "",
+            imgUrl: "",
+            campusName: "",
+        });
     }
 
     // Modifies the state to reflect current text in input fields

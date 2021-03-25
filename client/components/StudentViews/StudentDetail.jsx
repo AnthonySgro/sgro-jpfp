@@ -21,7 +21,9 @@ class StudentDetail extends Component {
             firstName: "",
             lastName: "",
             gpa: "",
+            email: "",
             id: "",
+            campusId: "",
             editLabel: "Edit",
             saveChangesStyles: {
                 visibility: "hidden",
@@ -32,6 +34,7 @@ class StudentDetail extends Component {
                 lastName: "",
                 gpa: "",
                 id: "",
+                campusId: "",
             },
         };
         this.getStudentCampusDetails = this.getStudentCampusDetails.bind(this);
@@ -39,6 +42,7 @@ class StudentDetail extends Component {
         this.submitDelete = this.submitDelete.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitCampus = this.handleSubmitCampus.bind(this);
         this.enableEditing = this.enableEditing.bind(this);
     }
 
@@ -51,17 +55,29 @@ class StudentDetail extends Component {
         await loadStudent(id);
         await loadAllCampuses();
 
-        const { firstName, lastName, imgUrl, gpa } = this.props.student;
+        const { firstName, lastName, imgUrl, gpa, email } = this.props.student;
+        let { Campus } = this.props.student;
+
+        // If no campus, set id to be an empty string
+        if (Campus === null) {
+            Campus = {
+                id: "",
+            };
+        }
 
         this.setState({
             firstName,
             lastName,
             gpa,
             id,
+            email,
+            campusId: Campus.id,
             preValues: {
                 firstName,
                 lastName,
                 gpa,
+                email,
+                campusId: Campus.id,
             },
         });
     }
@@ -122,12 +138,13 @@ class StudentDetail extends Component {
         event.preventDefault();
 
         // Prepare payload
-        const { firstName, lastName, id, gpa } = this.state;
+        const { firstName, lastName, id, gpa, email } = this.state;
 
         const payload = {
             firstName,
             lastName,
             gpa,
+            email,
             id,
         };
 
@@ -139,11 +156,36 @@ class StudentDetail extends Component {
             firstName,
             lastName,
             gpa,
+            email,
             preValues: { ...payload, gpa: gpa || "N/A" },
         });
 
         // Reverts our styling to pre-editing
         this.enableEditing();
+    }
+
+    async handleSubmitCampus(event) {
+        // Prevents the form from submitting normally
+        event.preventDefault();
+
+        // Prepare payload
+        const { campusId, id } = this.state;
+
+        const payload = {
+            campusId,
+            id,
+        };
+
+        // Submits the data to our redux thunk which makes the post request
+        await this.props.updateStudent(payload);
+
+        // Deconstruct our previous values
+        const { preValues } = this.state;
+        // If successful (not implemented yet), reset our state to be in sync with the database
+        this.setState({
+            campusId,
+            preValues: { ...preValues, ...payload },
+        });
     }
 
     getStudentCampusDetails() {
@@ -176,6 +218,7 @@ class StudentDetail extends Component {
     render() {
         // Deconstructs all information from campus store obj
         const { firstName, lastName, id, imgUrl } = this.props.student;
+        const { allCampuses } = this.props;
 
         // Get campus information
         const campus = this.getStudentCampusDetails();
@@ -260,6 +303,27 @@ class StudentDetail extends Component {
                                             maxLength="3"
                                         />
                                     </div>
+                                    <div className="info-detail-email-container">
+                                        <p>Email: </p>{" "}
+                                        <input
+                                            id="email-editor"
+                                            type="text"
+                                            className="info-detail-information disabled"
+                                            name="email"
+                                            disabled
+                                            style={{
+                                                width:
+                                                    this.state.email !== null
+                                                        ? this.state.email
+                                                              .length + "ch"
+                                                        : "3ch",
+                                            }}
+                                            value={this.state.email}
+                                            onChange={() =>
+                                                this.handleChange(event)
+                                            }
+                                        />
+                                    </div>
                                 </div>
                                 <div className="info-detail-button-container">
                                     <a
@@ -288,61 +352,73 @@ class StudentDetail extends Component {
                             </div>
                         </form>
                     </div>
-
-                    {campus ? (
-                        // If student has a campus
-                        <div className="student-detail-campus">
-                            <div className="student-detail-campus-feedback">
-                                This Student is registered to a campus
-                            </div>
-                            <div className="student-detail-campus-info">
-                                <div className="student-detail-campus-card">
-                                    <CampusCard {...campus} />
+                    <div className="main-view-list-student">
+                        <h2>Campus Information</h2>
+                        {campus ? (
+                            // // If student has a campus
+                            <form onSubmit={this.handleSubmitCampus}>
+                                <div className="student-detail-campus-feedback">
+                                    This Student is registered to a campus
                                 </div>
-                                <div className="student-detail-campus-edit">
-                                    <select name="student-detail-campus-select">
-                                        <option value={0}>
-                                            Select Campus...
-                                        </option>
-                                        {allOtherCampuses.map((campus) => (
-                                            <option
-                                                key={campus.id}
-                                                value={campus.name}
-                                            >
-                                                {campus.name}
+                                <div className="student-detail-campus-info">
+                                    <div className="student-detail-campus-card">
+                                        <CampusCard {...campus} />
+                                    </div>
+                                    <div className="student-detail-campus-edit">
+                                        <select
+                                            name="campusId"
+                                            onChange={() =>
+                                                this.handleChange(event)
+                                            }
+                                            value={this.state.campusId}
+                                        >
+                                            {allCampuses.map((campus) => (
+                                                <option
+                                                    key={campus.id}
+                                                    value={campus.id}
+                                                >
+                                                    {campus.name}
+                                                </option>
+                                            ))}
+                                            <option value={""}>None</option>
+                                        </select>
+                                        <button>Change Campus</button>
+                                    </div>
+                                </div>
+                            </form>
+                        ) : (
+                            // If student does not have a campus
+                            <form onSubmit={this.handleSubmitCampus}>
+                                <div className="student-detail-campus-feedback">
+                                    This Student is not registered to a campus
+                                </div>
+                                <div className="student-detail-campus-info">
+                                    <div className="student-detail-campus-edit">
+                                        <select
+                                            name="campusId"
+                                            onChange={() =>
+                                                this.handleChange(event)
+                                            }
+                                            value={this.state.campusId}
+                                        >
+                                            <option value={""} disabled hidden>
+                                                Select Campus...
                                             </option>
-                                        ))}
-                                    </select>
-                                    <button>Change Campus</button>
+                                            {allOtherCampuses.map((campus) => (
+                                                <option
+                                                    key={campus.id}
+                                                    value={campus.id}
+                                                >
+                                                    {campus.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <button>Change Campus</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ) : (
-                        // If student does not have a campus
-                        <div className="student-detail-campus">
-                            <div className="student-detail-campus-feedback">
-                                This Student is not registered to a campus
-                            </div>
-                            <div className="student-detail-campus-info">
-                                <div className="student-detail-campus-edit">
-                                    <select name="student-detail-campus-select">
-                                        <option value={0}>
-                                            Select Campus...
-                                        </option>
-                                        {allOtherCampuses.map((campus) => (
-                                            <option
-                                                key={campus.id}
-                                                value={campus.name}
-                                            >
-                                                {campus.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <button>Change Campus</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                            </form>
+                        )}
+                    </div>
                 </div>
             </React.Fragment>
         );

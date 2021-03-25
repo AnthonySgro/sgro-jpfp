@@ -39,7 +39,7 @@ class CampusCard extends Component {
                 onMouseLeave={() => this.lowerImage()}
             >
                 <div className="campus-card-image-container">
-                    <Link to={`/campuses/${id}`} className="card-detail-link">
+                    <Link to={`/campuses/${id}`} className="">
                         <img
                             src={imgUrl}
                             alt="Campus Image"
@@ -48,11 +48,8 @@ class CampusCard extends Component {
                     </Link>
                 </div>
                 <div className="campus-card-info-container">
-                    <div className="campus-card-info-text">
-                        <Link
-                            to={`/campuses/${id}`}
-                            className="card-detail-link"
-                        >
+                    <div className="">
+                        <Link to={`/campuses/${id}`} className="">
                             {name}
                         </Link>
                         <p className="campus-card-numStudents">
@@ -61,7 +58,7 @@ class CampusCard extends Component {
                             } `}
                         </p>
                     </div>
-                    <div className="campus-card-info-interact">
+                    <div className="campus-card-info-interact ">
                         <Link to={`/campuses/${id}`} className="card-edit-link">
                             Edit
                         </Link>

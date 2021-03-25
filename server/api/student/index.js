@@ -75,7 +75,7 @@ router.put("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
         const { firstName, lastName } = req.body;
-        let { gpa } = req.body;
+        let { gpa, email, campusId } = req.body;
 
         let student = await Student.findOne({
             where: {
@@ -88,20 +88,30 @@ router.put("/:id", async (req, res, next) => {
             res.sendStatus(404);
         }
 
-        if (gpa === "N/A" || gpa === "") {
-            gpa = null;
+        // Two kinds of updates: student data ** or ** associated campus
+        if (firstName) {
+            if (gpa === "N/A" || gpa === "") {
+                gpa = null;
+            }
+
+            // Update values
+            student.firstName = firstName;
+            student.lastName = lastName;
+            student.email = email;
+            student.gpa = gpa || 0;
+        } else {
+            if (campusId === "") {
+                campusId = null;
+            }
+            student.CampusId = campusId;
         }
 
-        // Update values
-        student.firstName = firstName;
-        student.lastName = lastName;
-        student.gpa = gpa || 0;
         await student.save();
-
         res.sendStatus(204);
     } catch (err) {
+        console.log(err);
         switch (err.errors[0].type) {
-            case "Validation error":
+            case "Validation error || notNull Violation":
                 res.sendStatus(422);
             case "unique violation":
                 res.sendStatus(409);

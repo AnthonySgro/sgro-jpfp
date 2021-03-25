@@ -23,6 +23,14 @@ class CampusAdd extends Component {
 
         // Submits the data to our redux thunk which makes the post request
         this.props.addCampus(this.state);
+
+        // Resets our state to blank
+        this.setState({
+            name: "",
+            address: "",
+            description: "",
+            imgUrl: "",
+        });
     }
 
     // Modifies the state to reflect current text in input fields

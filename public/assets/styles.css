@@ -339,7 +339,8 @@ footer {
     align-self: center;
 }
 
-.main-view-list-campus {
+.main-view-list-campus,
+.main-view-list-student {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -412,7 +413,8 @@ footer {
     width: auto;
 }
 
-.info-detail-gpa-container {
+.info-detail-gpa-container,
+.info-detail-email-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -444,12 +446,6 @@ footer {
 #save-changes {
 }
 
-/* .info-detail-img {
-    width: 33%;
-    height: auto;
-    border-radius: 1rem;
-} */
-
 /* Campus Detail Styles */
 
 /* Card Styles */
@@ -457,12 +453,25 @@ footer {
 .card-container a {
     color: white;
 }
+
+.card-container > .card-item-container {
+    text-align: center;
+    width: 100%;
+}
+
 .card-container img {
     border-radius: 1rem;
     background-color: white;
     cursor: pointer;
     transform: translateY(0px);
     transition: transform 0.2s ease-in-out;
+}
+
+.card-detail-link {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
 }
 
 .card-container .card-img-hover {
@@ -590,6 +599,10 @@ footer {
 
 .student-card-campus {
     font-size: x-small;
+}
+
+.card-university-container {
+    padding-top: 5px;
 }
 
 .student-card-university {

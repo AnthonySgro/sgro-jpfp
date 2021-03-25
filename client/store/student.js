@@ -100,7 +100,7 @@ export const deleteStudentFromDatabase = (studentId, campusId) => {
     };
 };
 
-export const updateStudentInDatabase = (payload, campusId) => {
+export const updateStudentInDatabase = (payload) => {
     return async (dispatch) => {
         // Attempts to update the student in the database, then grabs that student
         await axios.put(`/api/students/${payload.id}`, payload);
@@ -108,6 +108,12 @@ export const updateStudentInDatabase = (payload, campusId) => {
 
         // Dispatches the action to all reducers
         dispatch(updateStudent(student));
+
+        // Re-fetches all students to update the full list
+        dispatch(fetchAllStudents());
+
+        // Re-fetches campuses as the update may have changed the total counts that are displayed
+        dispatch(fetchAllCampuses());
     };
 };
 

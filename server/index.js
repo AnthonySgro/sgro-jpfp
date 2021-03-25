@@ -13,6 +13,8 @@ const {
     seed,
     model: { Campus, Student },
 } = require("./db");
+
+// Seeds database with original data (uncomment for persistent database)
 // seed();
 
 // Middleware
