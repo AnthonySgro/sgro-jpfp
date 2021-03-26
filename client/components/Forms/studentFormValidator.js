@@ -105,7 +105,6 @@ function studentFormValidator(allStudents) {
         if ([...entry.classList].includes("error")) {
             allValid = false;
         }
-        console.log(entry);
     });
 
     return allValid;

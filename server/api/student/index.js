@@ -56,7 +56,7 @@ router.post("/", async (req, res, next) => {
         });
 
         if (newStudent !== null) {
-            res.sendStatus(201);
+            res.status(201).send(newStudent);
         }
     } catch (err) {
         switch (err.errors[0].type) {
@@ -73,13 +73,23 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
+        // Default parameter passed
         const { id } = req.params;
-        const { firstName, lastName } = req.body;
-        let { gpa, email, campusId } = req.body;
 
+        // For student info update
+        const { firstName, lastName } = req.body;
+        let { gpa, email } = req.body;
+
+        // For campus update
+        const { newCampusId } = req.body;
+
+        // Finds student
         let student = await Student.findOne({
             where: {
-                id: id,
+                id,
+            },
+            include: {
+                model: Campus,
             },
         });
 
@@ -100,23 +110,44 @@ router.put("/:id", async (req, res, next) => {
             student.email = email;
             student.gpa = gpa || 0;
         } else {
-            if (campusId === "" || undefined) {
+            if (!newCampusId) {
                 campusId = null;
             }
-            student.CampusId = campusId;
+
+            // Find new campus
+            const newCampus = await Campus.findOne({
+                where: {
+                    id: newCampusId,
+                },
+            });
+
+            // Set our variables
+            student.CampusId = newCampusId;
+            student.setCampus(newCampus);
         }
 
+        // Save changes
         await student.save();
-        res.sendStatus(204);
+
+        // Find instance again now
+        const newStudent = await Student.findOne({
+            where: {
+                id,
+            },
+            include: {
+                model: Campus,
+            },
+        });
+
+        res.status(200).send(newStudent);
     } catch (err) {
-        console.log(err);
+        console.group(err);
         switch (err.errors[0].type) {
             case "Validation error || notNull Violation":
                 res.sendStatus(422);
             case "unique violation":
                 res.sendStatus(409);
             default:
-                console.log(err);
                 next(err);
         }
     }
@@ -132,7 +163,6 @@ router.delete("/:id", async (req, res, next) => {
         });
         res.sendStatus(204);
     } catch (err) {
-        console.log(err);
         next(err);
     }
 });

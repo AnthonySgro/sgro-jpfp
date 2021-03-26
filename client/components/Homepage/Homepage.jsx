@@ -3,6 +3,9 @@ import React, { Component } from "react";
 // Component Imports
 import Icon from "./Icon.jsx";
 
+// React Router Imports
+import { Link } from "react-router-dom";
+
 class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -130,9 +133,11 @@ class HomePage extends Component {
                         </h1>
                     </div>
                     <div id="homepage-btn-container">
-                        <button id="homepage-btn">
-                            <p>Browse Campuses</p>
-                        </button>
+                        <Link to="/campuses">
+                            <button id="homepage-btn">
+                                <p>Browse Campuses</p>
+                            </button>
+                        </Link>
                         <p
                             className="typewrite"
                             data-period="2000"

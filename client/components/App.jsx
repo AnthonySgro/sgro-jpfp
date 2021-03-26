@@ -10,7 +10,6 @@ import { fetchAllStudents } from "../store/student";
 
 // Components
 import NotFound from "./NotFound.jsx";
-import Loading from "./Loading.jsx";
 import Header from "./Header.jsx";
 import HomePage from "./Homepage/Homepage.jsx";
 import AboutUs from "./AboutUs.jsx";
@@ -28,10 +27,10 @@ class App extends Component {
         };
     }
 
-    componentDidMount() {
-        // Fetches all the campuses
-        this.props.loadAllCampuses();
-        this.props.loadAllStudents();
+    async componentDidMount() {
+        // Fetches all the campuses and students when app mounts
+        await this.props.loadAllCampuses();
+        await this.props.loadAllStudents();
 
         this.setState({
             loading: false,
@@ -39,52 +38,46 @@ class App extends Component {
     }
 
     render() {
-        const { students } = this.props;
+        const { students, campuses } = this.props;
         return (
             <Router>
                 <React.Fragment>
                     <Header />
                     <main className="listing-main">
-                        {this.state.loading ? (
-                            <Loading />
-                        ) : (
-                            <Switch>
-                                <Route exact path="/" component={HomePage} />
-                                <Route
-                                    exact
-                                    path="/campuses"
-                                    component={CampusListing}
-                                />
-                                <Route
-                                    exact
-                                    path="/campuses/add"
-                                    component={CampusAdd}
-                                />
-                                <Route
-                                    exact
-                                    path="/campuses/:id"
-                                    component={CampusDetail}
-                                />
-                                <Route
-                                    exact
-                                    path="/students"
-                                    render={() => (
-                                        <StudentListing students={students} />
-                                    )}
-                                />
-                                <Route
-                                    exact
-                                    path="/students/:id"
-                                    component={StudentDetail}
-                                />
-                                <Route
-                                    exact
-                                    path="/about-us"
-                                    component={AboutUs}
-                                />
-                                <Route component={NotFound} />
-                            </Switch>
-                        )}
+                        <Switch>
+                            <Route exact path="/" component={HomePage} />
+                            <Route
+                                exact
+                                path="/campuses"
+                                component={() => (
+                                    <CampusListing campuses={campuses} />
+                                )}
+                            />
+                            <Route
+                                exact
+                                path="/campuses/add"
+                                component={CampusAdd}
+                            />
+                            <Route
+                                exact
+                                path="/campuses/:id"
+                                component={CampusDetail}
+                            />
+                            <Route
+                                exact
+                                path="/students"
+                                render={() => (
+                                    <StudentListing students={students} />
+                                )}
+                            />
+                            <Route
+                                exact
+                                path="/students/:id"
+                                component={StudentDetail}
+                            />
+                            <Route exact path="/about-us" component={AboutUs} />
+                            <Route component={NotFound} />
+                        </Switch>
                     </main>
                 </React.Fragment>
             </Router>
@@ -95,6 +88,7 @@ class App extends Component {
 function mapStateToProps(state) {
     return {
         students: state.studentInfo.allStudents,
+        campuses: state.campusInfo.allCampuses,
     };
 }
 

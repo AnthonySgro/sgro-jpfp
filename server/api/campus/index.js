@@ -54,8 +54,8 @@ router.post("/", async (req, res, next) => {
         });
 
         if (newCampus !== null) {
-            // Return a 201 code and all campuses
-            res.sendStatus(201);
+            // Return a 201 code and the new campuses
+            res.status(201).send(newCampus);
         }
 
         // Error handling
@@ -81,6 +81,9 @@ router.put("/:id", async (req, res, next) => {
             where: {
                 id: id,
             },
+            include: {
+                model: Student,
+            },
         });
 
         // If student not found, return 404
@@ -94,7 +97,7 @@ router.put("/:id", async (req, res, next) => {
         campus.gpa = address;
         await campus.save();
 
-        res.sendStatus(204);
+        res.status(204).send(campus);
     } catch (err) {
         switch (err.errors[0].type) {
             case "Validation error":
@@ -102,7 +105,6 @@ router.put("/:id", async (req, res, next) => {
             case "unique violation":
                 res.sendStatus(409);
             default:
-                console.log(err);
                 next(err);
         }
     }

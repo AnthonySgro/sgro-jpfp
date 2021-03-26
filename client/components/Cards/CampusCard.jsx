@@ -5,54 +5,72 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { deleteCampusFromDatabase } from "../../store/campus";
 import {
-    updateStudentInDatabase,
+    changeStudentCampusInDatabase,
     fetchStudentDetail,
 } from "../../store/student";
 
 class CampusCard extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            id: props.id,
+            name: props.name,
+            imgUrl: props.imgUrl,
+            description: props.description,
+            studentCount: props.studentCount,
+        };
         this.raiseImage = this.raiseImage.bind(this);
         this.lowerImage = this.lowerImage.bind(this);
         this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
+    // componentDidMount() {
+    //     // If we are missing the student count, fetch
+    //     if (!this.state.studentCount) {
+    //         // Finds the full campus information
+    //         const selectedCampus = this.props.allCampuses.find(
+    //             (campus) => campus.id === this.state.id,
+    //         );
+
+    //         // Now we have access
+    //         this.setState({
+    //             ...this.state,
+    //             studentCount: selectedCampus.studentCount,
+    //         });
+    //     }
+    // }
+
+    // Fun hover effect
     raiseImage() {
-        const { id } = this.props;
+        const { id } = this.state;
         const img = document.querySelector(`#campus-card-img-${id}`);
         img.classList.add("card-img-hover");
     }
 
+    // Fun hover effect
     lowerImage() {
-        const { id } = this.props;
+        const { id } = this.state;
         const img = document.querySelector(`#campus-card-img-${id}`);
         img.classList.remove("card-img-hover");
     }
 
     async unregisterStudent() {
-        const { studentId, unregisterFunction, loadStudent } = this.props;
+        const { studentId, changeRegistration, loadStudent, id } = this.props;
         if (studentId) {
             // Calls the update thunk with an empty id
-            await unregisterFunction({ id: studentId, campusId: "" });
+            await changeRegistration({
+                id: studentId,
+                newCampusId: 0,
+                prevCampusId: id,
+            });
 
             this.props.resetSelect();
-
-            // Loads the selected student again
-            await loadStudent(studentId);
         }
     }
 
     render() {
-        const {
-            id,
-            name,
-            imgUrl,
-            description,
-            studentCount,
-            unregister,
-        } = this.props;
-        const { deleteCampus } = this.props;
+        const { id, name, imgUrl, description, studentCount } = this.state;
+        const { unregister, deleteCampus } = this.props;
 
         // Pluralize student count corrently
         const plural = studentCount !== "1";
@@ -98,9 +116,7 @@ class CampusCard extends Component {
                         ) : (
                             <button
                                 className="card-delete-button"
-                                onClick={() =>
-                                    deleteStudent(id, stateCampus.id)
-                                }
+                                onClick={() => deleteCampus(id)}
                             >
                                 <p className="delete-text">x</p>
                             </button>
@@ -112,11 +128,17 @@ class CampusCard extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        allCampuses: state.campusInfo.allCampuses,
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         deleteCampus: (id) => dispatch(deleteCampusFromDatabase(id)),
-        unregisterFunction: (payload) =>
-            dispatch(updateStudentInDatabase(payload)),
+        changeRegistration: (payload) =>
+            dispatch(changeStudentCampusInDatabase(payload)),
         loadStudent: (id) => dispatch(fetchStudentDetail(id)),
     };
 }

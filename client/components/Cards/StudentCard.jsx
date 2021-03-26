@@ -20,8 +20,6 @@ class StudentCard extends Component {
         this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
-    componentDidMount() {}
-
     raiseImage() {
         const { id } = this.props;
         const img = document.querySelector(`#student-card-img-${id}`);
@@ -59,8 +57,8 @@ class StudentCard extends Component {
         return (
             <div
                 className="student-card-container card-container"
-                onMouseEnter={() => this.raiseImage()}
-                onMouseLeave={() => this.lowerImage()}
+                onMouseEnter={this.raiseImage}
+                onMouseLeave={this.lowerImage}
             >
                 <div className="student-card-image card-item-container">
                     <Link to={`/students/${id}`} className="image-link-wrapper">
@@ -105,7 +103,13 @@ class StudentCard extends Component {
                     ) : (
                         <button
                             className="card-delete-button"
-                            onClick={() => deleteStudent(id, stateCampus.id)}
+                            // onClick={() => deleteStudent(id, stateCampus.id)}
+                            onClick={() =>
+                                deleteStudent(
+                                    { id, campus: Campus },
+                                    stateCampus.id,
+                                )
+                            }
                         >
                             <p className="delete-text">x</p>
                         </button>
@@ -124,8 +128,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        deleteStudent: (sId, cId) =>
-            dispatch(deleteStudentFromDatabase(sId, cId)),
+        deleteStudent: (studentInfo, cId) =>
+            dispatch(deleteStudentFromDatabase(studentInfo, cId)),
         unregisterFunction: (payload) =>
             dispatch(updateStudentInDatabase(payload)),
         loadCampus: (id) => dispatch(fetchCampusDetail(id)),

@@ -9,6 +9,10 @@ const LOAD_STUDENT_DETAIL = "LOAD_STUDENT_DETAIL";
 const ADD_STUDENT = "ADD_STUDENT";
 const DELETE_STUDENT = "DELETE_STUDENT";
 const UPDATE_STUDENT = "UPDATE_STUDENT";
+const UPDATE_REGISTRATION = "UPDATE_REGISTRATION";
+
+const DELETE_CAMPUS = "DELETE_CAMPUS";
+const UPDATE_CAMPUS = "UPDATE_CAMPUS";
 
 // Action Creator
 export const loadAllStudents = (allStudents) => {
@@ -25,17 +29,18 @@ export const loadStudentDetail = (student) => {
     };
 };
 
-export const addStudent = (allStudents) => {
+export const addStudent = (newStudent) => {
     return {
         type: ADD_STUDENT,
-        allStudents,
+        newStudent,
     };
 };
 
-export const deleteStudent = (allStudents) => {
+export const deleteStudent = (id, campus) => {
     return {
         type: DELETE_STUDENT,
-        allStudents,
+        studentId: id,
+        studentCampus: campus,
     };
 };
 
@@ -43,6 +48,15 @@ export const updateStudent = (student) => {
     return {
         type: UPDATE_STUDENT,
         student,
+    };
+};
+
+export const updateRegistration = (newStudent, newCampusId, oldCampusId) => {
+    return {
+        type: UPDATE_REGISTRATION,
+        student: newStudent,
+        newCampusId,
+        oldCampusId,
     };
 };
 
@@ -70,50 +84,61 @@ export const fetchStudentDetail = (id) => {
 export const addStudentToDatabase = (studentData) => {
     return async (dispatch) => {
         // Attempts to add the student to the database, then grabs all students in database
-        await axios.post("/api/students", studentData);
-        const students = (await axios.get("/api/students")).data;
+        const { data: newStudent } = await axios.post(
+            "/api/students",
+            studentData,
+        );
 
         // Dispatches the action to all reducers
-        dispatch(addStudent(students));
-
-        // Re-fetches campuses as the addition may have changed things
-        dispatch(fetchAllCampuses());
+        dispatch(addStudent(newStudent));
     };
 };
 
-export const deleteStudentFromDatabase = (studentId, campusId) => {
+export const deleteStudentFromDatabase = (studentInfo) => {
     return async (dispatch) => {
+        // We only need to know the id of the student and their campus
+        const { id, campus } = studentInfo;
+
         // Attempts to delete the student from the database, then grabs all students in database
-        await axios.delete(`/api/students/${studentId}`);
-        const students = (await axios.get("/api/students")).data;
+        await axios.delete(`/api/students/${studentInfo.id}`);
 
         // Dispatches the action to all reducers
-        dispatch(deleteStudent(students));
-
-        // Re-fetches campuses as the delete may have changed things
-        dispatch(fetchAllCampuses());
-
-        if (campusId) {
-            // Re-fetches target campus in case we are deleting from its detail page
-            dispatch(fetchCampusDetail(campusId));
-        }
+        dispatch(deleteStudent(id, campus));
     };
 };
 
 export const updateStudentInDatabase = (payload) => {
     return async (dispatch) => {
         // Attempts to update the student in the database, then grabs that student
-        await axios.put(`/api/students/${payload.id}`, payload);
-        const student = (await axios.get(`/api/students/${payload.id}`)).data;
+        const { data: newStudent } = await axios.put(
+            `/api/students/${payload.id}`,
+            payload,
+        );
+
+        // Save campus id's so we can increment and decrement total values
+        // const prevCampusId = payload.preCampusId || null;
+        // const newCampusId = newStudent.CampusId;
 
         // Dispatches the action to all reducers
-        dispatch(updateStudent(student));
+        dispatch(updateStudent(newStudent));
+    };
+};
 
-        // Re-fetches all students to update the full list
-        dispatch(fetchAllStudents());
+export const changeStudentCampusInDatabase = (payload) => {
+    return async (dispatch) => {
+        // Attempts to change the students registration in the database
+        const { data: newStudent } = await axios.put(
+            `/api/students/${payload.id}`,
+            payload,
+        );
 
-        // Re-fetches campuses as the update may have changed the total counts that are displayed
-        dispatch(fetchAllCampuses());
+        dispatch(
+            updateRegistration(
+                newStudent,
+                payload.newCampusId,
+                payload.prevCampusId,
+            ),
+        );
     };
 };
 
@@ -128,12 +153,88 @@ export default (state = initialState, action) => {
         case LOAD_STUDENT_DETAIL:
             return (state = { ...state, selectedStudent: action.student });
         case ADD_STUDENT:
-            return (state = { ...state, allStudents: action.allStudents });
-        case DELETE_STUDENT:
-            return (state = { ...state, allStudents: action.allStudents });
-        case UPDATE_STUDENT:
-            return (state = { ...state, selectedStudent: action.student });
+            return (state = {
+                ...state,
+                allStudents: [...state.allStudents, action.newStudent],
+                selectedStudent: action.newStudent,
+            });
+        case DELETE_STUDENT: {
+            const newAllStudents = state.allStudents.filter(
+                (student) => student.id !== action.studentId,
+            );
 
+            const newSelectedStudent =
+                state.selectedStudent.id === action.studentId
+                    ? {}
+                    : state.selectedStudent;
+
+            return (state = {
+                allStudents: [...newAllStudents],
+                selectedStudent: newSelectedStudent,
+            });
+        }
+        case UPDATE_STUDENT: {
+            const newAllStudents = state.allStudents.filter(
+                (student) => student.id !== action.student.id,
+            );
+
+            return (state = {
+                allStudents: [...newAllStudents, action.student],
+                selectedStudent: action.student,
+            });
+        }
+        case UPDATE_REGISTRATION: {
+            const newAllStudents = state.allStudents.filter(
+                (student) => student.id !== action.student.id,
+            );
+
+            return (state = {
+                allStudents: [...newAllStudents, action.student],
+                selectedStudent: action.student,
+            });
+        }
+        case DELETE_CAMPUS: {
+            const newAllStudents = state.allStudents.reduce((acc, cur) => {
+                if (cur.CampusId === action.campusId) {
+                    cur = { ...cur, Campus: null, CampusId: null };
+                }
+                acc.push(cur);
+                return acc;
+            }, []);
+
+            const newSelectedStudent =
+                state.selectedStudent.CampusId === action.campusId
+                    ? { ...state.selectedStudent, Campus: null, CampusId: null }
+                    : state.selectedStudent;
+
+            return (state = {
+                allStudents: [...newAllStudents],
+                selectedStudent: newSelectedStudent,
+            });
+        }
+        case UPDATE_CAMPUS: {
+            const newAllStudents = state.allStudents.reduce((acc, cur) => {
+                if (cur.CampusId === action.campus.id) {
+                    cur = {
+                        ...cur,
+                        Campus: action.campus,
+                        CampusId: action.campus.id,
+                    };
+                }
+                acc.push(cur);
+                return acc;
+            }, []);
+
+            const newSelectedStudent =
+                state.selectedStudent.CampusId === action.campus.id
+                    ? { ...state.selectedStudent, Campus: action.campus }
+                    : state.selectedStudent;
+
+            return (state = {
+                allStudents: [...newAllStudents],
+                selectedStudent: newSelectedStudent,
+            });
+        }
         default:
             return state;
     }

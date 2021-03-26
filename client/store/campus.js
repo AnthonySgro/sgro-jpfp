@@ -3,12 +3,20 @@ import axios from "axios";
 // Import redux actions
 import { fetchAllStudents } from "./student";
 
+// Import helper functions
+import incrementStudents from "./functions/incrementStudents";
+import replaceCampus from "./functions/replaceCampus";
+
 // Action Types
 const LOAD_All_CAMPUSES = "LOAD_ALL_CAMPUSES";
 const LOAD_CAMPUS_DETAIL = "LOAD_CAMPUS_DETAIL";
 const ADD_CAMPUS = "ADD_CAMPUS";
 const DELETE_CAMPUS = "DELETE_CAMPUS";
 const UPDATE_CAMPUS = "UPDATE_CAMPUS";
+
+const ADD_STUDENT = "ADD_STUDENT";
+const DELETE_STUDENT = "DELETE_STUDENT";
+const UPDATE_REGISTRATION = "UPDATE_REGISTRATION";
 
 // Action Creators
 export const loadAllCampuses = (campuses) => {
@@ -25,17 +33,17 @@ export const loadCampusDetail = (campus) => {
     };
 };
 
-export const addCampus = (campuses) => {
+export const addCampus = (campus) => {
     return {
         type: ADD_CAMPUS,
-        campuses,
+        campus,
     };
 };
 
-export const deleteCampus = (campuses) => {
+export const deleteCampus = (campusId) => {
     return {
         type: DELETE_CAMPUS,
-        campuses,
+        campusId,
     };
 };
 
@@ -70,11 +78,13 @@ export const fetchCampusDetail = (id) => {
 export const addCampusToDatabase = (campusData) => {
     return async (dispatch) => {
         // Attempts to add the campus to the database, then grabs all campuses in database
-        await axios.post(`/api/campuses`, campusData);
-        const campuses = (await axios.get("/api/campuses")).data;
+        const { data: newCampus } = await axios.post(
+            `/api/campuses`,
+            campusData,
+        );
 
         // Dispatches the add campus event
-        dispatch(addCampus(campuses));
+        dispatch(addCampus(newCampus));
     };
 };
 
@@ -82,27 +92,22 @@ export const deleteCampusFromDatabase = (id) => {
     return async (dispatch) => {
         // Attempts to delete the campus from the database, then grabs all campuses in database
         await axios.delete(`/api/campuses/${id}`);
-        const campuses = (await axios.get("/api/campuses")).data;
 
         // Dispatches the delete campus event
-        dispatch(deleteCampus(campuses));
-
-        // Dispatches this to reload campus affiliations if deleted
-        dispatch(fetchAllStudents());
+        dispatch(deleteCampus(id));
     };
 };
 
 export const updateCampusInDatabase = (payload) => {
     return async (dispatch) => {
         // Attempts to update the student in the database, then grabs that student
-        await axios.put(`/api/campuses/${payload.id}`, payload);
-        const campus = (await axios.get(`/api/campuses/${payload.id}`)).data;
+        const { data: campus } = await axios.put(
+            `/api/campuses/${payload.id}`,
+            payload,
+        );
 
         // Dispatches the action to all reducers
         dispatch(updateCampus(campus));
-
-        // Dispatches this to update all campus information
-        dispatch(fetchAllCampuses());
     };
 };
 
@@ -117,11 +122,41 @@ export default (state = initialState, action) => {
         case LOAD_CAMPUS_DETAIL:
             return (state = { ...state, selectedCampus: action.campus });
         case ADD_CAMPUS:
-            return (state = { ...state, allCampuses: action.campuses });
-        case DELETE_CAMPUS:
-            return (state = { ...state, allCampuses: action.campuses });
+            return (state = {
+                ...state,
+                allCampuses: [...state.allCampuses, action.campus],
+                selectedCampus: action.campus,
+            });
+        case DELETE_CAMPUS: {
+            const newAllCampuses = state.allCampuses.filter(
+                (campus) => campus.id !== action.campusId,
+            );
+
+            const newSelectedCampus =
+                state.selectedCampus.id === action.campusId
+                    ? {}
+                    : state.selectedCampus;
+
+            return (state = {
+                allCampuses: [...newAllCampuses],
+                selectedCampus: newSelectedCampus,
+            });
+        }
         case UPDATE_CAMPUS:
-            return (state = { ...state, selectedCampus: action.campus });
+            return replaceCampus(state, action.campus);
+        case ADD_STUDENT:
+            return incrementStudents(state, action.newStudent.CampusId, 1);
+        case DELETE_STUDENT: {
+            if (action.studentCampus) {
+                return incrementStudents(state, action.studentCampus.id, -1);
+            } else {
+                return state;
+            }
+        }
+        case UPDATE_REGISTRATION:
+            // If the campus id is null, it just returns the state
+            const midState = incrementStudents(state, action.newCampusId, 1);
+            return incrementStudents(midState, action.oldCampusId, -1);
         default:
             return state;
     }

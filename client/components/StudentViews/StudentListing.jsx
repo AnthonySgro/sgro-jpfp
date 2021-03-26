@@ -2,86 +2,58 @@ import React, { Component } from "react";
 
 // Component Imports
 import StudentCard from "../Cards/StudentCard.jsx";
-import StudentAdd from "../Forms/StudentAdd.jsx";
+import Sidebar from "../Sidebar.jsx";
 import Loading from "../Loading.jsx";
+import StudentListingHeader from "../ListingHeaders/StudentListingHeader.jsx";
 
 // Redux imports
 import { connect } from "react-redux";
+import { fetchAllStudents } from "../../store/student.js";
 
 class StudentListing extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            students: [],
             loading: true,
         };
-
-        this.highlightAdder = this.highlightAdder.bind(true);
-        this.removeAdder = this.removeAdder.bind(true);
     }
 
-    componentDidMount() {
+    // We want to get all the students when we go to this page
+    async componentDidMount() {
+        // I know this doesn't do anything now, it's just here for
+        // the cool loading screen. Does help make component look
+        // nice if the array mapping takes a while
+        await this.props.loadAllStudents();
+
         this.setState({
+            students: this.props.allStudents,
             loading: false,
         });
     }
 
-    highlightAdder() {
-        const container = document.querySelectorAll(".container");
-        container[0].classList.add("container-highlighted");
-    }
-
-    removeAdder() {
-        const container = document.querySelectorAll(".container");
-        container[0].classList.remove("container-highlighted");
-    }
-
     render() {
-        // Receive students as props
-        let { students } = this.props;
+        const { loading } = this.state;
+        const { students } = this.props;
 
         return (
             <React.Fragment>
-                <div className="listing-lander">
-                    <div className="listing-lander-content-box">
-                        <h1 className="listing-lander-title">Students</h1>
-                        <p className="listing-lander-text secondline">
-                            Math is for mice and the alphabet is for dummies.
-                            Enter
-                        </p>
-                        <p className="listing-lander-text secondline">
-                            the secret Luxembourgish childhood dystopia: enroll
-                        </p>
-                        <p className="listing-lander-text secondline">
-                            your little Jimmy in Harvard today. He deserves it.
-                        </p>
-                        <p className="listing-lander-text secondline finalline">
-                            You deserve it.
-                        </p>
-                    </div>
-                    <div className="listing-lander-fun-box">
-                        <img src={`/images/darkAcademia.jpeg`} alt="" />
-                    </div>
-                </div>
+                <StudentListingHeader />
                 <div className="main-listing-view">
                     <div className="main-view-chunk">
-                        <StudentAdd removeAdder={this.removeAdder} />
-                        <nav className="main-view-sidebar">
-                            <h2>Menu</h2>
-                            <button
-                                className="add-btn add-after-listings"
-                                onClick={this.highlightAdder}
-                            >
-                                Enroll Student
-                            </button>
-                        </nav>
+                        <Sidebar
+                            removeAdder={this.removeAdder}
+                            student={true}
+                        />
                         <div className="main-view-list-campus">
-                            {/* Displays loading page if loading (not really working) */}
-                            {students === undefined ? (
+                            {/* Displays loading page if loading */}
+                            {loading ? (
                                 <Loading />
                             ) : (
                                 <React.Fragment>
                                     <h2>All Students</h2>
-                                    {students.length > 0 ? (
+                                    {students.length ? (
+                                        // If there are students, render cards
                                         <div className="main-view-listings-container">
                                             {students.map((student) => (
                                                 <StudentCard
@@ -111,8 +83,14 @@ class StudentListing extends Component {
 
 function mapStateToProps(state) {
     return {
-        storeStudents: state.studentInfo.allStudents,
+        allStudents: state.studentInfo.allStudents,
     };
 }
 
-export default connect(mapStateToProps, null)(StudentListing);
+function mapDispatchToProps(dispatch) {
+    return {
+        loadAllStudents: () => dispatch(fetchAllStudents()),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentListing);

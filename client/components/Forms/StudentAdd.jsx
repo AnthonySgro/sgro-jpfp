@@ -25,7 +25,11 @@ class StudentAdd extends Component {
     }
 
     backBtn() {
-        this.props.removeAdder();
+        // Hides the form container
+        const container = document.querySelectorAll(".container");
+        if (container.length) {
+            container[0].classList.remove("container-highlighted");
+        }
 
         // Reset styles after the form disappears
         setTimeout(() => {

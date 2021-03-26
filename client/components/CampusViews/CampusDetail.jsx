@@ -142,6 +142,7 @@ class CampusDetail extends Component {
         this.props.history.push(`/campuses`);
     }
 
+    // Submits Update
     async handleSubmit(event) {
         // Prevents the form from submitting normally
         event.preventDefault();
