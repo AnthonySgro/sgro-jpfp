@@ -5,19 +5,21 @@ import { Link } from "react-router-dom";
 
 // Redux Imports
 import { connect } from "react-redux";
-import {
-    deleteStudentFromDatabase,
-    updateStudentInDatabase,
-} from "../../store/student";
+import { deleteStudentFromDatabase } from "../../store/student";
 import { fetchCampusDetail } from "../../store/campus";
 
 class StudentCard extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            id: props.id,
+            Campus: props.Campus,
+            firstName: props.firstName,
+            lastName: props.lastName,
+            imgUrl: props.imgUrl,
+        };
         this.raiseImage = this.raiseImage.bind(this);
         this.lowerImage = this.lowerImage.bind(this);
-        this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
     raiseImage() {
@@ -32,27 +34,11 @@ class StudentCard extends Component {
         img.classList.remove("card-img-hover");
     }
 
-    async unregisterStudent() {
-        const { id, unregisterFunction, stateCampus, loadCampus } = this.props;
-
-        // Calls the update thunk with an empty id
-        await unregisterFunction({ id, campusId: "" });
-
-        // Updates the selected campus so we see the update
-        await loadCampus(stateCampus.id);
-    }
-
     render() {
-        const {
-            id,
-            Campus,
-            firstName,
-            lastName,
-            imgUrl,
-            unregister,
-        } = this.props;
-
-        const { deleteStudent, stateCampus } = this.props;
+        // Destructuring data for render
+        const { id, imgUrl, firstName, lastName, Campus } = this.state;
+        const { deleteStudent, stateCampus, unregisterStudent } = this.props;
+        const cId = Campus ? Campus.id : null;
 
         return (
             <div
@@ -93,22 +79,18 @@ class StudentCard extends Component {
                     )}
                 </div>
                 <div className="student-card-interact card-item-container">
-                    {unregister ? (
+                    {unregisterStudent ? (
                         <button
                             className="card-delete-button"
-                            onClick={this.unregisterStudent}
+                            onClick={() => unregisterStudent(id)}
                         >
                             <p className="delete-text">Unregister</p>
                         </button>
                     ) : (
                         <button
                             className="card-delete-button"
-                            // onClick={() => deleteStudent(id, stateCampus.id)}
                             onClick={() =>
-                                deleteStudent(
-                                    { id, campus: Campus },
-                                    stateCampus.id,
-                                )
+                                deleteStudent({ id, campus: Campus }, cId)
                             }
                         >
                             <p className="delete-text">x</p>
@@ -122,7 +104,7 @@ class StudentCard extends Component {
 
 function mapStateToProps(state) {
     return {
-        stateCampus: state.campusInfo.selectedCampus,
+        selectedCampus: state.campusInfo.selectedCampus,
     };
 }
 
@@ -130,8 +112,6 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteStudent: (studentInfo, cId) =>
             dispatch(deleteStudentFromDatabase(studentInfo, cId)),
-        unregisterFunction: (payload) =>
-            dispatch(updateStudentInDatabase(payload)),
         loadCampus: (id) => dispatch(fetchCampusDetail(id)),
     };
 }

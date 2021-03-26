@@ -3,31 +3,32 @@ import React, { Component } from "react";
 // Redux Imports
 import { connect } from "react-redux";
 import {
-    fetchStudentDetail,
-    deleteStudentFromDatabase,
-    updateStudentInDatabase,
-} from "../../../store/student";
+    updateCampusInDatabase,
+    deleteCampusFromDatabase,
+} from "../../../store/campus";
 
-class StudentProfile extends Component {
+class CampusProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            student: { ...props.student },
-            preValues: { ...props.student },
+            campus: { ...props.campus },
+            preValues: { ...props.campus },
             styles: {
                 editLabel: "Edit",
                 saveChangesStyles: {
                     visibility: "hidden",
                     position: "absolute",
-                    display: "none",
+                },
+                textAreaStyles: {
+                    resize: "none",
                 },
             },
         };
 
-        this.toggleEditing = this.toggleEditing.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.submitDelete = this.submitDelete.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.toggleEditing = this.toggleEditing.bind(this);
     }
 
     // Dispatches update student event
@@ -36,67 +37,71 @@ class StudentProfile extends Component {
         event.preventDefault();
 
         // Submits the updated student data to our redux thunk for post request
-        const { student } = this.state;
-        await this.props.updateStudent({ ...this.state.student });
+        const { campus } = this.state;
+        await this.props.updateCampus({ ...campus });
 
         // Revert editing windows
         this.toggleEditing();
 
         // If successful (not implemented yet), reset our state to be in sync with the database
         this.setState({
-            student: { ...student },
-            preValues: { ...student },
+            campus: { ...campus },
+            preValues: { ...campus },
         });
     }
 
-    // Dispatches Delete Student
-    submitDelete() {
-        const { deleteStudent } = this.props;
-        deleteStudent({
-            id: this.state.student.id,
-            campus: this.state.preValues.Campus,
-        });
+    // Dispatches Delete Campus
+    async submitDelete() {
+        // Deletes Campus
+        await this.props.deleteCampus(this.state.campus.id);
 
-        this.props.history.push(`/students`);
+        // Redirects
+        this.props.history.push(`/campuses`);
     }
 
     // Modify the state with a controlled form
     handleChange(event) {
-        const { student } = this.state;
+        const { campus } = this.state;
         this.setState({
-            student: {
-                ...student,
+            campus: {
+                ...campus,
                 [event.target.name]: event.target.value,
             },
         });
     }
 
-    // Toggles editing view
+    // Handles edit buttons
     toggleEditing() {
-        const { student, preValues } = this.state;
+        const { campus, preValues } = this.state;
         const { saveChangesStyles, editLabel } = this.state.styles;
 
         // Toggles input editability
         const inputs = document.getElementsByTagName("INPUT");
+        const textAreas = document.getElementsByTagName("TEXTAREA");
+
+        // Toggle editing styling
+        // WE CAN MERGE THESE BY USING A COMMON CLASS NAME: **TODO**
+        for (let textArea of textAreas) {
+            textArea.disabled = !textArea.disabled;
+            textArea.classList.toggle("disabled");
+        }
         for (let input of inputs) {
             input.disabled = !input.disabled;
             input.classList.toggle("disabled");
             input.classList.toggle("enabled");
         }
 
-        // If we are disregarding changes, revert to the original values
+        // If we are disregarding changes, rever to the original values
         if (inputs[0].disabled === true) {
             this.setState({
-                student: {
-                    ...student,
-                    firstName: preValues.firstName,
-                    lastName: preValues.lastName,
-                    gpa: preValues.gpa,
-                },
+                name: preValues.name,
+                description: preValues.description,
+                address: preValues.address,
+                editLabel: "Edit",
             });
         }
 
-        // Toggles the visibility of our "save changes" button and edit label
+        // Toggles our editing styling
         const newEditLabel =
             editLabel !== "Edit" ? "Edit" : "Disregard Changes";
         const newSaveChanges =
@@ -104,29 +109,31 @@ class StudentProfile extends Component {
                 ? {
                       visibility: "visible",
                       position: "static",
-                      display: "inline",
                   }
                 : {
                       visibility: "hidden",
                       position: "absolute",
                       display: "none",
                   };
+
+        // Toggles the visibility of our "save changes" button
         this.setState({
             styles: {
                 editLabel: newEditLabel,
                 saveChangesStyles: newSaveChanges,
+                textAreaStyles: { resize: "none" },
             },
         });
     }
 
     render() {
-        // Break out the state of our student
-        const { firstName, lastName, email, gpa, imgUrl } = this.state.student;
+        const { name, address, description, imgUrl } = this.state.campus;
+        const {
+            textAreaStyles,
+            editLabel,
+            saveChangesStyles,
+        } = this.state.styles;
 
-        // Break out the state of other styling elements we want to track
-        const { editLabel, saveChangesStyles } = this.state.styles;
-
-        // Displays component
         return (
             <div className="info-detail-profile">
                 <div className="info-detail-img-container">
@@ -135,32 +142,16 @@ class StudentProfile extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="info-detail-text">
                         <div className="info-detail-name">
-                            <input
-                                id="first-name-editor"
+                            <textarea
+                                id="campus-name-editor"
                                 type="text"
                                 className="info-detail-title disabled"
-                                name="firstName"
+                                name="name"
                                 disabled
-                                style={{
-                                    width: firstName
-                                        ? firstName.length + "ch"
-                                        : "0ch",
-                                }}
-                                value={firstName}
-                                onChange={this.handleChange}
-                            />
-                            <input
-                                id="last-name-editor"
-                                type="text"
-                                className="info-detail-title disabled"
-                                name="lastName"
-                                disabled
-                                style={{
-                                    width: lastName
-                                        ? lastName.length + "ch"
-                                        : "0ch",
-                                }}
-                                value={lastName}
+                                rows={name ? (name.length > 20 ? 2 : 1) : 1}
+                                cols="20"
+                                style={textAreaStyles}
+                                value={name}
                                 onChange={this.handleChange}
                             />
                         </div>
@@ -168,34 +159,41 @@ class StudentProfile extends Component {
                             <h2 className="info-detail-subtitle">
                                 Information
                             </h2>
-                            <div className="info-detail-gpa-container">
-                                <p>Gpa: </p>{" "}
+                            <div className="info-detail-address-container">
+                                <p>Address: </p>{" "}
                                 <input
-                                    id="gpa-editor"
+                                    id="address-editor"
                                     type="text"
                                     className="info-detail-information disabled"
-                                    name="gpa"
-                                    disabled
-                                    style={{ width: "3ch" }}
-                                    value={gpa || ""}
-                                    onChange={this.handleChange}
-                                    maxLength="3"
-                                />
-                            </div>
-                            <div className="info-detail-email-container">
-                                <p>Email: </p>{" "}
-                                <input
-                                    id="email-editor"
-                                    type="text"
-                                    className="info-detail-information disabled"
-                                    name="email"
+                                    name="address"
                                     disabled
                                     style={{
-                                        width: email
-                                            ? email.length + "ch"
+                                        width: address
+                                            ? address.length + "ch"
                                             : "0ch",
                                     }}
-                                    value={email}
+                                    value={address}
+                                    onChange={() => this.handleChange(event)}
+                                />
+                            </div>
+                            <div className="info-detail-description-container">
+                                <p>Description: </p>{" "}
+                                <textarea
+                                    id="description-editor"
+                                    type="text"
+                                    className="info-detail-information disabled"
+                                    name="description"
+                                    disabled
+                                    rows="7"
+                                    cols="40"
+                                    style={
+                                        (textAreaStyles,
+                                        {
+                                            width: "100%",
+                                            height: "100%",
+                                        })
+                                    }
+                                    value={description}
                                     onChange={this.handleChange}
                                 />
                             </div>
@@ -205,13 +203,13 @@ class StudentProfile extends Component {
                                 className="card-edit-link"
                                 onClick={this.toggleEditing}
                             >
-                                {editLabel || ""}
+                                {editLabel}
                             </a>
                             <button
                                 type="submit"
                                 className="add-btn add-after-listings"
                                 id="save-changes"
-                                style={saveChangesStyles || ""}
+                                style={saveChangesStyles}
                             >
                                 Save Changes
                             </button>
@@ -232,10 +230,9 @@ class StudentProfile extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadStudent: (id) => dispatch(fetchStudentDetail(id)),
-        deleteStudent: (sId) => dispatch(deleteStudentFromDatabase(sId)),
-        updateStudent: (student) => dispatch(updateStudentInDatabase(student)),
+        deleteCampus: (id) => dispatch(deleteCampusFromDatabase(id)),
+        updateCampus: (campus) => dispatch(updateCampusInDatabase(campus)),
     };
 }
 
-export default connect(null, mapDispatchToProps)(StudentProfile);
+export default connect(null, mapDispatchToProps)(CampusProfile);

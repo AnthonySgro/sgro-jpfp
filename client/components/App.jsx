@@ -15,6 +15,7 @@ import HomePage from "./Homepage/Homepage.jsx";
 import AboutUs from "./AboutUs.jsx";
 import CampusListing from "./CampusViews/CampusListing.jsx";
 import CampusDetail from "./CampusViews/CampusDetail.jsx";
+import CampusDeets from "./CampusViews/CampusDeets.jsx";
 import CampusAdd from "./Forms/CampusAdd.jsx";
 import StudentListing from "./StudentViews/StudentListing.jsx";
 import StudentDetail from "./StudentViews/StudentDetail.jsx";
@@ -61,7 +62,7 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/campuses/:id"
-                                component={CampusDetail}
+                                component={CampusDeets}
                             />
                             <Route
                                 exact

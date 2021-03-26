@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import StudentProfile from "./DetailParts/StudentProfile.jsx";
 import StudentCampusModule from "./DetailParts/StudentCampusModule.jsx";
 import Loading from "../Loading.jsx";
+import NotFound from "../NotFound.jsx";
 
 // Redux Imports
 import { connect } from "react-redux";
@@ -32,7 +33,7 @@ class StudentDeets extends Component {
 
     // Hydrates our page on first render
     async componentDidMount() {
-        // Get props to load campus
+        // Get props to load student
         const { id } = this.state.student;
         const { loadStudent, loadAllCampuses } = this.props;
 
@@ -67,6 +68,11 @@ class StudentDeets extends Component {
                     <Loading />
                 </div>
             );
+        }
+
+        // If we finished loading and id is nowhere to be found...
+        if (!this.state.student.id) {
+            return <NotFound />;
         }
 
         // Displays component

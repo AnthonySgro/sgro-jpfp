@@ -23,6 +23,7 @@ class StudentCampusModule extends Component {
         );
     }
 
+    // Handles updated campus registration
     async submitRegistrationChange(event) {
         event.preventDefault();
 
@@ -76,8 +77,8 @@ class StudentCampusModule extends Component {
         });
     }
 
+    // Converts everything to datatypes our select element likes
     resetSelect() {
-        // Reset campus id if we disenrolled
         this.setState({
             campusId: null,
             campus: null,

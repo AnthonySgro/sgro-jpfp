@@ -58,56 +58,76 @@ export const updateCampus = (campus) => {
 export const fetchAllCampuses = () => {
     // Fetches campuses from my api
     return async (dispatch) => {
-        const campuses = (await axios.get("/api/campuses")).data;
+        try {
+            const campuses = (await axios.get("/api/campuses")).data;
 
-        // Dispatches the action to all reducers
-        dispatch(loadAllCampuses(campuses));
+            // Dispatches the action to all reducers
+            dispatch(loadAllCampuses(campuses));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const fetchCampusDetail = (id) => {
     // Fetches campuses from my api
     return async (dispatch) => {
-        const campus = (await axios.get(`/api/campuses/${id}`)).data;
+        try {
+            const campus = (await axios.get(`/api/campuses/${id}`)).data;
 
-        // Dispatches the action to all reducers
-        dispatch(loadCampusDetail(campus));
+            // Dispatches the action to all reducers
+            dispatch(loadCampusDetail(campus));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const addCampusToDatabase = (campusData) => {
     return async (dispatch) => {
-        // Attempts to add the campus to the database, then grabs all campuses in database
-        const { data: newCampus } = await axios.post(
-            `/api/campuses`,
-            campusData,
-        );
+        try {
+            // Attempts to add the campus to the database, then grabs all campuses in database
+            const { data: newCampus } = await axios.post(
+                `/api/campuses`,
+                campusData,
+            );
 
-        // Dispatches the add campus event
-        dispatch(addCampus(newCampus));
+            // Dispatches the add campus event
+            dispatch(addCampus(newCampus));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const deleteCampusFromDatabase = (id) => {
     return async (dispatch) => {
-        // Attempts to delete the campus from the database, then grabs all campuses in database
-        await axios.delete(`/api/campuses/${id}`);
+        try {
+            // Attempts to delete the campus from the database, then grabs all campuses in database
+            await axios.delete(`/api/campuses/${id}`);
 
-        // Dispatches the delete campus event
-        dispatch(deleteCampus(id));
+            // Dispatches the delete campus event
+            dispatch(deleteCampus(id));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const updateCampusInDatabase = (payload) => {
     return async (dispatch) => {
-        // Attempts to update the student in the database, then grabs that student
-        const { data: campus } = await axios.put(
-            `/api/campuses/${payload.id}`,
-            payload,
-        );
+        try {
+            // Attempts to update the student in the database, then grabs that student
+            const { data: campus } = await axios.put(
+                `/api/campuses/${payload.id}`,
+                payload,
+            );
 
-        // Dispatches the action to all reducers
-        dispatch(updateCampus(campus));
+            // Dispatches the action to all reducers
+            dispatch(updateCampus(campus));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
@@ -121,12 +141,16 @@ export default (state = initialState, action) => {
             return (state = { ...state, allCampuses: action.campuses });
         case LOAD_CAMPUS_DETAIL:
             return (state = { ...state, selectedCampus: action.campus });
-        case ADD_CAMPUS:
+        case ADD_CAMPUS: {
+            const newCampues = Object.assign(action.campus, {
+                studentCount: 0,
+            });
             return (state = {
                 ...state,
-                allCampuses: [...state.allCampuses, action.campus],
-                selectedCampus: action.campus,
+                allCampuses: [...state.allCampuses, newCampues],
+                selectedCampus: newCampues,
             });
+        }
         case DELETE_CAMPUS: {
             const newAllCampuses = state.allCampuses.filter(
                 (campus) => campus.id !== action.campusId,

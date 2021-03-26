@@ -24,22 +24,6 @@ class CampusCard extends Component {
         this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
-    // componentDidMount() {
-    //     // If we are missing the student count, fetch
-    //     if (!this.state.studentCount) {
-    //         // Finds the full campus information
-    //         const selectedCampus = this.props.allCampuses.find(
-    //             (campus) => campus.id === this.state.id,
-    //         );
-
-    //         // Now we have access
-    //         this.setState({
-    //             ...this.state,
-    //             studentCount: selectedCampus.studentCount,
-    //         });
-    //     }
-    // }
-
     // Fun hover effect
     raiseImage() {
         const { id } = this.state;
@@ -55,7 +39,7 @@ class CampusCard extends Component {
     }
 
     async unregisterStudent() {
-        const { studentId, changeRegistration, loadStudent, id } = this.props;
+        const { studentId, changeRegistration, id } = this.props;
         if (studentId) {
             // Calls the update thunk with an empty id
             await changeRegistration({
@@ -73,7 +57,7 @@ class CampusCard extends Component {
         const { unregister, deleteCampus } = this.props;
 
         // Pluralize student count corrently
-        const plural = studentCount !== "1";
+        const plural = parseInt(studentCount) !== 1;
 
         return (
             <div

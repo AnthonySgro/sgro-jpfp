@@ -62,83 +62,101 @@ export const updateRegistration = (newStudent, newCampusId, oldCampusId) => {
 
 // Thunk
 export const fetchAllStudents = () => {
-    // Fetches students from my api
     return async (dispatch) => {
-        const students = (await axios.get("/api/students")).data;
+        try {
+            const students = (await axios.get("/api/students")).data;
 
-        // Dispatches the action to all reducers
-        dispatch(loadAllStudents(students));
+            // Dispatches the action to all reducers
+            dispatch(loadAllStudents(students));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const fetchStudentDetail = (id) => {
-    // Fetches students from my api
     return async (dispatch) => {
-        const student = (await axios.get(`/api/students/${id}`)).data;
+        try {
+            const student = (await axios.get(`/api/students/${id}`)).data;
 
-        // Dispatches the action to all reducers
-        dispatch(loadStudentDetail(student));
+            // Dispatches the action to all reducers
+            dispatch(loadStudentDetail(student));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const addStudentToDatabase = (studentData) => {
     return async (dispatch) => {
-        // Attempts to add the student to the database, then grabs all students in database
-        const { data: newStudent } = await axios.post(
-            "/api/students",
-            studentData,
-        );
+        try {
+            // Attempts to add the student to the database, then grabs all students in database
+            const { data: newStudent } = await axios.post(
+                "/api/students",
+                studentData,
+            );
 
-        // Dispatches the action to all reducers
-        dispatch(addStudent(newStudent));
+            // Dispatches the action to all reducers
+            dispatch(addStudent(newStudent));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const deleteStudentFromDatabase = (studentInfo) => {
     return async (dispatch) => {
-        // We only need to know the id of the student and their campus
-        const { id, campus } = studentInfo;
+        try {
+            // We only need to know the id of the student and their campus
+            const { id, campus } = studentInfo;
 
-        // Attempts to delete the student from the database, then grabs all students in database
-        await axios.delete(`/api/students/${studentInfo.id}`);
+            // Attempts to delete the student from the database, then grabs all students in database
+            await axios.delete(`/api/students/${studentInfo.id}`);
 
-        // Dispatches the action to all reducers
-        dispatch(deleteStudent(id, campus));
+            // Dispatches the action to all reducers
+            dispatch(deleteStudent(id, campus));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const updateStudentInDatabase = (payload) => {
     return async (dispatch) => {
-        // Attempts to update the student in the database, then grabs that student
-        const { data: newStudent } = await axios.put(
-            `/api/students/${payload.id}`,
-            payload,
-        );
+        try {
+            // Attempts to update the student in the database, then grabs that student
+            const { data: newStudent } = await axios.put(
+                `/api/students/${payload.id}`,
+                payload,
+            );
 
-        // Save campus id's so we can increment and decrement total values
-        // const prevCampusId = payload.preCampusId || null;
-        // const newCampusId = newStudent.CampusId;
-
-        // Dispatches the action to all reducers
-        dispatch(updateStudent(newStudent));
+            // Dispatches the action to all reducers
+            dispatch(updateStudent(newStudent));
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 
 export const changeStudentCampusInDatabase = (payload) => {
     return async (dispatch) => {
-        // Attempts to change the students registration in the database
-        const { data: newStudent } = await axios.put(
-            `/api/students/${payload.id}`,
-            payload,
-        );
+        try {
+            // Attempts to change the students registration in the database
+            const { data: newStudent } = await axios.put(
+                `/api/students/${payload.id}`,
+                payload,
+            );
 
-        dispatch(
-            updateRegistration(
-                newStudent,
-                payload.newCampusId,
-                payload.prevCampusId,
-            ),
-        );
+            dispatch(
+                updateRegistration(
+                    newStudent,
+                    payload.newCampusId,
+                    payload.prevCampusId,
+                ),
+            );
+        } catch (err) {
+            console.error(err);
+        }
     };
 };
 

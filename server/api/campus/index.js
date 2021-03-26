@@ -72,6 +72,7 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+// Updates a campus
 router.put("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -97,7 +98,7 @@ router.put("/:id", async (req, res, next) => {
         campus.gpa = address;
         await campus.save();
 
-        res.status(204).send(campus);
+        res.status(200).send(campus);
     } catch (err) {
         switch (err.errors[0].type) {
             case "Validation error":

@@ -13,11 +13,16 @@ function replaceCampus(state, newCampus) {
             (campObj) => campObj.id !== campus.id,
         );
 
+        // Copy number of students to the new campus
+        const newCampusWithStudentCount = Object.assign(newCampus, {
+            studentCount: campus.studentCount,
+        });
+
         // Replace
         return (state = {
             ...state,
-            allCampuses: [...newAllCampuses, newCampus],
-            selectedCampus: newCampus,
+            allCampuses: [...newAllCampuses, newCampusWithStudentCount],
+            selectedCampus: newCampusWithStudentCount,
         });
     }
 }
