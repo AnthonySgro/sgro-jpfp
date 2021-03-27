@@ -7,7 +7,11 @@ class AboutUs extends Component {
     }
 
     render() {
-        return <p>Developed by Anthony Sgro :)</p>;
+        return (
+            <div className="not-found-screen">
+                <p className="about-us">Developed by Anthony Sgro :)</p>
+            </div>
+        );
     }
 }
 

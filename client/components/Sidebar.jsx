@@ -27,12 +27,14 @@ class Sidebar extends Component {
                 )}
                 <nav className="main-view-sidebar">
                     <h2>Menu</h2>
-                    <button
-                        className="add-btn add-after-listings"
-                        onClick={this.highlightAdder}
-                    >
-                        {student ? "Enroll Student" : "Build Campus"}
-                    </button>
+                    <div className="sidebar-body">
+                        <button
+                            className="add-btn add-after-listings"
+                            onClick={this.highlightAdder}
+                        >
+                            {student ? "Enroll Student" : "Build Campus"}
+                        </button>
+                    </div>
                 </nav>
             </React.Fragment>
         );

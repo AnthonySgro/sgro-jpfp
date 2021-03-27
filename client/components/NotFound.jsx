@@ -11,7 +11,7 @@ class NotFound extends Component {
                 <div className="not-found-container">
                     <img src="/images/frown.png" alt="" />
                     <h1 className="not-found-title">404</h1>
-                    <h3 className="not-found-subtitle">Page not found</h3>
+                    <h3 className="not-found-subtitle">Page not found...</h3>
                 </div>
             </div>
         );

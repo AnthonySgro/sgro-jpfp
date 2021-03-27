@@ -18,7 +18,7 @@ class HomePage extends Component {
     }
 
     // Handles homepage typing animation
-    // Original source idea: https://codepen.io/hi-im-si/pen/DHoup
+    // Original idea with codepen: https://codepen.io/hi-im-si/pen/DHoup
     typewriter() {
         // This is a class that handles the text on the screen
         class TxtType {

@@ -1,5 +1,6 @@
 html {
     font-family: "Lato", "Poppins", sans-serif;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -110,6 +111,8 @@ body {
     z-index: 5;
     position: sticky;
     top: 0;
+    box-shadow: 0px -12px 9px 5px rgba(0, 0, 0, 0);
+    transition: 0.2s;
 }
 
 #header-home > * {
@@ -269,7 +272,7 @@ footer {
 /* Campus Listing Styles */
 
 .listing-lander {
-    height: 60vh;
+    height: 55vh;
     width: 100%;
 }
 
@@ -277,7 +280,7 @@ footer {
     position: relative;
     top: 3.6%;
     left: 10%;
-    height: 71%;
+    height: 75%;
     width: 63.5%;
     color: white;
     background: rgb(0, 0, 0);
@@ -291,17 +294,19 @@ footer {
 
 .listing-lander-fun-box {
     position: relative;
-    bottom: 63%;
+    bottom: 67%;
     left: 59.5%;
     background-color: transparent;
     height: 36.9vh;
     width: 53vh;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 40px 1px rgba(235, 231, 231, 0.14);
 }
 
 .listing-lander-fun-box > img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 0.4rem;
+    border-radius: 1rem;
 }
 
 .listing-lander-title {
@@ -367,6 +372,7 @@ footer {
     justify-content: flex-start;
     align-items: center;
     background-color: white;
+    margin: 1rem 2rem 0rem 2rem;
     /* border-top: 1px solid black;
     border-right: 1px solid black; */
     min-width: 30vh;
@@ -392,14 +398,15 @@ footer {
     align-self: center;
 }
 
-.main-view-list-campus,
-.main-view-list-student {
+.main-view-list-student,
+.main-view-list-campus {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
     padding: 0rem 2rem;
+    margin: 1rem 1rem 0rem 0rem;
 }
 
 .main-view-listings-container {
@@ -408,6 +415,25 @@ footer {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: rgb(235, 225, 225);
+    border-radius: 1rem;
+    box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
+}
+
+.sidebar-body {
+    padding: 1rem;
+    margin: 0rem 1rem 1rem 1rem;
+    border-radius: 1rem;
+    width: 90%;
+    height: 90%;
+    background-color: rgb(235, 225, 225);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
 }
 
 .main-view-listings-container > * {
@@ -453,6 +479,11 @@ footer {
 .info-detail-text {
     display: flex;
     flex-direction: column;
+    background-color: rgb(235, 225, 225);
+    height: 100%;
+    padding: 1rem;
+    box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
 }
 
 .info-detail-name {
@@ -492,6 +523,9 @@ footer {
     font-family: "Roboto Mono", monospace;
 }
 
+.info-detail-button-container {
+    justify-self: flex-end;
+}
 .info-detail-button-container > * {
     margin: 1rem;
 }
@@ -603,7 +637,6 @@ footer {
     border: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
-    margin-top: 0.5rem;
     transform: translateY(0px);
     box-shadow: 0px 0px 0px red;
     transition: all 0.1s ease-in-out;
@@ -657,7 +690,12 @@ footer {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
+    height: 100%;
     padding-left: 1vh;
+}
+
+.campus-card-info-container > div:nth-child(1) {
+    margin-bottom: 28%;
 }
 
 .campus-card-numStudents {

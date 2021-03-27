@@ -184,7 +184,7 @@ class CampusProfile extends Component {
                                     className="info-detail-information disabled"
                                     name="description"
                                     disabled
-                                    rows="7"
+                                    rows="5"
                                     cols="40"
                                     style={
                                         (textAreaStyles,

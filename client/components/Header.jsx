@@ -8,6 +8,37 @@ class Header extends Component {
         super(props);
         this.state = {};
     }
+
+    // Scrolling behavior
+    componentDidMount() {
+        window.onscroll = () => {
+            // Fighting the bug...
+            // If you are within 5px of the top, we will trigger the animation immediately
+            if (document.documentElement.scrollTop < 5) {
+                document.getElementById("app-header").style.padding = "3.3vh";
+                document.getElementById("app-header").style.boxShadow =
+                    "0px -12px 9px 5px rgba(0, 0, 0, 0)";
+            } else {
+                setTimeout(() => {
+                    if (document.documentElement.scrollTop > 5) {
+                        document.getElementById("app-header").style.padding =
+                            "0vh";
+                        document.getElementById("app-header").style.boxShadow =
+                            "0px -5px 9px 5px rgba(0, 0, 0, 0.75)";
+                    } else {
+                        document.getElementById("app-header").style.padding =
+                            "3.3vh";
+                        document.getElementById("app-header").style.boxShadow =
+                            "0px -12px 9px 5px rgba(0, 0, 0, 0)";
+                    }
+                    // There's a weird bug if you sit around 50 px, so this
+                    // gives user x milliseconds of buffer before it happens.
+                    // it also delays our animation though so we can't go too crazy
+                }, 220);
+            }
+        };
+    }
+
     render() {
         return (
             <header id="app-header">
