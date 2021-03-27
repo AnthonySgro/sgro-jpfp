@@ -9,6 +9,7 @@ import { fetchAllCampuses } from "../store/campus";
 import { fetchAllStudents } from "../store/student";
 
 // Components
+import Loading from "./Loading.jsx";
 import NotFound from "./NotFound.jsx";
 import Header from "./Header.jsx";
 import HomePage from "./Homepage/Homepage.jsx";
@@ -75,7 +76,10 @@ class App extends Component {
                                 path="/students/:id"
                                 component={StudentDetail}
                             />
+
+                            {/* About us page and route to test load animation for fun */}
                             <Route exact path="/about-us" component={AboutUs} />
+                            <Route exact path="/loading" component={Loading} />
                             <Route component={NotFound} />
                         </Switch>
                     </main>

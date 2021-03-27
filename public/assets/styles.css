@@ -299,13 +299,13 @@ footer {
     height: 36.9vh;
     width: 53vh;
     border-radius: 0.7rem;
-    box-shadow: 0px 4px 40px 1px rgba(235, 231, 231, 0.14);
 }
 
 .listing-lander-fun-box > img {
     max-width: 100%;
     max-height: 100%;
     border-radius: 1rem;
+    box-shadow: 0px 4px 40px 1px rgba(235, 231, 231, 0.14);
 }
 
 .listing-lander-title {
@@ -496,9 +496,9 @@ footer {
     display: flex;
     flex-direction: column;
     background-color: rgb(246, 244, 244);
-    height: 100%;
+    height: calc(97%);
     width: 100%;
-    padding: 1rem 0rem 1rem 1rem;
+    padding: 1.2rem 0rem 0rem 1rem;
     box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
     border-radius: 1rem;
 }
