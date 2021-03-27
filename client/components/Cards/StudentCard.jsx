@@ -41,11 +41,7 @@ class StudentCard extends Component {
         const cId = Campus ? Campus.id : null;
 
         return (
-            <div
-                className="student-card-container card-container"
-                onMouseEnter={this.raiseImage}
-                onMouseLeave={this.lowerImage}
-            >
+            <div className="student-card-container card-container">
                 <div className="student-card-image card-item-container">
                     <Link to={`/students/${id}`} className="image-link-wrapper">
                         <img
@@ -53,6 +49,8 @@ class StudentCard extends Component {
                             alt="Student Image"
                             className="student-card-image"
                             id={`student-card-img-${id}`}
+                            onMouseEnter={this.raiseImage}
+                            onMouseLeave={this.lowerImage}
                         />
                     </Link>
                 </div>
@@ -69,6 +67,8 @@ class StudentCard extends Component {
                         <Link
                             to={`/campuses/${Campus.id}`}
                             className="student-card-campus card-detail-link"
+                            onMouseEnter={this.raiseImage}
+                            onMouseLeave={this.lowerImage}
                         >
                             {Campus.name}
                         </Link>

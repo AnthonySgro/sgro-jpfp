@@ -46,7 +46,10 @@ class CampusStudentsModule extends Component {
             <div className="main-view-list-campus">
                 <h2>{`All Students (${students.length})`}</h2>
                 {students.length > 0 ? (
-                    <div className="main-view-listings-container">
+                    <div
+                        className="main-view-listings-container"
+                        id="campus-module"
+                    >
                         {students.map((student) => (
                             <StudentCard
                                 key={student.id}

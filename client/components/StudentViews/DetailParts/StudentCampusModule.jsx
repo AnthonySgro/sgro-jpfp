@@ -97,7 +97,7 @@ class StudentCampusModule extends Component {
         const { allCampuses } = this.props;
 
         return (
-            <div className="main-view-list-student">
+            <div className="main-view-list-student main-view-backdrop">
                 <h2>Campus Information</h2>
                 <form
                     onSubmit={() => this.submitRegistrationChange(event)}

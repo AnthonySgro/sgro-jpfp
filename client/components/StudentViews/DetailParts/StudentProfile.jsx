@@ -8,6 +8,9 @@ import {
     updateStudentInDatabase,
 } from "../../../store/student";
 
+// Function Imports
+import studentProfileValidator from "./studentProfileValidator";
+
 class StudentProfile extends Component {
     constructor(props) {
         super(props);
@@ -35,18 +38,23 @@ class StudentProfile extends Component {
         // Prevents the form from submitting normally
         event.preventDefault();
 
-        // Submits the updated student data to our redux thunk for post request
-        const { student } = this.state;
-        await this.props.updateStudent({ ...this.state.student });
+        // Check if name and email are entered
+        const allValid = studentProfileValidator();
 
-        // Revert editing windows
-        this.toggleEditing();
+        if (allValid) {
+            // Submits the updated student data to our redux thunk for post request
+            const { student } = this.state;
+            await this.props.updateStudent({ ...this.state.student });
 
-        // If successful (not implemented yet), reset our state to be in sync with the database
-        this.setState({
-            student: { ...student },
-            preValues: { ...student },
-        });
+            // Revert editing windows
+            this.toggleEditing();
+
+            // If successful (not implemented yet), reset our state to be in sync with the database
+            this.setState({
+                student: { ...student },
+                preValues: { ...student },
+            });
+        }
     }
 
     // Dispatches Delete Student
@@ -63,6 +71,10 @@ class StudentProfile extends Component {
     // Modify the state with a controlled form
     handleChange(event) {
         const { student } = this.state;
+
+        // Style input items if a required item is blank
+        studentProfileValidator();
+
         this.setState({
             student: {
                 ...student,
@@ -82,16 +94,17 @@ class StudentProfile extends Component {
             input.disabled = !input.disabled;
             input.classList.toggle("disabled");
             input.classList.toggle("enabled");
+            if (input.style.backgroundColor !== "") {
+                input.style.backgroundColor = "";
+            }
         }
 
         // If we are disregarding changes, revert to the original values
         if (inputs[0].disabled === true) {
             this.setState({
+                ...this.state,
                 student: {
-                    ...student,
-                    firstName: preValues.firstName,
-                    lastName: preValues.lastName,
-                    gpa: preValues.gpa,
+                    ...preValues,
                 },
             });
         }
@@ -128,11 +141,11 @@ class StudentProfile extends Component {
 
         // Displays component
         return (
-            <div className="info-detail-profile">
+            <div className="info-detail-profile student-detail-profile-main">
                 <div className="info-detail-img-container">
                     <img src={imgUrl} alt="" className="info-detail-img" />
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className="detail-form">
                     <div className="info-detail-text">
                         <div className="info-detail-name">
                             <input
@@ -217,7 +230,7 @@ class StudentProfile extends Component {
                             </button>
                             <button
                                 type="button"
-                                className="card-delete-button"
+                                className="card-delete-button profile-button"
                                 onClick={this.submitDelete}
                             >
                                 Delete

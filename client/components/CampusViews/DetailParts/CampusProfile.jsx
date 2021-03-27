@@ -7,6 +7,9 @@ import {
     deleteCampusFromDatabase,
 } from "../../../store/campus";
 
+// Function Imports
+import campusProfileValidator from "./campusProfileValidator";
+
 class CampusProfile extends Component {
     constructor(props) {
         super(props);
@@ -36,18 +39,21 @@ class CampusProfile extends Component {
         // Prevents the form from submitting normally
         event.preventDefault();
 
-        // Submits the updated student data to our redux thunk for post request
-        const { campus } = this.state;
-        await this.props.updateCampus({ ...campus });
+        // Check if address and name are populated
+        const allValid = campusProfileValidator();
 
-        // Revert editing windows
-        this.toggleEditing();
-
-        // If successful (not implemented yet), reset our state to be in sync with the database
-        this.setState({
-            campus: { ...campus },
-            preValues: { ...campus },
-        });
+        if (allValid) {
+            // Submits the updated student data to our redux thunk for post request
+            const { campus } = this.state;
+            await this.props.updateCampus({ ...campus });
+            // Revert editing windows
+            this.toggleEditing();
+            // If successful (not implemented yet), reset our state to be in sync with the database
+            this.setState({
+                campus: { ...campus },
+                preValues: { ...campus },
+            });
+        }
     }
 
     // Dispatches Delete Campus
@@ -62,6 +68,10 @@ class CampusProfile extends Component {
     // Modify the state with a controlled form
     handleChange(event) {
         const { campus } = this.state;
+
+        // DOM Feedback on Editing
+        campusProfileValidator();
+
         this.setState({
             campus: {
                 ...campus,
@@ -84,20 +94,26 @@ class CampusProfile extends Component {
         for (let textArea of textAreas) {
             textArea.disabled = !textArea.disabled;
             textArea.classList.toggle("disabled");
+            if (textArea.style.backgroundColor !== "") {
+                textArea.style.backgroundColor = "";
+            }
         }
         for (let input of inputs) {
             input.disabled = !input.disabled;
             input.classList.toggle("disabled");
             input.classList.toggle("enabled");
+            if (input.style.backgroundColor !== "") {
+                input.style.backgroundColor = "";
+            }
         }
 
-        // If we are disregarding changes, rever to the original values
-        if (inputs[0].disabled === true) {
+        // If we are disregarding changes, revert to the original values
+        if (textAreas[0].disabled === true) {
             this.setState({
-                name: preValues.name,
-                description: preValues.description,
-                address: preValues.address,
-                editLabel: "Edit",
+                ...this.state,
+                campus: {
+                    ...preValues,
+                },
             });
         }
 
@@ -139,7 +155,7 @@ class CampusProfile extends Component {
                 <div className="info-detail-img-container">
                     <img src={imgUrl} alt="" className="info-detail-img" />
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className="detail-form">
                     <div className="info-detail-text">
                         <div className="info-detail-name">
                             <textarea
@@ -173,7 +189,7 @@ class CampusProfile extends Component {
                                             : "0ch",
                                     }}
                                     value={address}
-                                    onChange={() => this.handleChange(event)}
+                                    onChange={this.handleChange}
                                 />
                             </div>
                             <div className="info-detail-description-container">
@@ -185,11 +201,11 @@ class CampusProfile extends Component {
                                     name="description"
                                     disabled
                                     rows="5"
-                                    cols="40"
+                                    cols="30"
                                     style={
                                         (textAreaStyles,
                                         {
-                                            width: "100%",
+                                            width: "80%",
                                             height: "100%",
                                         })
                                     }
@@ -215,7 +231,7 @@ class CampusProfile extends Component {
                             </button>
                             <button
                                 type="button"
-                                className="card-delete-button"
+                                className="card-delete-button profile-button"
                                 onClick={this.submitDelete}
                             >
                                 Delete

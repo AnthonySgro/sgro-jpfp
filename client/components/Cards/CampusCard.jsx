@@ -60,23 +60,26 @@ class CampusCard extends Component {
         const plural = parseInt(studentCount) !== 1;
 
         return (
-            <div
-                className="campus-card-container card-container"
-                onMouseEnter={() => this.raiseImage()}
-                onMouseLeave={() => this.lowerImage()}
-            >
+            <div className="campus-card-container card-container">
                 <div className="campus-card-image-container">
                     <Link to={`/campuses/${id}`} className="">
                         <img
                             src={imgUrl}
                             alt="Campus Image"
                             id={`campus-card-img-${id}`}
+                            onMouseEnter={this.raiseImage}
+                            onMouseLeave={this.lowerImage}
                         />
                     </Link>
                 </div>
                 <div className="campus-card-info-container">
                     <div className="">
-                        <Link to={`/campuses/${id}`} className="">
+                        <Link
+                            to={`/campuses/${id}`}
+                            className=""
+                            onMouseEnter={this.raiseImage}
+                            onMouseLeave={this.lowerImage}
+                        >
                             {name}
                         </Link>
                         <p className="campus-card-numStudents">

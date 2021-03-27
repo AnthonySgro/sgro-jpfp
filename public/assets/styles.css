@@ -5,7 +5,6 @@ html {
 
 body {
     margin: 0;
-    background-color: white;
     z-index: -1;
 }
 /* General Styles */
@@ -24,7 +23,7 @@ body {
 
 .add-btn {
     color: white;
-    background-color: blue;
+    background-color: rgb(43, 43, 177);
     outline: none;
     border: none;
     border-radius: 0.5rem;
@@ -112,7 +111,7 @@ body {
     position: sticky;
     top: 0;
     box-shadow: 0px -12px 9px 5px rgba(0, 0, 0, 0);
-    transition: 0.2s;
+    transition: 0.2s ease-in-out;
 }
 
 #header-home > * {
@@ -289,7 +288,7 @@ footer {
         rgba(0, 0, 0, 1) 50%,
         rgba(61, 61, 61, 1) 100%
     );
-    border-radius: 0.4rem;
+    border-radius: 0.7rem;
 }
 
 .listing-lander-fun-box {
@@ -299,7 +298,7 @@ footer {
     background-color: transparent;
     height: 36.9vh;
     width: 53vh;
-    border-radius: 1rem;
+    border-radius: 0.7rem;
     box-shadow: 0px 4px 40px 1px rgba(235, 231, 231, 0.14);
 }
 
@@ -363,7 +362,9 @@ footer {
 .main-view-chunk {
     display: flex;
     flex-direction: row;
-    height: 78vh;
+    height: 100%;
+    background-color: rgb(246, 245, 243);
+    box-shadow: inset 0px 3px 12px -5px rgba(0, 0, 0, 0.75);
 }
 
 .main-view-sidebar {
@@ -371,7 +372,6 @@ footer {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    background-color: white;
     margin: 1rem 2rem 0rem 2rem;
     /* border-top: 1px solid black;
     border-right: 1px solid black; */
@@ -409,6 +409,22 @@ footer {
     margin: 1rem 1rem 0rem 0rem;
 }
 
+.main-view-backdrop {
+    background-color: rgb(246, 244, 244);
+    border-radius: 1rem;
+    box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
+    width: 50%;
+    position: relative;
+    left: 23%;
+    top: 40%;
+    margin-top: 10vh;
+}
+
+#campus-module {
+    background-color: rgb(246, 244, 244);
+    box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
+}
+
 .main-view-listings-container {
     width: 100%;
     display: flex;
@@ -416,8 +432,8 @@ footer {
     align-items: flex-start;
     justify-content: center;
     padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: rgb(235, 225, 225);
+    margin-bottom: 4rem;
+    background-color: rgb(255, 255, 255);
     border-radius: 1rem;
     box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
 }
@@ -428,7 +444,7 @@ footer {
     border-radius: 1rem;
     width: 90%;
     height: 90%;
-    background-color: rgb(235, 225, 225);
+    background-color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -449,7 +465,7 @@ footer {
 .info-detail-profile {
     display: flex;
     flex-direction: row;
-    margin-bottom: 2vh;
+    margin-bottom: 5vh;
 }
 
 .info-detail-profile input {
@@ -479,9 +495,10 @@ footer {
 .info-detail-text {
     display: flex;
     flex-direction: column;
-    background-color: rgb(235, 225, 225);
+    background-color: rgb(246, 244, 244);
     height: 100%;
-    padding: 1rem;
+    width: 100%;
+    padding: 1rem 0rem 1rem 1rem;
     box-shadow: 0px 4px 8px -4px rgba(0, 0, 0, 0.75);
     border-radius: 1rem;
 }
@@ -504,6 +521,12 @@ footer {
     align-items: center;
     white-space: pre-wrap;
     font-family: "Roboto Mono";
+}
+
+.student-detail-profile-main {
+    justify-content: center;
+}
+.detail-form {
 }
 
 #gpa-editor {
@@ -632,11 +655,12 @@ footer {
 
 .card-delete-button {
     color: white;
-    background-color: rgb(255, 1, 1);
+    background-color: rgb(82, 43, 43);
     outline: none;
     border: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.6rem;
     transform: translateY(0px);
     box-shadow: 0px 0px 0px red;
     transition: all 0.1s ease-in-out;
@@ -752,13 +776,13 @@ footer {
     width: 120%;
     margin-top: 2vh;
     position: absolute;
-    transform: translateX(-40vh);
+    transform: translateX(-41vh);
     transition: transform 0.25s ease-in-out;
     z-index: 4;
 }
 
 .container-highlighted {
-    transform: translateX(5.5%);
+    transform: translateX(6%);
     transition: transform 0.25s ease-in-out;
 }
 
@@ -832,6 +856,11 @@ input {
     box-shadow: 0px 0px 0px #313131;
     transition: all 0.2s ease-in-out;
     background-color: #d7d8d7;
+}
+
+.profile-button {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 
 .back-btn {

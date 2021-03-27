@@ -141,7 +141,7 @@ class HomePage extends Component {
                         <p
                             className="typewrite"
                             data-period="2000"
-                            data-type='[ "Steal an Ivy League diploma.", "Flunk the neighbors kid.", "Destroy a public school.", "Boost your childs grades", "You deserve it." ]'
+                            data-type='[ "Steal an Ivy League diploma.", "Flunk the neighborhood kid.", "Destroy a public school.", "Boost your grades", "You deserve it." ]'
                         >
                             {/* Typewriter effect here */}
                             <span></span>
