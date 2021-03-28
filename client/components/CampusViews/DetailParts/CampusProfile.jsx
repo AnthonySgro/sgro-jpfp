@@ -16,6 +16,7 @@ class CampusProfile extends Component {
         this.state = {
             campus: { ...props.campus },
             preValues: { ...props.campus },
+            editing: false,
             styles: {
                 editLabel: "Edit",
                 saveChangesStyles: {
@@ -24,6 +25,9 @@ class CampusProfile extends Component {
                 },
                 textAreaStyles: {
                     resize: "none",
+                },
+                inputs: {
+                    backgroundColor: "",
                 },
             },
         };
@@ -50,6 +54,7 @@ class CampusProfile extends Component {
             this.toggleEditing();
             // If successful (not implemented yet), reset our state to be in sync with the database
             this.setState({
+                ...this.state,
                 campus: { ...campus },
                 preValues: { ...campus },
             });

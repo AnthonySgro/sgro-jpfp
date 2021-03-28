@@ -17,6 +17,7 @@ class StudentProfile extends Component {
         this.state = {
             student: { ...props.student },
             preValues: { ...props.student },
+            editing: false,
             styles: {
                 editLabel: "Edit",
                 saveChangesStyles: {
@@ -24,6 +25,10 @@ class StudentProfile extends Component {
                     position: "absolute",
                     display: "none",
                 },
+                firstNameInput: {},
+                firstNameInput: {},
+                gpa: {},
+                email: {},
             },
         };
 
@@ -51,6 +56,7 @@ class StudentProfile extends Component {
 
             // If successful (not implemented yet), reset our state to be in sync with the database
             this.setState({
+                ...this.state,
                 student: { ...student },
                 preValues: { ...student },
             });
@@ -76,6 +82,7 @@ class StudentProfile extends Component {
         studentProfileValidator();
 
         this.setState({
+            ...this.state,
             student: {
                 ...student,
                 [event.target.name]: event.target.value,
@@ -125,6 +132,7 @@ class StudentProfile extends Component {
                       display: "none",
                   };
         this.setState({
+            ...this.state,
             styles: {
                 editLabel: newEditLabel,
                 saveChangesStyles: newSaveChanges,

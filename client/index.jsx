@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDom from "react-dom";
 
-// Redux
+// Redux Imports
 import { Provider } from "react-redux";
 import store from "./store";
 
-// Components
+// Component Imports
 import App from "./components/App.jsx";
 
 ReactDom.render(

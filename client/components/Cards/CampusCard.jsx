@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-// React Router Links
-import { Link } from "react-router-dom";
+// Redux Imports
 import { connect } from "react-redux";
 import { deleteCampusFromDatabase } from "../../store/campus";
 import {
@@ -9,15 +8,21 @@ import {
     fetchStudentDetail,
 } from "../../store/student";
 
+// React Router Imports
+import { Link } from "react-router-dom";
+
 class CampusCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: props.id,
-            name: props.name,
-            imgUrl: props.imgUrl,
-            description: props.description,
-            studentCount: props.studentCount,
+            campus: {
+                id: props.id,
+                name: props.name,
+                imgUrl: props.imgUrl,
+                description: props.description,
+                studentCount: props.studentCount,
+            },
+            styles: { imgClassName: "campus-card-img" },
         };
         this.raiseImage = this.raiseImage.bind(this);
         this.lowerImage = this.lowerImage.bind(this);
@@ -26,34 +31,42 @@ class CampusCard extends Component {
 
     // Fun hover effect
     raiseImage() {
-        const { id } = this.state;
-        const img = document.querySelector(`#campus-card-img-${id}`);
-        img.classList.add("card-img-hover");
+        this.setState({
+            ...this.state,
+            styles: { imgClassName: "student-card-img card-img-hover" },
+        });
     }
 
     // Fun hover effect
     lowerImage() {
-        const { id } = this.state;
-        const img = document.querySelector(`#campus-card-img-${id}`);
-        img.classList.remove("card-img-hover");
+        this.setState({
+            ...this.state,
+            styles: { imgClassName: "campus-card-img" },
+        });
     }
 
+    // Unregisters student (passed down from parent)
     async unregisterStudent() {
-        const { studentId, changeRegistration, id } = this.props;
-        if (studentId) {
-            // Calls the update thunk with an empty id
-            await changeRegistration({
-                id: studentId,
-                newCampusId: 0,
-                prevCampusId: id,
-            });
+        try {
+            const { studentId, changeRegistration, id } = this.props;
+            if (studentId) {
+                // Calls the update thunk with an empty id
+                await changeRegistration({
+                    id: studentId,
+                    newCampusId: 0,
+                    prevCampusId: id,
+                });
 
-            this.props.resetSelect();
+                this.props.resetSelect();
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 
     render() {
-        const { id, name, imgUrl, description, studentCount } = this.state;
+        const { id, name, imgUrl, studentCount } = this.state.campus;
+        const { imgClassName } = this.state.styles;
         const { unregister, deleteCampus } = this.props;
 
         // Pluralize student count corrently
@@ -66,6 +79,7 @@ class CampusCard extends Component {
                         <img
                             src={imgUrl}
                             alt="Campus Image"
+                            className={imgClassName}
                             id={`campus-card-img-${id}`}
                             onMouseEnter={this.raiseImage}
                             onMouseLeave={this.lowerImage}

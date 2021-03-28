@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
+// Redux imports
+import { connect } from "react-redux";
+import { fetchAllCampuses } from "../../store/campus";
+
 // Component Imports
 import CampusCard from "../Cards/CampusCard.jsx";
 import Sidebar from "../Sidebar.jsx";
 import Loading from "../Loading.jsx";
 import CampusListingHeader from "../ListingHeaders/CampusListingHeader.jsx";
-
-// Redux imports
-import { connect } from "react-redux";
-import { fetchAllCampuses } from "../../store/campus";
 
 class CampusListing extends Component {
     constructor(props) {

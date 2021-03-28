@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-// Component Imports
-import StudentCard from "../../Cards/StudentCard.jsx";
-
 // Redux Imports
 import { connect } from "react-redux";
 import { changeStudentCampusInDatabase } from "../../../store/student";
+
+// Component Imports
+import StudentCard from "../../Cards/StudentCard.jsx";
 
 class CampusStudentsModule extends Component {
     constructor(props) {
@@ -18,13 +18,9 @@ class CampusStudentsModule extends Component {
         this.unregisterStudent = this.unregisterStudent.bind(this);
     }
 
-    async componentDidMount() {
-        if (!this.state.students.length) {
-        }
-    }
-
     async unregisterStudent(sId) {
         const { changeRegistration } = this.props;
+
         // Calls the update thunk with an empty id
         await changeRegistration({
             id: sId,
