@@ -29,6 +29,8 @@ class CampusDeets extends Component {
             students: [],
             loading: true,
         };
+
+        this.triggerLoading = this.triggerLoading.bind(this);
     }
     // Hydrates our page on first render
     async componentDidMount() {
@@ -56,6 +58,22 @@ class CampusDeets extends Component {
         });
     }
 
+    // Triggers the loading component for loading events after a set amount of time
+    triggerLoading(ms) {
+        setTimeout(() => {
+            // Test element to see if this component is still waiting after ms
+            const isStillShown = document.querySelector("#campus-name-editor");
+
+            // If yes, show the loading component
+            if (isStillShown) {
+                this.setState({
+                    ...this.state,
+                    loading: true,
+                });
+            }
+        }, ms);
+    }
+
     render() {
         // Displays loading animation
         if (this.state.loading) {
@@ -65,6 +83,7 @@ class CampusDeets extends Component {
                 </div>
             );
         }
+
         // If we finished loading and id is nowhere to be found...
         if (!this.state.campus.id) {
             return <NotFound />;
@@ -77,6 +96,7 @@ class CampusDeets extends Component {
                     id={this.state.campus.id}
                     history={this.props.history}
                     campus={this.state.campus}
+                    triggerLoading={this.triggerLoading}
                 />
 
                 <CampusStudentsModule

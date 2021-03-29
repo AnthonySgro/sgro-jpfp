@@ -95,7 +95,8 @@ router.put("/:id", async (req, res, next) => {
         // Update values
         campus.name = name;
         campus.description = description;
-        campus.gpa = address;
+        campus.address = address;
+
         await campus.save();
 
         res.status(200).send(campus);
