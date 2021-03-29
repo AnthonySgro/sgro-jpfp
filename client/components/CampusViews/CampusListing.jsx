@@ -15,16 +15,19 @@ class CampusListing extends Component {
         super(props);
         this.state = {
             campuses: [],
-            loading: true,
+            loading: false,
         };
     }
 
     // We want to get all the students when this page mounts
     async componentDidMount() {
-        // This breaks the entire application and I don't know why...
-        // await this.props.loadAllCampuses();
+        // I know this doesn't do anything now, it's just here for
+        // the cool loading screen. Does help make component look
+        // nice if the array mapping takes a while. Works better
+        // for the student listings component
+        await this.props.loadAllCampuses();
         this.setState({
-            // campuses: this.props.allCampuses,
+            campuses: this.props.campuses,
             loading: false,
         });
     }
@@ -38,10 +41,7 @@ class CampusListing extends Component {
                 <CampusListingHeader />
                 <div className="main-listing-view">
                     <div className="main-view-chunk">
-                        <Sidebar
-                            removeAdder={this.removeAdder}
-                            student={false}
-                        />
+                        <Sidebar student={false} />
                         <div className="main-view-list-campus">
                             {/* Displays loading page if loading */}
                             {loading ? (
@@ -78,16 +78,10 @@ class CampusListing extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        allCampuses: state.campusInfo.allCampuses,
-    };
-}
-
 function mapDispatchToProps(dispatch) {
     return {
         loadAllCampuses: () => dispatch(fetchAllCampuses()),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampusListing);
+export default connect(null, mapDispatchToProps)(CampusListing);

@@ -11,6 +11,9 @@ const DELETE_STUDENT = "DELETE_STUDENT";
 const UPDATE_STUDENT = "UPDATE_STUDENT";
 const UPDATE_REGISTRATION = "UPDATE_REGISTRATION";
 
+const SEARCH_STUDENT_LISTING = "SEARCH_STUDENT_LISTING";
+const SORT_STUDENTS = "SORT_STUDENTS";
+
 const DELETE_CAMPUS = "DELETE_CAMPUS";
 const UPDATE_CAMPUS = "UPDATE_CAMPUS";
 
@@ -60,7 +63,22 @@ export const updateRegistration = (newStudent, newCampusId, oldCampusId) => {
     };
 };
 
-// Thunk
+export const searchStudentListing = (str) => {
+    return {
+        type: SEARCH_STUDENT_LISTING,
+        str,
+    };
+};
+
+export const sortStudentListing = (str, order) => {
+    return {
+        type: SORT_STUDENTS,
+        str,
+        order,
+    };
+};
+
+// Thunks
 export const fetchAllStudents = () => {
     return async (dispatch) => {
         try {
@@ -161,23 +179,44 @@ export const changeStudentCampusInDatabase = (payload) => {
 };
 
 // Initial Reducer State
-const initialState = { allStudents: [], selectedStudent: {} };
+const initialState = {
+    allStudents: [],
+    displayedStudents: [],
+    currentSort: "",
+    selectedStudent: {},
+};
 
 // Student Reducer
 export default (state = initialState, action) => {
     switch (action.type) {
         case LOAD_All_STUDENTS:
-            return (state = { ...state, allStudents: action.allStudents });
+            return (state = {
+                ...state,
+                currentSort: "",
+                displayedStudents: action.allStudents,
+                allStudents: action.allStudents,
+            });
+
         case LOAD_STUDENT_DETAIL:
-            return (state = { ...state, selectedStudent: action.student });
+            return (state = {
+                ...state,
+                selectedStudent: action.student,
+            });
+
         case ADD_STUDENT:
             return (state = {
                 ...state,
                 allStudents: [...state.allStudents, action.newStudent],
+                displayedStudents: [...displayedStudents, action.newStudent],
                 selectedStudent: action.newStudent,
             });
+
         case DELETE_STUDENT: {
             const newAllStudents = state.allStudents.filter(
+                (student) => student.id !== action.studentId,
+            );
+
+            const newDisplayedStudents = state.displayedStudents.filter(
                 (student) => student.id !== action.studentId,
             );
 
@@ -187,30 +226,39 @@ export default (state = initialState, action) => {
                     : state.selectedStudent;
 
             return (state = {
+                ...state,
                 allStudents: [...newAllStudents],
+                displayedStudents: [...newDisplayedStudents],
                 selectedStudent: newSelectedStudent,
             });
         }
+
         case UPDATE_STUDENT: {
             const newAllStudents = state.allStudents.filter(
                 (student) => student.id !== action.student.id,
             );
 
             return (state = {
+                ...state,
+                displayedStudents: state.allStudents,
                 allStudents: [...newAllStudents, action.student],
                 selectedStudent: action.student,
             });
         }
+
         case UPDATE_REGISTRATION: {
             const newAllStudents = state.allStudents.filter(
                 (student) => student.id !== action.student.id,
             );
 
             return (state = {
+                ...state,
+                displayedStudents: state.allStudents,
                 allStudents: [...newAllStudents, action.student],
                 selectedStudent: action.student,
             });
         }
+
         case DELETE_CAMPUS: {
             const newAllStudents = state.allStudents.reduce((acc, cur) => {
                 if (cur.CampusId === action.campusId) {
@@ -226,10 +274,13 @@ export default (state = initialState, action) => {
                     : state.selectedStudent;
 
             return (state = {
+                ...state,
+                displayedStudents: [...newAllStudents],
                 allStudents: [...newAllStudents],
                 selectedStudent: newSelectedStudent,
             });
         }
+
         case UPDATE_CAMPUS: {
             const newAllStudents = state.allStudents.reduce((acc, cur) => {
                 if (cur.CampusId === action.campus.id) {
@@ -249,8 +300,78 @@ export default (state = initialState, action) => {
                     : state.selectedStudent;
 
             return (state = {
+                ...state,
+                displayedStudents: [...newAllStudents],
                 allStudents: [...newAllStudents],
                 selectedStudent: newSelectedStudent,
+            });
+        }
+
+        case SEARCH_STUDENT_LISTING: {
+            const newDisplayedStudents = state.allStudents.filter((student) => {
+                const fullName = (
+                    student.firstName +
+                    " " +
+                    student.lastName
+                ).toLowerCase();
+                if (fullName.includes(action.str.toLowerCase().trim())) {
+                    return student;
+                }
+            });
+            return (state = {
+                ...state,
+                displayedStudents: newDisplayedStudents,
+            });
+        }
+
+        case SORT_STUDENTS: {
+            const compare = (a, b) => {
+                // If null value, treat it as less than 0
+                if (!a[action.str]) {
+                    a[action.str] = -1;
+                } else if (!a[action.str]) {
+                    b[action.str] = -1;
+                }
+
+                // We have to compare consistent types to each other
+                const valueA =
+                    typeof a[action.str] === "string"
+                        ? a[action.str].toLowerCase()
+                        : a[action.str];
+                const valueB =
+                    typeof b[action.str] === "string"
+                        ? b[action.str].toLowerCase()
+                        : b[action.str];
+
+                // If ascending
+                if (action.order) {
+                    if (valueA < valueB) {
+                        return -1;
+                    }
+                    if (valueA > valueB) {
+                        return 1;
+                    }
+                } else {
+                    if (valueA < valueB) {
+                        return 1;
+                    }
+                    if (valueA > valueB) {
+                        return -1;
+                    }
+                }
+
+                // If equal values, return 0
+                return 0;
+            };
+
+            // Action.order === true for ascending
+            const newDisplayedStudents = [...state.displayedStudents].sort(
+                compare,
+            );
+
+            return (state = {
+                ...state,
+                displayedStudents: newDisplayedStudents,
             });
         }
         default:

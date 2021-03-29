@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
+// Redux imports
+import { connect } from "react-redux";
+import { fetchAllStudents } from "../../store/student.js";
+
 // Component Imports
 import StudentCard from "../Cards/StudentCard.jsx";
 import Sidebar from "../Sidebar.jsx";
 import Loading from "../Loading.jsx";
 import StudentListingHeader from "../ListingHeaders/StudentListingHeader.jsx";
-
-// Redux imports
-import { connect } from "react-redux";
-import { fetchAllStudents } from "../../store/student.js";
 
 class StudentListing extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class StudentListing extends Component {
         await this.props.loadAllStudents();
 
         this.setState({
-            students: this.props.allStudents,
+            students: this.props.students,
             loading: false,
         });
     }
@@ -41,10 +41,7 @@ class StudentListing extends Component {
                 <StudentListingHeader />
                 <div className="main-listing-view">
                     <div className="main-view-chunk">
-                        <Sidebar
-                            removeAdder={this.removeAdder}
-                            student={true}
-                        />
+                        <Sidebar student={true} />
                         <div className="main-view-list-campus">
                             {/* Displays loading page if loading */}
                             {loading ? (
@@ -84,6 +81,7 @@ class StudentListing extends Component {
 function mapStateToProps(state) {
     return {
         allStudents: state.studentInfo.allStudents,
+        displayedStudents: state.studentInfo.displayedStudents,
     };
 }
 

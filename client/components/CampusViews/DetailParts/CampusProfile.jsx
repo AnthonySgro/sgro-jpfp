@@ -126,7 +126,6 @@ class CampusProfile extends Component {
 
     // Returns true if all arguments are valid, false if any are invalid
     isEmptyValidator(...args) {
-        console.log(args);
         for (let arg of args) {
             if (!arg.trim()) {
                 return false;

@@ -28,6 +28,7 @@ Student.init(
             unique: true,
             validate: {
                 notEmpty: true,
+                isEmail: true,
             },
         },
         imgUrl: {

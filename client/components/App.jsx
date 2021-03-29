@@ -32,14 +32,13 @@ class App extends Component {
         // Fetches all the campuses and students when app mounts
         await this.props.loadAllCampuses();
         await this.props.loadAllStudents();
-
         this.setState({
             loading: false,
         });
     }
 
     render() {
-        const { students, campuses } = this.props;
+        const { displayedStudents, displayedCampuses } = this.props;
         return (
             <Router>
                 <React.Fragment>
@@ -50,8 +49,10 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/campuses"
-                                component={() => (
-                                    <CampusListing campuses={campuses} />
+                                render={() => (
+                                    <CampusListing
+                                        campuses={displayedCampuses}
+                                    />
                                 )}
                             />
                             <Route
@@ -68,7 +69,9 @@ class App extends Component {
                                 exact
                                 path="/students"
                                 render={() => (
-                                    <StudentListing students={students} />
+                                    <StudentListing
+                                        students={displayedStudents}
+                                    />
                                 )}
                             />
                             <Route
@@ -91,8 +94,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
     return {
-        students: state.studentInfo.allStudents,
-        campuses: state.campusInfo.allCampuses,
+        displayedStudents: state.studentInfo.displayedStudents,
+        displayedCampuses: state.campusInfo.displayedCampuses,
     };
 }
 

@@ -25,6 +25,7 @@ function incrementStudents(state, campusId, increment) {
         // Replace
         return (state = {
             ...state,
+            displayedCampuses: [...newAllCampuses, updatedCampus],
             allCampuses: [...newAllCampuses, updatedCampus],
             selectedCampus: updatedCampus,
         });

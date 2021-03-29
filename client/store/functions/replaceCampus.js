@@ -21,6 +21,7 @@ function replaceCampus(state, newCampus) {
         // Replace
         return (state = {
             ...state,
+            displayedCampuses: [...newAllCampuses, newCampusWithStudentCount],
             allCampuses: [...newAllCampuses, newCampusWithStudentCount],
             selectedCampus: newCampusWithStudentCount,
         });
