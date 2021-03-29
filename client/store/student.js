@@ -13,6 +13,7 @@ const UPDATE_REGISTRATION = "UPDATE_REGISTRATION";
 
 const SEARCH_STUDENT_LISTING = "SEARCH_STUDENT_LISTING";
 const SORT_STUDENTS = "SORT_STUDENTS";
+const FILTER_STUDENTS = "FILTER_STUDENTS";
 
 const DELETE_CAMPUS = "DELETE_CAMPUS";
 const UPDATE_CAMPUS = "UPDATE_CAMPUS";
@@ -75,6 +76,14 @@ export const sortStudentListing = (str, order) => {
         type: SORT_STUDENTS,
         str,
         order,
+    };
+};
+
+export const filterStudentListing = (str, active) => {
+    return {
+        type: FILTER_STUDENTS,
+        str,
+        active,
     };
 };
 
@@ -207,7 +216,10 @@ export default (state = initialState, action) => {
             return (state = {
                 ...state,
                 allStudents: [...state.allStudents, action.newStudent],
-                displayedStudents: [...displayedStudents, action.newStudent],
+                displayedStudents: [
+                    ...state.displayedStudents,
+                    action.newStudent,
+                ],
                 selectedStudent: action.newStudent,
             });
 
@@ -374,6 +386,24 @@ export default (state = initialState, action) => {
                 displayedStudents: newDisplayedStudents,
             });
         }
+
+        case FILTER_STUDENTS: {
+            // If active, filter, if not, display all students
+            const newDisplayedStudents = action.active
+                ? state.displayedStudents.filter((student) => {
+                      switch (action.str) {
+                          case "notEnrolled":
+                              return student.CampusId === null;
+                      }
+                  })
+                : state.allStudents;
+
+            return (state = {
+                ...state,
+                displayedStudents: newDisplayedStudents,
+            });
+        }
+
         default:
             return state;
     }

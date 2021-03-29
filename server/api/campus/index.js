@@ -10,25 +10,56 @@ const {
 // Sends information about the database back
 router.get("/", async (req, res, next) => {
     try {
-        // Get all campuses and number of students
-        const allCampuses = await Campus.findAll({
-            attributes: [
-                "Campuses.*",
-                [db.fn("COUNT", db.col("Students.id")), "studentCount"],
-            ],
-            include: [
-                {
-                    model: Student,
-                    attributes: [],
-                    include: [],
-                },
-            ],
-            group: ["Campuses.id"],
-            raw: true,
-        });
+        const { page } = req.query;
+        if (!page) {
+            // Get all campuses and number of students
+            const allCampuses = await Campus.findAll({
+                attributes: [
+                    "Campuses.*",
+                    [db.fn("COUNT", db.col("Students.id")), "studentCount"],
+                ],
+                include: [
+                    {
+                        model: Student,
+                        attributes: [],
+                        include: [],
+                    },
+                ],
+                group: ["Campuses.id"],
+                raw: true,
+            });
 
-        // Return all campuses
-        res.status(200).send(allCampuses);
+            // Return all campuses
+            res.status(200).send(allCampuses);
+        } else {
+            // Catch invalid page request
+            if (page < 1) {
+                res.sendStatus(400);
+            }
+
+            // Returns a paginated list based on the page we input
+            const paginatedCampuses = await Campus.findAll({
+                attributes: [
+                    "Campuses.*",
+                    [db.fn("COUNT", db.col("Students.id")), "studentCount"],
+                ],
+                include: [
+                    {
+                        model: Student,
+                        attributes: [],
+                        duplicating: false,
+                    },
+                ],
+                group: ["Campuses.id"],
+                raw: true,
+                order: [["id", "ASC"]],
+                limit: 10,
+                offset: 10 * parseInt(page) - 10,
+            });
+
+            // Return all campuses
+            res.status(200).send(paginatedCampuses);
+        }
     } catch (err) {
         next(err);
     }

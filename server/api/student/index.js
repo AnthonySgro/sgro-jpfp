@@ -9,15 +9,38 @@ const {
 
 router.get("/", async (req, res, next) => {
     try {
-        // Get all campuses
-        const allStudents = await Student.findAll({
-            include: {
-                model: Campus,
-            },
-        });
+        const { page } = req.query;
+        if (!page) {
+            // Get all campuses
+            const allStudents = await Student.findAll({
+                include: {
+                    model: Campus,
+                },
+                order: [["id", "ASC"]],
+            });
 
-        // Return proper status
-        res.status(200).send(allStudents);
+            // Return proper status
+            res.status(200).send(allStudents);
+        } else {
+            // Catch invalid page request
+            if (page < 1) {
+                res.sendStatus(400);
+            }
+
+            // Returns a paginated list based on the page we input
+            const paginatedStudents = await Student.findAndCountAll({
+                include: {
+                    model: Campus,
+                    required: false,
+                },
+                order: [["id", "ASC"]],
+                limit: 10,
+                offset: 10 * parseInt(page) - 10,
+            });
+
+            // Return proper status
+            res.status(200).send(paginatedStudents);
+        }
     } catch (err) {
         next(err);
     }

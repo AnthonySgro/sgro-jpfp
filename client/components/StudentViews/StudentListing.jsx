@@ -14,7 +14,6 @@ class StudentListing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            students: [],
             loading: true,
         };
     }
@@ -27,7 +26,7 @@ class StudentListing extends Component {
         await this.props.loadAllStudents();
 
         this.setState({
-            students: this.props.students,
+            ...this.state,
             loading: false,
         });
     }

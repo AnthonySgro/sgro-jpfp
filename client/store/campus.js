@@ -16,6 +16,7 @@ const UPDATE_CAMPUS = "UPDATE_CAMPUS";
 
 const SEARCH_CAMPUS_LISTING = "SEARCH_CAMPUS_LISTING";
 const SORT_CAMPUSES = "SORT_CAMPUSES";
+const FILTER_CAMPUSES = "FILTER_CAMPUSES";
 
 const ADD_STUDENT = "ADD_STUDENT";
 const DELETE_STUDENT = "DELETE_STUDENT";
@@ -69,6 +70,14 @@ export const sortCampusListing = (str, order) => {
         type: SORT_CAMPUSES,
         str,
         order,
+    };
+};
+
+export const filterCampusListing = (str, active) => {
+    return {
+        type: FILTER_CAMPUSES,
+        str,
+        active,
     };
 };
 
@@ -181,7 +190,7 @@ export default (state = initialState, action) => {
                 ...state,
                 displayedCampuses: [...state.displayedCampuses, newCampus],
                 allCampuses: [...state.allCampuses, newCampus],
-                selectedCampus: newCampues,
+                selectedCampus: newCampus,
             });
         }
 
@@ -244,8 +253,6 @@ export default (state = initialState, action) => {
 
         case SORT_CAMPUSES: {
             const compare = (a, b) => {
-                console.log(action.order);
-
                 // If null value, treat it as less than 0
                 if (!a[action.str]) {
                     a[action.str] = -1;
@@ -288,6 +295,23 @@ export default (state = initialState, action) => {
             const newDisplayedCampuses = [...state.displayedCampuses].sort(
                 compare,
             );
+
+            return (state = {
+                ...state,
+                displayedCampuses: newDisplayedCampuses,
+            });
+        }
+
+        case FILTER_CAMPUSES: {
+            // If active, filter, if not, display all students
+            const newDisplayedCampuses = action.active
+                ? state.displayedCampuses.filter((campus) => {
+                      switch (action.str) {
+                          case "noStudents":
+                              return campus.studentCount === "0";
+                      }
+                  })
+                : state.allCampuses;
 
             return (state = {
                 ...state,

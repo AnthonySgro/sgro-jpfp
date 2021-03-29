@@ -20,6 +20,11 @@ const webpackConfig = {
             },
         ],
     },
+    resolve: {
+        fallback: {
+            util: require.resolve("util/"),
+        },
+    },
 };
 
 module.exports = webpackConfig;

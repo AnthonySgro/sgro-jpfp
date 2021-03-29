@@ -33,6 +33,7 @@ class App extends Component {
         await this.props.loadAllCampuses();
         await this.props.loadAllStudents();
         this.setState({
+            ...this.state,
             loading: false,
         });
     }
