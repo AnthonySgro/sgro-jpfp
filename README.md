@@ -5,6 +5,17 @@ associated campuses. This is basically an amalgamation
 of everything we've learned at FullStack Academy up until
 this point.
 
+# Features
+- Fun Home Screen
+- Full Campus and Student listing screen
+- Adding Campuses and Students
+- Updating Campuses and Students, along with their associations
+- Deleting Campuses and Students
+- User feedback on adding and updating
+- Searching, Sorting, and Filtering on main listing screen
+- Fun design
+- Back-end and *hopefully* front-end pagination
+
 # Startup Guide
 
 -   **Easy Start-Up**
