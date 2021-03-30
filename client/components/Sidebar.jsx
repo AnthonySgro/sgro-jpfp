@@ -37,6 +37,7 @@ class Sidebar extends Component {
         this.toggleFilterDropdown = this.toggleFilterDropdown.bind(this);
         this.sorting = this.sorting.bind(this);
         this.filtering = this.filtering.bind(this);
+        this.buttonStyling = this.buttonStyling.bind(this);
     }
 
     highlightAdder() {
@@ -73,9 +74,33 @@ class Sidebar extends Component {
         document.getElementById("filter-dropdown").classList.toggle("show");
     }
 
+    //Styling
+    buttonStyling(ev) {
+        const filterLinks = document.querySelector("#filter-dropdown").children;
+        const sortLinks = document.querySelector("#sort-dropdown").children;
+        const images = document.querySelectorAll(".sortpic");
+
+        [...images].forEach((pic) => {
+            pic.src = "";
+        });
+
+        [...filterLinks].forEach((link) => {
+            link.classList.remove("selected");
+        });
+
+        [...sortLinks].forEach((link) => {
+            link.firstChild.classList.remove("selected");
+        });
+
+        ev.target.classList.add("selected");
+    }
+
     // Handles sorting
-    sorting(str) {
+    sorting(ev, str) {
         const { sorting } = this.state;
+
+        //Styling
+        this.buttonStyling(ev);
 
         // True is ascending (default)
         // False is descending (default for numerical categories)
@@ -87,6 +112,13 @@ class Sidebar extends Component {
         // If we clicked the same sort button again, reverse order
         if (sorting.parameter === str) {
             order = Boolean(!sorting.order);
+        }
+
+        //Display correct image
+        if (!order) {
+            ev.target.lastChild.src = "/images/sortAsc.png";
+        } else {
+            ev.target.lastChild.src = "/images/sortDesc.png";
         }
 
         // Set state
@@ -111,8 +143,11 @@ class Sidebar extends Component {
     }
 
     // Handles filtering
-    filtering(str) {
+    filtering(ev, str) {
         const { filtering } = this.state;
+
+        //Styling
+        this.buttonStyling(ev);
 
         // If you click, we are now filtering
         let active = true;
@@ -120,6 +155,13 @@ class Sidebar extends Component {
         // Unless you clicked the same button, then we are toggling
         if (filtering.parameter === str) {
             active = Boolean(!filtering.active);
+        }
+
+        //Display correct image
+        if (active) {
+            ev.target.lastChild.src = "/images/active.png";
+        } else {
+            ev.target.lastChild.src = "";
         }
 
         // Set state
@@ -186,22 +228,62 @@ class Sidebar extends Component {
                                     id="sort-dropdown"
                                     className="dropdown-content"
                                 >
-                                    <a onClick={() => this.sorting("id")}>
-                                        Date Created
-                                    </a>
-                                    <a
-                                        onClick={() =>
-                                            this.sorting("firstName")
-                                        }
-                                    >
-                                        First Name
-                                    </a>
-                                    <a onClick={() => this.sorting("lastName")}>
-                                        Last Name
-                                    </a>
-                                    <a onClick={() => this.sorting("gpa")}>
-                                        GPA
-                                    </a>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "id")
+                                            }
+                                        >
+                                            Date Created
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "firstName")
+                                            }
+                                        >
+                                            First Name
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "lastName")
+                                            }
+                                        >
+                                            Last Name
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "gpa")
+                                            }
+                                        >
+                                            GPA
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
                                 </div>
                             ) : (
                                 // Campus Sorting Options
@@ -209,19 +291,48 @@ class Sidebar extends Component {
                                     id="sort-dropdown"
                                     className="dropdown-content"
                                 >
-                                    <a onClick={() => this.sorting("id")}>
-                                        Date Created
-                                    </a>
-                                    <a onClick={() => this.sorting("name")}>
-                                        Name
-                                    </a>
-                                    <a
-                                        onClick={() =>
-                                            this.sorting("studentCount")
-                                        }
-                                    >
-                                        Student Count
-                                    </a>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "id")
+                                            }
+                                        >
+                                            Date Created
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "name")
+                                            }
+                                        >
+                                            Name
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.sorting(e, "studentCount")
+                                            }
+                                        >
+                                            Student Count
+                                            <img
+                                                className="sortpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
                                 </div>
                             )}
                             <button
@@ -232,17 +343,25 @@ class Sidebar extends Component {
                             </button>
                             {student ? (
                                 // Student Filtering Options
+
                                 <div
                                     id="filter-dropdown"
                                     className="dropdown-content"
                                 >
-                                    <a
-                                        onClick={() =>
-                                            this.filtering("notEnrolled")
-                                        }
-                                    >
-                                        Not Enrolled
-                                    </a>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.filtering(e, "notEnrolled")
+                                            }
+                                        >
+                                            Not Enrolled
+                                            <img
+                                                className="filterpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
                                 </div>
                             ) : (
                                 // Campus Filtering Options
@@ -250,13 +369,20 @@ class Sidebar extends Component {
                                     id="filter-dropdown"
                                     className="dropdown-content"
                                 >
-                                    <a
-                                        onClick={() =>
-                                            this.filtering("noStudents")
-                                        }
-                                    >
-                                        No Students
-                                    </a>
+                                    <div className="dropdown-item">
+                                        <a
+                                            onClick={(e) =>
+                                                this.filtering(e, "noStudents")
+                                            }
+                                        >
+                                            No Students
+                                            <img
+                                                className="filterpic"
+                                                src=""
+                                                alt=""
+                                            />
+                                        </a>
+                                    </div>
                                 </div>
                             )}
                         </div>

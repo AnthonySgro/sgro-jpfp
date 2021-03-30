@@ -488,11 +488,39 @@ footer {
     text-decoration: none;
     display: block;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
 }
 
 .dropdown-content a:hover {
     background-color: #f1f1f1;
 }
+
+.dropdown-content a:active {
+    background-color: #c3c3c3;
+}
+
+.dropdown-content img {
+    background: transparent;
+    height: 20px;
+    width: auto;
+}
+
+.selected {
+    background-color: #d4d4d4;
+    color: white !important;
+}
+
+.selected:hover {
+    background-color: #c8c8c8 !important;
+}
+
+/* .dropdown-item {
+    display: flex;
+    flex-direction: row;
+} */
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {

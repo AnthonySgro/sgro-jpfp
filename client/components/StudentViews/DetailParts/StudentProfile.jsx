@@ -143,7 +143,7 @@ class StudentProfile extends Component {
 
     // Modify the state with a controlled form
     handleChange(event) {
-        const { student, styles } = this.state;
+        const { student, styles, feedback } = this.state;
 
         // Set value to whatever was typed
         this.setState(
@@ -185,6 +185,11 @@ class StudentProfile extends Component {
                         emailInput: {
                             backgroundColor: emailBackground,
                         },
+                    },
+                    feedback: {
+                        ...feedback,
+                        styles: { ...feedback.styles, visibility: "hidden" },
+                        text: "",
                     },
                 });
             },
