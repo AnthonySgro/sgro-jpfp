@@ -15,7 +15,7 @@ const {
 } = require("./db");
 
 // Seeds database with original data (uncomment for persistent database)
-// seed();
+seed();
 
 // Middleware
 app.use(express.json());

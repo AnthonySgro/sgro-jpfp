@@ -765,6 +765,10 @@ li.previous {
     align-items: center;
 }
 
+.no-underline {
+    text-decoration: none !important;
+}
+
 .card-detail-link,
 .card-edit-link {
     text-decoration: none;

@@ -21,8 +21,9 @@ class StudentListing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allStudents: [],
-            displayedStudents: [],
+            allStudents: props.allStudents,
+            displayedStudents: props.displayedStudents,
+            splicedStudents: [],
             currentPage: 1,
             loading: true,
             maxPageCount: 1,
@@ -34,46 +35,62 @@ class StudentListing extends Component {
 
     // We want to get all the students when we go to this page
     async componentDidMount() {
+        // Load students
+        await this.props.loadAllStudents();
+
+        const { allStudents, displayedStudents } = this.props;
         // Receive current page if a query was attatched to url
         const currentPage = this.parseQuery();
 
         // Get displayed students
-        const displayedStudents = this.sliceDisplayedStudents(currentPage);
+        const splicedStudents = this.sliceDisplayedStudents(
+            currentPage,
+            displayedStudents,
+        );
 
-        // Calculate max page count with students prop
-        const maxPageCount = Math.ceil(this.props.students.length / 10);
-
-        // I know this doesn't do anything now, it's just here for
-        // the cool loading screen. Does help make component look
-        // nice if the array mapping takes a while
-        await this.props.loadAllStudents();
+        const maxPageCount = Math.ceil(displayedStudents.length / 10);
 
         // Set all students
         this.setState({
             ...this.state,
-            allStudents: this.props.students,
+            allStudents,
             displayedStudents,
+            splicedStudents,
+            currentPage,
             loading: false,
             maxPageCount,
-            currentPage,
         });
     }
 
-    // Ensuring our state mirrors the passed down props
+    // Making sure our local state matches the redux store
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.allStudents !== this.props.students) {
-            const { currentPage } = this.state;
+        const { allStudents, displayedStudents } = this.props;
 
-            // Reupdate max page count
-            const maxPageCount = Math.ceil(this.props.students.length / 10);
+        // If our redux store changed something in the display
+        if (prevState.displayedStudents !== displayedStudents) {
+            // Splice students again accordingly
+            const splicedStudents = this.sliceDisplayedStudents(
+                prevState.currentPage,
+                displayedStudents,
+            );
 
-            // Update student
-            this.setState({
-                ...this.state,
-                allStudents: this.props.students,
-                displayedStudents: this.sliceDisplayedStudents(currentPage),
-                maxPageCount,
-            });
+            // Save the state
+            this.setState(
+                {
+                    ...this.state,
+                    allStudents,
+                    displayedStudents,
+                    splicedStudents,
+                    maxPageCount: Math.ceil(displayedStudents.length / 10),
+                    loading: false,
+                },
+                () => {
+                    // State is updating asynchronously, and is called after the render
+                    // We have to force an update to re-render the page once the
+                    // Update is processed. Idk if this is bad but I think it is working
+                    this.forceUpdate();
+                },
+            );
         }
     }
 
@@ -94,13 +111,13 @@ class StudentListing extends Component {
         return currentPage;
     }
 
-    sliceDisplayedStudents(currentPage) {
+    sliceDisplayedStudents(currentPage, students) {
         // Displayed students slicing
         const start = currentPage * 10 - 10;
         const end = currentPage * 10;
 
         // Return a segment of the all students block
-        return this.props.students.slice(start, end);
+        return students.slice(start, end);
     }
 
     // Handles pagination clicks
@@ -108,7 +125,10 @@ class StudentListing extends Component {
         // Redirect to clicked page
         const page = parseInt(data.selected) + 1;
 
-        const displayedStudents = this.sliceDisplayedStudents(page);
+        const displayedStudents = this.sliceDisplayedStudents(
+            page,
+            this.state.displayedStudents,
+        );
 
         // Set clicked page to state
         this.setState(
@@ -129,7 +149,7 @@ class StudentListing extends Component {
             loading,
             currentPage,
             allStudents,
-            displayedStudents,
+            splicedStudents,
             maxPageCount,
         } = this.state;
 
@@ -146,11 +166,11 @@ class StudentListing extends Component {
                             ) : (
                                 <React.Fragment>
                                     <h2>All Students</h2>
-                                    {allStudents.length ? (
+                                    {allStudents ? (
                                         // If there are students, render cards
                                         <div className="main-view-listings-container">
                                             <ReactPaginate
-                                                previousLabel={"previous"}
+                                                previousLabel={"prev"}
                                                 nextLabel={"next"}
                                                 breakLabel={"..."}
                                                 pageCount={maxPageCount}
@@ -166,7 +186,7 @@ class StudentListing extends Component {
                                                 activeClassName={"active"}
                                             />
                                             <div className="main-view-listings">
-                                                {displayedStudents.map(
+                                                {splicedStudents.map(
                                                     (student) => (
                                                         <StudentCard
                                                             key={student.id}

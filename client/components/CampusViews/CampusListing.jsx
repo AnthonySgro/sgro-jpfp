@@ -21,10 +21,11 @@ class CampusListing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allCampuses: [],
-            displayedCampuses: [],
-            loading: true,
+            allCampuses: props.allCampuses,
+            displayedCampuses: props.displayedCampuses,
+            splicedCampuses: [],
             currentPage: 1,
+            loading: true,
             maxPageCount: 1,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
@@ -32,47 +33,65 @@ class CampusListing extends Component {
         this.parseQuery = this.parseQuery.bind(this);
     }
 
-    // We want to get all the students when this page mounts
+    // We want to get all the students when we go to this page
     async componentDidMount() {
+        // Load students
+        await this.props.loadAllCampuses();
+
+        const { allCampuses, displayedCampuses } = this.props;
+
         // Receive current page if a query was attatched to url
         const currentPage = this.parseQuery();
 
         // Get displayed students
-        const displayedCampuses = this.sliceDisplayedCampuses(currentPage);
-
-        // Calculate max page count with campuses prop
-        const maxPageCount = Math.ceil(this.props.campuses.length / 10);
-
-        // I know this doesn't do anything now, it's just here for
-        // the cool loading screen. Does help make component look
-        // nice if the array mapping takes a while. Works better
-        // for the student listings component
-        await this.props.loadAllCampuses();
-
-        this.setState({
-            allCampuses: this.props.campuses,
+        const splicedCampuses = this.sliceDisplayedCampuses(
+            currentPage,
             displayedCampuses,
+        );
+
+        const maxPageCount = Math.ceil(displayedCampuses.length / 10);
+
+        // Set all students
+        this.setState({
+            ...this.state,
+            allCampuses,
+            displayedCampuses,
+            splicedCampuses,
+            currentPage,
             loading: false,
             maxPageCount,
-            currentPage,
         });
     }
 
-    // Ensuring our state mirrors the passed down props
+    // Making sure our local state matches the redux store
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.allCampuses !== this.props.campuses) {
-            const { currentPage } = this.state;
+        const { allCampuses, displayedCampuses } = this.props;
 
-            // Reupdate max page count
-            const maxPageCount = Math.ceil(this.props.campuses.length / 10);
+        // If our redux store changed something in the display
+        if (prevState.displayedCampuses !== displayedCampuses) {
+            // Splice students again accordingly
+            const splicedCampuses = this.sliceDisplayedCampuses(
+                prevState.currentPage,
+                displayedCampuses,
+            );
 
-            // Update student
-            this.setState({
-                ...this.state,
-                allCampuses: this.props.campuses,
-                displayedCampuses: this.sliceDisplayedCampuses(currentPage),
-                maxPageCount,
-            });
+            // Save the state
+            this.setState(
+                {
+                    ...this.state,
+                    allCampuses,
+                    displayedCampuses,
+                    splicedCampuses,
+                    maxPageCount: Math.ceil(displayedCampuses.length / 10),
+                    loading: false,
+                },
+                () => {
+                    // State is updating asynchronously, and is called after the render
+                    // We have to force an update to re-render the page once the
+                    // Update is processed. Idk if this is bad but I think it is working
+                    this.forceUpdate();
+                },
+            );
         }
     }
 
@@ -93,13 +112,13 @@ class CampusListing extends Component {
         return currentPage;
     }
 
-    sliceDisplayedCampuses(currentPage) {
+    sliceDisplayedCampuses(currentPage, campuses) {
         // Displayed students slicing
         const start = currentPage * 10 - 10;
         const end = currentPage * 10;
 
         // Return a segment of the all students block
-        return this.props.campuses.slice(start, end);
+        return campuses.slice(start, end);
     }
 
     // Handles pagination clicks
@@ -107,7 +126,10 @@ class CampusListing extends Component {
         // Redirect to clicked page
         const page = parseInt(data.selected) + 1;
 
-        const displayedCampuses = this.sliceDisplayedCampuses(page);
+        const displayedCampuses = this.sliceDisplayedCampuses(
+            page,
+            this.state.displayedCampuses,
+        );
 
         // Set clicked page to state
         this.setState(
@@ -128,7 +150,7 @@ class CampusListing extends Component {
             loading,
             currentPage,
             allCampuses,
-            displayedCampuses,
+            splicedCampuses,
             maxPageCount,
         } = this.state;
 
@@ -145,11 +167,11 @@ class CampusListing extends Component {
                             ) : (
                                 <React.Fragment>
                                     <h2>All Campuses</h2>
-                                    {displayedCampuses.length ? (
+                                    {allCampuses ? (
                                         // If there are campuses, render cards
                                         <div className="main-view-listings-container">
                                             <ReactPaginate
-                                                previousLabel={"previous"}
+                                                previousLabel={"prev"}
                                                 nextLabel={"next"}
                                                 breakLabel={"..."}
                                                 pageCount={maxPageCount}
@@ -165,7 +187,7 @@ class CampusListing extends Component {
                                                 activeClassName={"active"}
                                             />
                                             <div className="main-view-listings">
-                                                {displayedCampuses.map(
+                                                {splicedCampuses.map(
                                                     (campus) => (
                                                         <CampusCard
                                                             key={campus.id}
@@ -194,10 +216,19 @@ class CampusListing extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        allCampuses: state.campusInfo.allCampuses,
+        displayedCampuses: state.campusInfo.displayedCampuses,
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         loadAllCampuses: () => dispatch(fetchAllCampuses()),
     };
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(CampusListing));
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CampusListing),
+);

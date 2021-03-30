@@ -47,7 +47,6 @@ class StudentCard extends Component {
         const { imgClassName } = this.state.styles;
         const { deleteStudent, unregisterStudent } = this.props;
         const cId = Campus ? Campus.id : null;
-
         return (
             <div className="student-card-container card-container">
                 <div className="student-card-image card-item-container">
@@ -80,7 +79,7 @@ class StudentCard extends Component {
                             {Campus.name}
                         </Link>
                     ) : (
-                        <a className="student-card-campus card-detail-link">
+                        <a className="student-card-campus card-detail-link no-underline">
                             No University
                         </a>
                     )}

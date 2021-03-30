@@ -9,7 +9,7 @@ const seed = async () => {
     try {
         // Produces a random number of these in the database
         const NUMBER_OF_UNIVERSITIES = 15;
-        const NUMBER_OF_STUDENTS = 400;
+        const NUMBER_OF_STUDENTS = 200;
 
         // Drop database if exists...
         await db.sync({ force: true });

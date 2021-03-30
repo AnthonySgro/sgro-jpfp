@@ -50,11 +50,7 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/campuses"
-                                render={() => (
-                                    <CampusListing
-                                        campuses={displayedCampuses}
-                                    />
-                                )}
+                                component={CampusListing}
                             />
                             <Route
                                 exact
@@ -69,11 +65,7 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/students"
-                                render={() => (
-                                    <StudentListing
-                                        students={displayedStudents}
-                                    />
-                                )}
+                                component={StudentListing}
                             />
                             <Route
                                 exact
