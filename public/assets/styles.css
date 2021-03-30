@@ -334,6 +334,47 @@ footer {
     line-height: 5vh;
 }
 
+.pagination ul {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.pagination li {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.pagination a {
+    outline: none;
+}
+
+.pagination .active {
+    color: white;
+    background-color: rgb(43, 43, 177);
+    border: 1px solid rgb(43, 43, 177);
+}
+
+.pagination li:hover {
+    cursor: pointer;
+}
+
+.pagination .disabled {
+    color: grey;
+    cursor: text !important;
+}
+
+li.next {
+    border-top-right-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+}
+
+li.previous {
+    border-top-left-radius: 0.7rem;
+    border-bottom-left-radius: 0.7rem;
+}
 /*  */
 /*  */
 /*  */
@@ -438,6 +479,18 @@ footer {
     box-shadow: 0px 2px 8px -4px rgba(0, 0, 0, 0.5);
 }
 
+.main-view-listings {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 4rem;
+    background-color: rgb(255, 255, 255);
+    border-radius: 1rem;
+}
+
 .sidebar-body {
     padding: 1rem;
     margin: 0rem 1rem 1rem 1rem;
@@ -452,7 +505,7 @@ footer {
     box-shadow: 0px 2px 8px -4px rgba(0, 0, 0, 0.5);
 }
 
-.main-view-listings-container > * {
+.main-view-listings > * {
     margin: 1vh;
 }
 
@@ -506,6 +559,8 @@ footer {
     background: transparent;
     height: 20px;
     width: auto;
+    filter: invert(99%) sepia(42%) saturate(19%) hue-rotate(163deg)
+        brightness(118%) contrast(93%);
 }
 
 .selected {

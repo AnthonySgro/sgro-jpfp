@@ -40,11 +40,13 @@ class Sidebar extends Component {
         this.buttonStyling = this.buttonStyling.bind(this);
     }
 
+    // Triggers the Adding component
     highlightAdder() {
         const container = document.querySelectorAll(".container");
         container[0].classList.add("container-highlighted");
     }
 
+    // Handles search entries
     handleSearch(ev) {
         // Controlled form
         this.setState(
@@ -64,11 +66,13 @@ class Sidebar extends Component {
         );
     }
 
+    // Toggles the sorting options
     toggleSortDropdown() {
         document.getElementById("filter-dropdown").classList.remove("show");
         document.getElementById("sort-dropdown").classList.toggle("show");
     }
 
+    // Toggles the filtering options
     toggleFilterDropdown() {
         document.getElementById("sort-dropdown").classList.remove("show");
         document.getElementById("filter-dropdown").classList.toggle("show");
@@ -98,6 +102,11 @@ class Sidebar extends Component {
     // Handles sorting
     sorting(ev, str) {
         const { sorting } = this.state;
+
+        // If you clicked the image that came up, allow it
+        if (ev.target.tagName === "IMG") {
+            ev.target = ev.target.parentNode;
+        }
 
         //Styling
         this.buttonStyling(ev);
@@ -145,6 +154,11 @@ class Sidebar extends Component {
     // Handles filtering
     filtering(ev, str) {
         const { filtering } = this.state;
+
+        // If you clicked the image that came up, allow it
+        if (ev.target.tagName === "IMG") {
+            ev.target = ev.target.parentNode;
+        }
 
         //Styling
         this.buttonStyling(ev);
