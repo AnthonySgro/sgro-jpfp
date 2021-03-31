@@ -18,23 +18,24 @@ const {
     model: { Campus, Student },
 } = require("../server/db/");
 
+// Tests database validations
 describe("Database", () => {
-    describe("Campus Model", () => {
-        describe("Student Model", () => {
-            describe("Student Validation", () => {
-                it("Email must be valid email", () => {
-                    return StudentEmailTest("tomrobbinsgmail.com").then(
-                        async (response) => {
-                            // Expect validation error
-                            expect(response.message).to.equal(
-                                "Validation error: Validation isEmail on email failed",
-                            );
-                        },
-                    );
-                });
+    describe("Student Model", () => {
+        describe("Student Validation", () => {
+            it("Email must be valid email", () => {
+                return StudentEmailTest("tomrobbinsgmail.com").then(
+                    async (response) => {
+                        // Expect validation error
+                        expect(response.message).to.equal(
+                            "Validation error: Validation isEmail on email failed",
+                        );
+                    },
+                );
             });
         });
+    });
 
+    describe("Campus Model", () => {
         describe("Campus Validation", () => {
             it("Name cannot be empty", () => {
                 return CampusNotEmptyNameTest().then(async (response) => {

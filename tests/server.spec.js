@@ -7,8 +7,14 @@ const app = require("../server");
 const {
     getStudent,
     getAllStudents,
+    makeStudent,
+    updateStudent,
+    deleteStudent,
     getCampus,
     getAllCampuses,
+    makeCampus,
+    updateCampus,
+    deleteCampus,
 } = require("./server");
 
 // DB Models
@@ -17,6 +23,7 @@ const {
     model: { Campus, Student },
 } = require("../server/db/");
 
+// Tests all server routes
 describe("Server", () => {
     describe("Student API", () => {
         describe("GET /api/students", () => {
@@ -56,6 +63,79 @@ describe("Server", () => {
                     expect(response.firstName).to.equal(student.firstName);
                     expect(response.gpa).to.equal(student.gpa);
                     expect(response.CampusId).to.equal(student.CampusId);
+                });
+            });
+        });
+
+        describe("POST /api/students", () => {
+            it("Creates a student in the database", () => {
+                return makeStudent().then(async (response) => {
+                    const student = await Student.findOne({
+                        where: {
+                            firstName: "TestNameFirst",
+                        },
+                    });
+
+                    // Expect an object back
+                    expect(typeof response).to.equal("object");
+
+                    // Expect the data to match our direct database query
+                    expect(response.firstName).to.equal(student.firstName);
+                    expect(response.lastName).to.equal(student.lastName);
+                    expect(response.email).to.equal(student.email);
+                });
+            });
+
+            afterEach(async () => {
+                await Student.destroy({
+                    where: {
+                        firstName: "TestNameFirst",
+                    },
+                });
+            });
+        });
+
+        describe("PUT /api/students/:id", () => {
+            it("Updates a student in the database", () => {
+                return updateStudent().then(async (response) => {
+                    const student = await Student.findOne({
+                        where: {
+                            firstName: "TestNameFirstCHANGED",
+                        },
+                    });
+
+                    const oldStudent = await Student.findOne({
+                        where: {
+                            firstName: "TestNameFirst",
+                        },
+                    });
+
+                    // Expect an object back
+                    expect(typeof response).to.equal("object");
+
+                    // Expect the data to match our direct database query
+                    expect(response.firstName).to.equal(student.firstName);
+                    expect(response.lastName).to.equal(student.lastName);
+                    expect(response.email).to.equal(student.email);
+                });
+            });
+
+            afterEach(async () => {
+                await Student.destroy({
+                    where: {
+                        firstName: "TestNameFirstCHANGED",
+                    },
+                });
+            });
+        });
+
+        describe("DELETE /api/students/:id", () => {
+            it("Deletes a student in the database", () => {
+                return deleteStudent().then(async (response) => {
+                    // Expect an object back
+                    expect(typeof response).to.equal("number");
+                    // Expect a 204 response
+                    expect(response).to.equal(204);
                 });
             });
         });
@@ -99,6 +179,73 @@ describe("Server", () => {
                     expect(response.name).to.equal(campus.name);
                     expect(response.description).to.equal(campus.description);
                     expect(response.address).to.equal(campus.address);
+                });
+            });
+        });
+
+        describe("POST /api/campuses", () => {
+            it("Creates a campus in the database", () => {
+                return makeCampus().then(async (response) => {
+                    const campus = await Campus.findOne({
+                        where: {
+                            name: "TestCampus",
+                        },
+                    });
+
+                    // Expect an object back
+                    expect(typeof response).to.equal("object");
+
+                    // Expect the data to match our direct database query
+                    expect(response.name).to.equal(campus.name);
+                    expect(response.description).to.equal(campus.description);
+                    expect(response.address).to.equal(campus.address);
+                });
+            });
+
+            afterEach(async () => {
+                await Campus.destroy({
+                    where: {
+                        name: "TestCampus",
+                    },
+                });
+            });
+        });
+
+        describe("PUT /api/campuses/:id", () => {
+            it("Updates a campus in the database", () => {
+                return updateCampus().then(async (response) => {
+                    const campus = await Campus.findOne({
+                        where: {
+                            name: "TestCampusCHANGED",
+                        },
+                    });
+
+                    // Expect an object back
+                    expect(typeof response).to.equal("object");
+
+                    // Expect the data to match our direct database query
+                    expect(response.name).to.equal(campus.name);
+                    expect(response.description).to.equal(campus.description);
+                    expect(response.address).to.equal(campus.address);
+                });
+            });
+
+            afterEach(async () => {
+                await Campus.destroy({
+                    where: {
+                        name: "TestCampusCHANGED",
+                    },
+                });
+            });
+        });
+
+        describe("DELETE /api/campuses/:id", () => {
+            it("Deletes a student in the database", () => {
+                return deleteCampus().then(async (response) => {
+                    // Expect an object back
+                    expect(typeof response).to.equal("number");
+                    // Expect a 204 response
+                    expect(response).to.equal(204);
                 });
             });
         });
