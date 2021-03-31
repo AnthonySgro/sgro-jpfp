@@ -38,6 +38,7 @@ class StudentListing extends Component {
         // Load students
         await this.props.loadAllStudents();
 
+        // Bring in props after we load
         const { allStudents, displayedStudents } = this.props;
 
         // Receive current page if a query was attatched to url
@@ -87,7 +88,7 @@ class StudentListing extends Component {
                 },
                 () => {
                     // **
-                    // This is here for emergency debugging reasons lol
+                    // ** This is here for emergency debugging reasons lol
                     // **
                     // console.log("*************");
                     // console.log("Prev: ", prevState.displayedStudents);
@@ -118,6 +119,7 @@ class StudentListing extends Component {
         return currentPage;
     }
 
+    // Slices items into paginated groups for display
     sliceDisplayedStudents(currentPage, students) {
         // Displayed students slicing
         const start = currentPage * 10 - 10;

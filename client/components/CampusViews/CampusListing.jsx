@@ -38,6 +38,7 @@ class CampusListing extends Component {
         // Load students
         await this.props.loadAllCampuses();
 
+        // Bring in props after we load
         const { allCampuses, displayedCampuses } = this.props;
 
         // Receive current page if a query was attatched to url
@@ -115,6 +116,7 @@ class CampusListing extends Component {
         return currentPage;
     }
 
+    // Slices items into paginated groups for display
     sliceDisplayedCampuses(currentPage, campuses) {
         // Displayed students slicing
         const start = currentPage * 10 - 10;

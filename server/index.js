@@ -44,3 +44,5 @@ app.listen(PORT, () =>
         http://localhost:${PORT}
 `),
 );
+
+module.exports = { app, PORT };
