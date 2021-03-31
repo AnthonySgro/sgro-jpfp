@@ -8,8 +8,8 @@ const axios = require("axios");
 const seed = async () => {
     try {
         // Produces a random number of these in the database
-        const NUMBER_OF_UNIVERSITIES = 2;
-        const NUMBER_OF_STUDENTS = 15;
+        const NUMBER_OF_UNIVERSITIES = 25;
+        const NUMBER_OF_STUDENTS = 200;
 
         // Drop database if exists...
         await db.sync({ force: true });
@@ -34,10 +34,10 @@ const seed = async () => {
             const imgUrl = (await axios.get("https://picsum.photos/200"))
                 .request.connection._httpMessage.res.responseUrl;
 
-            // const street = faker.address.streetAddress();
-            // const city = faker.address.city();
-            // const state = faker.address.state();
-            // const zip = faker.address.zipCode();
+            const street = faker.address.streetAddress();
+            const city = faker.address.city();
+            const state = faker.address.state();
+            const zip = faker.address.zipCode();
             const address = `${street}, ${city}, ${state} ${zip}`;
 
             fakeUniversities.push({

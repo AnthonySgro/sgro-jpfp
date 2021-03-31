@@ -15,12 +15,14 @@ this point.
 -   User feedback on adding and updating
 -   Searching, Sorting, and Filtering on main listing screen
 -   Fun design
--   Back-end and _hopefully_ front-end pagination
+-   Back-end and front-end pagination
+-   Basic back-end testing
 
 # Startup Guide
 
 -   **Easy Start-Up**
 -   run `npm run start:dev` command
 -   [go to development port 5005](http://localhost:5005)
--   To seed data, uncomment `seed()` in `server/index.js`
--   To change the number of universities and students generated, change parameters in `server/db/seed.js`
+-   to seed data, uncomment `seed()` in `server/index.js`
+-   to change the number of universities and students generated, change parameters in `server/db/seed.js`
+-   to run tests, run `npm test`
