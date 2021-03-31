@@ -22,14 +22,5 @@ this point.
 -   **Easy Start-Up**
 -   run `npm run start:dev` command
 -   [go to development port 5005](http://localhost:5005)
--   To seed data, uncomment `seed()` in the server index file:
-
-```
-server/index.js
-```
-
--   To change the number of universities and students generated, change parameters in database seed file:
-
-```
-server/db/seed.js
-```
+-   To seed data, uncomment `seed()` in `server/index.js`
+-   To change the number of universities and students generated, change parameters in `server/db/seed.js`

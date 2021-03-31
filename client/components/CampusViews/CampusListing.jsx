@@ -86,10 +86,13 @@ class CampusListing extends Component {
                     loading: false,
                 },
                 () => {
+                    // **
+                    // ** This is here for emergency debugging reasons
+                    // **
                     // State is updating asynchronously, and is called after the render
                     // We have to force an update to re-render the page once the
                     // Update is processed. Idk if this is bad but I think it is working
-                    this.forceUpdate();
+                    // this.forceUpdate();
                 },
             );
         }

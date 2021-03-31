@@ -8,8 +8,8 @@ const axios = require("axios");
 const seed = async () => {
     try {
         // Produces a random number of these in the database
-        const NUMBER_OF_UNIVERSITIES = 15;
-        const NUMBER_OF_STUDENTS = 200;
+        const NUMBER_OF_UNIVERSITIES = 2;
+        const NUMBER_OF_STUDENTS = 15;
 
         // Drop database if exists...
         await db.sync({ force: true });

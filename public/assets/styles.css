@@ -343,12 +343,26 @@ footer {
 .pagination li {
     display: inline-block;
     border: 1px solid black;
-    padding: 5px;
     cursor: pointer;
+    padding: 5px 0px;
+}
+
+.pagination li:not(:first-child) {
+    border-left: 0;
+}
+
+.pagination li:nth-last-child(2) {
+    border-right: 0;
+}
+
+.next {
+    border: 1px solid black !important;
 }
 
 .pagination a {
     outline: none;
+    padding: 10px;
+    height: 10px;
 }
 
 .pagination .active {
@@ -357,23 +371,33 @@ footer {
     border: 1px solid rgb(43, 43, 177);
 }
 
+.pagination .active:hover {
+    background-color: rgb(43, 43, 177);
+}
+
 .pagination li:hover {
     cursor: pointer;
+    background-color: rgb(223, 223, 223);
 }
 
 .pagination .disabled {
-    color: grey;
+    color: rgb(199, 198, 198);
     cursor: text !important;
+    border: 1px solid rgb(199, 198, 198) !important;
+}
+
+.pagination .disabled:hover {
+    background-color: white;
 }
 
 li.next {
     border-top-right-radius: 0.7rem;
-    border-bottom-right-radius: 0.7rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
 li.previous {
     border-top-left-radius: 0.7rem;
-    border-bottom-left-radius: 0.7rem;
+    border-bottom-left-radius: 0.5rem;
 }
 /*  */
 /*  */

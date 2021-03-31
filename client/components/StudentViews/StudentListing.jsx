@@ -39,6 +39,7 @@ class StudentListing extends Component {
         await this.props.loadAllStudents();
 
         const { allStudents, displayedStudents } = this.props;
+
         // Receive current page if a query was attatched to url
         const currentPage = this.parseQuery();
 
@@ -85,10 +86,16 @@ class StudentListing extends Component {
                     loading: false,
                 },
                 () => {
+                    // **
+                    // This is here for emergency debugging reasons lol
+                    // **
+                    // console.log("*************");
+                    // console.log("Prev: ", prevState.displayedStudents);
+                    // console.log("Curr: ", displayedStudents);
                     // State is updating asynchronously, and is called after the render
                     // We have to force an update to re-render the page once the
                     // Update is processed. Idk if this is bad but I think it is working
-                    this.forceUpdate();
+                    // this.forceUpdate();
                 },
             );
         }
