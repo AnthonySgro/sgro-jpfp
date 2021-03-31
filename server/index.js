@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const path = require("path");
+const PORT = process.env.PORT || 5005;
 
 // Routers
 const apiRouter = require("./api");
@@ -37,7 +38,6 @@ app.use((err, req, res, next) => {
     res.send(err.message || "Internal server error");
 });
 
-const PORT = process.env.PORT || 5005;
 app.listen(PORT, () =>
     console.log(`
         Listening on Port ${PORT}
