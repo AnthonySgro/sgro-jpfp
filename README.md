@@ -16,7 +16,7 @@ this point.
 -   Searching, Sorting, and Filtering on main listing screen
 -   Fun design
 -   Back-end and front-end pagination
--   Basic back-end testing
+-   Back-end server and database testing with Chai and Mocha
 
 # Startup Guide
 
