@@ -130,4 +130,4 @@ const seedOnce = async () => {
     }
 };
 
-module.exports = { seedOnce };
+module.exports = seedOnce;
