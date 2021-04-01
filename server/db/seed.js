@@ -12,7 +12,7 @@ const seed = async () => {
         const NUMBER_OF_STUDENTS = 200;
 
         // Drop database if exists...
-        await db.sync({ force: true });
+        // await db.sync({ force: true });
 
         // Generates fake universities
         let fakeUniversities = [];
