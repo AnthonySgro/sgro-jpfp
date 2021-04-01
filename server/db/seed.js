@@ -12,7 +12,7 @@ const seed = async () => {
         const NUMBER_OF_STUDENTS = 200;
 
         // Drop database if exists...
-        // await db.sync({ force: true });
+        await db.sync({ force: true });
 
         // Generates fake universities
         let fakeUniversities = [];
@@ -118,14 +118,10 @@ const seed = async () => {
     }
 };
 
-// Seeds database with original data (only once!!!)
+// Seeds database with original data (only if there are no students!!!)
 const seedOnce = async () => {
-    const studentPresent = await Student.findOne({
-        where: {
-            id: 1,
-        },
-    });
-    if (!studentPresent) {
+    const students = await Student.findAll();
+    if (!students.length) {
         await seed();
     }
 };
