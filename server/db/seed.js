@@ -120,9 +120,13 @@ const seed = async () => {
 
 // Seeds database with original data (only if there are no students!!!)
 const seedOnce = async () => {
-    const students = await Student.findAll();
-    if (!students.length) {
-        await seed();
+    try {
+        const students = await Student.findAll();
+        if (!students.length) {
+            await seed();
+        }
+    } catch (err) {
+        console.log(err);
     }
 };
 
