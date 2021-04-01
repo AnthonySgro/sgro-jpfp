@@ -118,4 +118,16 @@ const seed = async () => {
     }
 };
 
-module.exports = seed;
+// Seeds database with original data (only once!!!)
+const seedOnce = async () => {
+    const studentPresent = await Student.findOne({
+        where: {
+            id: 1,
+        },
+    });
+    if (!studentPresent) {
+        await seed();
+    }
+};
+
+module.exports = { seedOnce };

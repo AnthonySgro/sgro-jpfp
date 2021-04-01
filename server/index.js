@@ -10,12 +10,11 @@ const apiRouter = require("./api");
 // Database imports
 const {
     db,
-    seed,
+    seedOnce,
     model: { Campus, Student },
 } = require("./db");
 
-// Seeds database with original data (uncomment for persistent database)
-seed();
+seedOnce();
 
 // Middleware
 app.use(express.json());

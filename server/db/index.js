@@ -1,11 +1,11 @@
 const db = require("./db");
-const seed = require("./seed");
+const seedOnce = require("./seed");
 const Student = require("./model/Student");
 const Campus = require("./model/Campus");
 
 module.exports = {
     db,
-    seed,
+    seedOnce,
     model: {
         Student,
         Campus,
