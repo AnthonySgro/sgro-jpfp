@@ -16,10 +16,10 @@ const {
 } = require("./db");
 
 // Will only seed if there is no data
-seedOnce();
+// seedOnce();
 
 // Will refresh the seed data every time
-// seed();
+seed();
 
 // Middleware
 app.use(express.json());
