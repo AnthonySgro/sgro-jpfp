@@ -509,8 +509,8 @@ li.previous {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
-    padding: 1rem;
-    margin-bottom: 4rem;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
     background-color: rgb(255, 255, 255);
     border-radius: 1rem;
 }

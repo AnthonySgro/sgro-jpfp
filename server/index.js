@@ -14,7 +14,7 @@ const {
     model: { Campus, Student },
 } = require("./db");
 
-seedOnce();
+// seedOnce();
 
 // Middleware
 app.use(express.json());

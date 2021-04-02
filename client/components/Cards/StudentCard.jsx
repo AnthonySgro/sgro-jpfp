@@ -14,10 +14,6 @@ class StudentCard extends Component {
         this.state = {
             student: {
                 id: props.id,
-                Campus: props.Campus,
-                firstName: props.firstName,
-                lastName: props.lastName,
-                imgUrl: props.imgUrl,
             },
             styles: {
                 imgClassName: "student-card-img",
@@ -25,6 +21,7 @@ class StudentCard extends Component {
         };
         this.raiseImage = this.raiseImage.bind(this);
         this.lowerImage = this.lowerImage.bind(this);
+        this.findStudentWithId = this.findStudentWithId.bind(this);
     }
 
     raiseImage() {
@@ -41,12 +38,38 @@ class StudentCard extends Component {
         });
     }
 
+    // most updated student info will be pulled from redux store
+    findStudentWithId(id) {
+        if (!id) {
+            return undefined;
+        }
+
+        const { allStudents } = this.props;
+        const thisStudent = allStudents.filter((student) => student.id === id);
+        return thisStudent[0];
+    }
+
     render() {
+        const student = this.findStudentWithId(this.state.student.id);
+
+        // If nothing passed, don't render
+        if (!student) {
+            return null;
+        }
+
         // Destructuring data for render
-        const { id, imgUrl, firstName, lastName, Campus } = this.state.student;
+        const { id, firstName, lastName, Campus, imgUrl } = student;
+
         const { imgClassName } = this.state.styles;
         const { deleteStudent, unregisterStudent } = this.props;
+
         const cId = Campus ? Campus.id : null;
+
+        // The reason for this is to check if campus was found from our student object.
+        // We can fix this later by making sure a newly added student has an associated campus returned
+        // From the database, but for now, this works.
+        const propCampus = Campus ? Campus : this.props.campus;
+
         return (
             <div className="student-card-container card-container">
                 <div className="student-card-image card-item-container">
@@ -71,12 +94,12 @@ class StudentCard extends Component {
                 </div>
                 <div className="student-card-university card-item-container card-university-container">
                     {/* Displays Campus Name or "No University" */}
-                    {Campus ? (
+                    {propCampus ? (
                         <Link
-                            to={`/campuses/${Campus.id}`}
+                            to={`/campuses/${propCampus.id}`}
                             className="student-card-campus card-detail-link"
                         >
-                            {Campus.name}
+                            {propCampus.name}
                         </Link>
                     ) : (
                         <a className="student-card-campus card-detail-link no-underline">
@@ -97,7 +120,7 @@ class StudentCard extends Component {
                         <button
                             className="card-delete-button"
                             onClick={() =>
-                                deleteStudent({ id, campus: Campus }, cId)
+                                deleteStudent({ id, campus: propCampus }, cId)
                             }
                         >
                             <p className="delete-text">x</p>
@@ -112,6 +135,7 @@ class StudentCard extends Component {
 function mapStateToProps(state) {
     return {
         selectedCampus: state.campusInfo.selectedCampus,
+        allStudents: state.studentInfo.allStudents,
     };
 }
 

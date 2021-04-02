@@ -6,6 +6,7 @@ import { fetchAllStudents } from "../../store/student.js";
 
 // Router & Query Imports
 import { withRouter } from "react-router";
+import { Redirect } from "react-router-dom";
 import queryString from "query-string";
 
 // Component Imports
@@ -27,10 +28,12 @@ class StudentListing extends Component {
             currentPage: 1,
             loading: true,
             maxPageCount: 1,
+            redirect: null,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
         this.sliceDisplayedStudents = this.sliceDisplayedStudents.bind(this);
         this.parseQuery = this.parseQuery.bind(this);
+        this.findCampusWithId = this.findCampusWithId.bind(this);
     }
 
     // We want to get all the students when we go to this page
@@ -90,7 +93,7 @@ class StudentListing extends Component {
                     // **
                     // ** This is here for emergency debugging reasons lol
                     // **
-                    // console.log("*************");
+                    // console.log("***c**********");
                     // console.log("Prev: ", prevState.displayedStudents);
                     // console.log("Curr: ", displayedStudents);
                     // State is updating asynchronously, and is called after the render
@@ -153,6 +156,16 @@ class StudentListing extends Component {
         );
     }
 
+    findCampusWithId(id) {
+        if (id === null) {
+            return null;
+        }
+
+        const { allCampuses } = this.props;
+        const campus = allCampuses.filter((campus) => campus.id === id);
+        return campus[0];
+    }
+
     render() {
         const {
             loading,
@@ -161,6 +174,12 @@ class StudentListing extends Component {
             splicedStudents,
             maxPageCount,
         } = this.state;
+
+        // If there are no students on the page despite having students...
+        if (!splicedStudents.length && allStudents.length) {
+            // Reload but from the max page
+            // this.props.history.push(`/students?page=${maxPageCount}`);
+        }
 
         return (
             <React.Fragment>
@@ -196,12 +215,19 @@ class StudentListing extends Component {
                                             />
                                             <div className="main-view-listings">
                                                 {splicedStudents.map(
-                                                    (student) => (
-                                                        <StudentCard
-                                                            key={student.id}
-                                                            {...student}
-                                                        />
-                                                    ),
+                                                    (student) => {
+                                                        const campus = this.findCampusWithId(
+                                                            student.CampusId,
+                                                        );
+                                                        return (
+                                                            <StudentCard
+                                                                key={student.id}
+                                                                id={student.id}
+                                                                // {...student}
+                                                                campus={campus}
+                                                            />
+                                                        );
+                                                    },
                                                 )}
                                             </div>
                                         </div>
@@ -228,6 +254,7 @@ function mapStateToProps(state) {
     return {
         allStudents: state.studentInfo.allStudents,
         displayedStudents: state.studentInfo.displayedStudents,
+        allCampuses: state.campusInfo.allCampuses,
     };
 }
 

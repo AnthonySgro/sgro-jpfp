@@ -38,6 +38,7 @@ class CampusStudentsModule extends Component {
 
     render() {
         const { students, campus } = this.state;
+
         return (
             <div className="main-view-list-campus">
                 <h2>{`All Students (${students.length})`}</h2>
@@ -47,7 +48,7 @@ class CampusStudentsModule extends Component {
                             <StudentCard
                                 key={student.id}
                                 {...student}
-                                Campus={campus}
+                                campus={campus}
                                 unregisterStudent={this.unregisterStudent}
                             />
                         ))}
