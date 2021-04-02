@@ -26,3 +26,4 @@ this point.
 -   to seed data, uncomment `seed()` in `server/index.js`
 -   to change the number of universities and students generated, change parameters in `server/db/seed.js`
 -   to run tests, run `npm test`
+-   have fun!
