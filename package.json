@@ -1,9 +1,6 @@
 {
     "name": "sgro-final-project",
     "version": "10.19.0",
-    "engines": {
-        "node": "10.19.0"
-    },
     "description": "",
     "main": "index.js",
     "scripts": {
