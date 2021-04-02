@@ -59,6 +59,6 @@ Student.init(
 );
 
 Campus.hasMany(Student);
-Student.belongsTo(Campus);
+Student.belongsTo(Campus, { constraints: false });
 
 module.exports = Student;
