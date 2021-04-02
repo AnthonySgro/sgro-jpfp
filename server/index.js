@@ -11,10 +11,15 @@ const apiRouter = require("./api");
 const {
     db,
     seedOnce,
+    seed,
     model: { Campus, Student },
 } = require("./db");
 
-// seedOnce();
+// Will only seed if there is no data
+seedOnce();
+
+// Will refresh the seed data every time
+// seed();
 
 // Middleware
 app.use(express.json());

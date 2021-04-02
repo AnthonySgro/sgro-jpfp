@@ -118,11 +118,12 @@ const seed = async () => {
     }
 };
 
-// Seeds database with original data (only if there are no students!!!)
+// Seeds database with original data only if there is no data
 const seedOnce = async () => {
     try {
         const students = await Student.findAll();
-        if (!students.length) {
+        const campuses = await Campus.findAll();
+        if (!students.length && !campuses.length) {
             await seed();
         }
     } catch (err) {
@@ -130,4 +131,4 @@ const seedOnce = async () => {
     }
 };
 
-module.exports = seedOnce;
+module.exports = { seed, seedOnce };
