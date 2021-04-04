@@ -10,13 +10,9 @@ const apiRouter = require("./api");
 // Database imports
 const {
     db,
-    seedOnce,
     seed,
     model: { Campus, Student },
 } = require("./db");
-
-// Will only seed if there is no data
-// seedOnce();
 
 // Will refresh the seed data every time
 seed();

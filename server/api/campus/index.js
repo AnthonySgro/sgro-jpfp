@@ -72,6 +72,7 @@ router.post("/", async (req, res, next) => {
         let { imgUrl } = req.body;
 
         // If url is empty, give it the default value
+        // I had a lot of trouble with this, so I had to do it this way...
         if (imgUrl === "") {
             imgUrl =
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Media_Viewer_Icon_-_Location.svg/1200px-Media_Viewer_Icon_-_Location.svg.png";
