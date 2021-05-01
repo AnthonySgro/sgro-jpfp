@@ -21,6 +21,8 @@ this point.
 # Startup Guide
 
 -   **Easy Start-Up**
+-   run `npm init -y` command if node has not been installed locally
+-   run `npm i` to install dependencies
 -   run `npm run start:dev` command
 -   [go to development port 5005](http://localhost:5005)
 -   to seed data, uncomment `seed()` in `server/index.js`
